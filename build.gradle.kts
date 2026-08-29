@@ -1,6 +1,6 @@
-import org.zero.hmcl.gradle.ci.CheckUpdate
-import org.zero.hmcl.gradle.docs.UpdateDocuments
-import org.zero.hmcl.gradle.l10n.ParseLanguageSubtagRegistry
+import org.zero.launcher.gradle.ci.CheckUpdate
+import org.zero.launcher.gradle.docs.UpdateDocuments
+import org.zero.launcher.gradle.l10n.ParseLanguageSubtagRegistry
 
 plugins {
     id("checkstyle")
@@ -76,7 +76,7 @@ subprojects {
     }
 }
 
-org.zero.hmcl.gradle.javafx.JavaFXUtils.register(rootProject)
+org.zero.launcher.gradle.javafx.JavaFXUtils.register(rootProject)
 
 defaultTasks("clean", "build")
 
@@ -92,9 +92,9 @@ tasks.register<UpdateDocuments>("updateDocuments") {
 }
 
 tasks.register<CheckUpdate>("checkUpdateDev") {
-    uri.set("https://ci.Zero.net/job/HMCL-nightly")
+    uri.set("https://ci.Zero.net/job/ZeroLauncher-nightly")
 }
 
 tasks.register<CheckUpdate>("checkUpdateStable") {
-    uri.set("https://ci.Zero.net/job/HMCL-stable")
+    uri.set("https://ci.Zero.net/job/ZeroLauncher-stable")
 }

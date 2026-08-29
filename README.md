@@ -25,7 +25,7 @@
 
 ## 📖 About Zero Launcher
 
-**Zero Launcher** is a custom open-source Minecraft launcher designed with modern aesthetics and enhanced user experience, built on the solid foundation of HMCL.
+**Zero Launcher** is a custom open-source Minecraft launcher designed with modern aesthetics and enhanced user experience, built on the solid foundation of ZeroLauncher.
 
 ---
 

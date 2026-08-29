@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.glavo.site/hmcl/launcher-state/1.0.0",
-  "title": "HMCL Launcher State",
+  "$id": "https://schemas.glavo.site/zero/launcher-state/1.0.0",
+  "title": "ZeroLauncher Launcher State",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -10,7 +10,7 @@
   "patternProperties": {
     "^\\$schema$": {
       "enum": [
-        "https://schemas.glavo.site/hmcl/launcher-state/1.0.0"
+        "https://schemas.glavo.site/zero/launcher-state/1.0.0"
       ]
     }
   },

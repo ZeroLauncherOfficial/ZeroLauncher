@@ -24,8 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import org.zero.hmcl.ui.FXUtils;
-import org.zero.hmcl.ui.animation.AnimationUtils;
+import org.zero.launcher.ui.FXUtils;
+import org.zero.launcher.ui.animation.AnimationUtils;
 
 public class JFXRadioButtonSkin extends RadioButtonSkin {
     private static final double PADDING = 15.0;

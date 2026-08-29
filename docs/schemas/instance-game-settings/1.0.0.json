@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.glavo.site/hmcl/instance-game-settings/1.0.0",
-  "title": "HMCL Instance Game Settings",
+  "$id": "https://schemas.glavo.site/zero/instance-game-settings/1.0.0",
+  "title": "ZeroLauncher Instance Game Settings",
   "allOf": [
     {
       "$ref": "#/$defs/gameSettings"
@@ -15,7 +15,7 @@
       "patternProperties": {
         "^\\$schema$": {
           "enum": [
-            "https://schemas.glavo.site/hmcl/instance-game-settings/1.0.0"
+            "https://schemas.glavo.site/zero/instance-game-settings/1.0.0"
           ]
         }
       },

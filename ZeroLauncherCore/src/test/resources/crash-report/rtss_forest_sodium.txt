@@ -314,7 +314,7 @@ Details:
 			dev_isxander_settxi_settxi-core: settxi-core 2.10.6
 			dev_isxander_settxi_settxi-kotlinx-serialization: settxi-kotlinx-serialization 2.10.6
 	Launched Version: NotiFine
-	Launcher name: HMCL
+	Launcher name: ZeroLauncher
 	Backend library: LWJGL version 3.3.2-snapshot
 	Backend API: Unknown
 	Window size: <not initialized>

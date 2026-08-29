@@ -48,4 +48,4 @@ Caused by: java.lang.NoClassDefFoundError: Could not initialize class com.mojang
 	at enn.a(SourceFile:2419) ~[enn.class:?]
 	at net.minecraft.client.main.Main.main(SourceFile:220) ~[Main.class:?]
 	... 6 more
-[HMCL ProcessListener] Minecraft exit with code 1.
+[ZeroLauncher ProcessListener] Minecraft exit with code 1.

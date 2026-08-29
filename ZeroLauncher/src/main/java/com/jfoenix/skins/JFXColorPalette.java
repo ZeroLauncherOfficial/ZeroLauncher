@@ -44,7 +44,7 @@ import javafx.scene.shape.StrokeType;
 
 import java.util.List;
 
-import static org.zero.hmcl.util.i18n.I18n.i18n;
+import static org.zero.launcher.util.i18n.I18n.i18n;
 
 /**
  * @author Shadi Shaheen FUTURE WORK: this UI will get re-designed to match material design guidlines

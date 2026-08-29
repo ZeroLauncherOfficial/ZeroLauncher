@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.zero.hmcl.ui.FXUtils.useJFXContextMenu;
+import static org.zero.launcher.ui.FXUtils.useJFXContextMenu;
 
 /**
  * JFXComboBox is the material design implementation of a combobox.

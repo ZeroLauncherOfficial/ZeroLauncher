@@ -97,7 +97,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
                                         invtweaks.forge.asm.ContainerTransformer
   GL info: ' Vendor: 'Intel' Version: '4.0.0 - Build 10.18.10.4425' Renderer: 'Intel(R) HD Graphics'
   Suspected Mods: Kathairis (kathairis)
-  Launched Version: HMCL 3.2.139
+  Launched Version: ZeroLauncher 3.2.139
   LWJGL: 2.9.4
   OpenGL: Intel(R) HD Graphics GL version 4.0.0 - Build 10.18.10.4425, Intel
   GL Caps: Using GL 1.3 multitexturing.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.glavo.site/hmcl/user-settings/1.0.0",
-  "title": "HMCL User Settings",
+  "$id": "https://schemas.glavo.site/zero/user-settings/1.0.0",
+  "title": "ZeroLauncher User Settings",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -10,7 +10,7 @@
   "patternProperties": {
     "^\\$schema$": {
       "enum": [
-        "https://schemas.glavo.site/hmcl/user-settings/1.0.0"
+        "https://schemas.glavo.site/zero/user-settings/1.0.0"
       ]
     }
   },

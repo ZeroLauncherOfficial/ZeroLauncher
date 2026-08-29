@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.glavo.site/hmcl/authlib-injector-server-metadata/1.0.0",
-  "title": "HMCL Authlib Injector Server Metadata Cache",
+  "$id": "https://schemas.glavo.site/zero/authlib-injector-server-metadata/1.0.0",
+  "title": "ZeroLauncher Authlib Injector Server Metadata Cache",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -10,7 +10,7 @@
   "patternProperties": {
     "^\\$schema$": {
       "enum": [
-        "https://schemas.glavo.site/hmcl/authlib-injector-server-metadata/1.0.0"
+        "https://schemas.glavo.site/zero/authlib-injector-server-metadata/1.0.0"
       ]
     }
   },

@@ -4,13 +4,13 @@
 **English** | 中文 ([简体](Localization_zh.md), [繁體](Localization_zh_Hant.md))
 <!-- #END LANGUAGE_SWITCHER -->
 
-HMCL provides localization support for multiple languages.
+ZeroLauncher provides localization support for multiple languages.
 
-This document describes HMCL's support status for these languages and provides a guide for contributors who want to help with HMCL localization.
+This document describes ZeroLauncher's support status for these languages and provides a guide for contributors who want to help with ZeroLauncher localization.
 
 ## Supported languages
 
-Currently, HMCL supports the following languages:
+Currently, ZeroLauncher supports the following languages:
 
 | Language              | Language Tag | Preferred Localization Key | Preferred Localization File Suffix | [Game Language Files](https://minecraft.wiki/w/Language) | Support Status | Volunteers                                |
 |-----------------------|--------------|----------------------------|------------------------------------|----------------------------------------------------------|----------------|-------------------------------------------|
@@ -27,7 +27,7 @@ Currently, HMCL supports the following languages:
 <details>
 <summary>About Language Tags</summary>
 
-HMCL uses language tags that conform to the IETF BCP 47 standard.
+ZeroLauncher uses language tags that conform to the IETF BCP 47 standard.
 
 When choosing language tags, we follow these principles:
 
@@ -56,7 +56,7 @@ As a special case, for default resources, the localization key is `default` and 
 
 Due to the existence of the [resource fallback mechanism](#resource-fallback-mechanism),
 if there is no resource that exactly matches the current locale, 
-HMCL will derive a search list from the current language tag and search for resources in order.
+ZeroLauncher will derive a search list from the current language tag and search for resources in order.
 
 We recommend always providing a default resource (with the `default` key and empty file suffix) when providing localization resources,
 to ensure all users can load resources properly.
@@ -74,7 +74,7 @@ and use the more specific `zh-Hans`/`zh-Hant` as the key for the resource with f
 
 </details>
 
-HMCL requires all pull requests that update documentation and localization resources to also update the resources
+ZeroLauncher requires all pull requests that update documentation and localization resources to also update the resources
 for all **primary** supported languages.
 If the PR author is not familiar with the relevant languages, they can request translation help in the comments,
 and maintainers will help translate these texts before merging the PR.
@@ -92,7 +92,7 @@ We greatly appreciate your help.
 
 ## Adding Support for a New Language
 
-HMCL welcomes anyone to participate in translation and contribution. 
+ZeroLauncher welcomes anyone to participate in translation and contribution. 
 However, maintaining translations for more languages requires more maintenance effort, so we have some requirements for newly added languages.
 Please confirm the following requirements before contributing:
 
@@ -106,13 +106,13 @@ Please confirm the following requirements before contributing:
   we hope to find people proficient in the language to help us maintain the newly added localization files in the long term.
   If there may be a lack of long-term maintainers, we will be more cautious about adding support for that language.
 
-We recommend that contributors submit a [feature request](https://github.com/HMCL-dev/HMCL/issues/new?template=feature.yml) before providing a new language translation,
+We recommend that contributors submit a [feature request](https://github.com/ZeroLauncher-dev/ZeroLauncher/issues/new?template=feature.yml) before providing a new language translation,
 discuss with other contributors first, and determine the future maintenance plan before starting the translation work.
 
 ### Getting Started with Translation
 
-If you want to add support for a new language to HMCL, please start by translating [`I18N.properties`](../HMCL/src/main/resources/assets/lang/I18N.properties).
-The vast majority of HMCL's texts are in this file, and translating it will translate the entire interface.
+If you want to add support for a new language to ZeroLauncher, please start by translating [`I18N.properties`](../ZeroLauncher/src/main/resources/assets/lang/I18N.properties).
+The vast majority of ZeroLauncher's texts are in this file, and translating it will translate the entire interface.
 
 This is a Java Properties file, which is very simple in format.
 Before translating, please read the introduction to this format: [Properties file](https://en.wikipedia.org/wiki/.properties).
@@ -120,20 +120,20 @@ Before translating, please read the introduction to this format: [Properties fil
 As the first step of translation, please look up the two- or three-letter language tag for your language in [this table](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry).
 For example, the language tag for English is `en`.
 
-After determining the language tag, please create a file named `I18N_<localization file suffix>.properties` (e.g., `I18N_en.properties`) next to the [`I18N.properties` file](../HMCL/src/main/resources/assets/lang).
+After determining the language tag, please create a file named `I18N_<localization file suffix>.properties` (e.g., `I18N_en.properties`) next to the [`I18N.properties` file](../ZeroLauncher/src/main/resources/assets/lang).
 Then you can start translating in this file.
 
 The `I18N.properties` file follows the [resource fallback mechanism](#resource-fallback-mechanism) to look up missing translations.
 That is, you can translate entry by entry, and any untranslated entries will automatically fall back to English.
 
-After translating part of the file, you can [build HMCL yourself](./Contributing.md#build-hmcl), 
-and your translations will be included in the compiled HMCL.
+After translating part of the file, you can [build ZeroLauncher yourself](./Contributing.md#build-hmcl), 
+and your translations will be included in the compiled ZeroLauncher.
 If your computer's default environment is not the target language,
-you can set the environment variable `HMCL_LANGUAGE` to the language tag you just found from the table,
-and HMCL will automatically switch to that language.
+you can set the environment variable `ZeroLauncher_LANGUAGE` to the language tag you just found from the table,
+and ZeroLauncher will automatically switch to that language.
 
-At this point, you can push the file to GitHub and submit a PR to HMCL.
-The maintainers of HMCL will complete the remaining steps for you.
+At this point, you can push the file to GitHub and submit a PR to ZeroLauncher.
+The maintainers of ZeroLauncher will complete the remaining steps for you.
 
 ## Localization Resources
 
@@ -146,7 +146,7 @@ For example, for `README.md`, the localized versions in different languages are 
 - Chinese (Traditional): `README_zh_Hant.md`
 - Chinese (Classical): `README_lzh.md`
 
-In addition to localized files, HMCL also supports localizing certain text fields in JSON. Localized text in JSON uses the following format:
+In addition to localized files, ZeroLauncher also supports localizing certain text fields in JSON. Localized text in JSON uses the following format:
 
 ```json5
 {
@@ -179,7 +179,7 @@ It can be rewritten as localized text:
 
 ## Resource Fallback Mechanism
 
-For missing resources in a certain language, HMCL supports a resource fallback mechanism,
+For missing resources in a certain language, ZeroLauncher supports a resource fallback mechanism,
 which derives a search list based on different language tags and searches for resources in order according to this list.
 
 Before searching, we first refine the language tag through the following steps.
@@ -187,20 +187,20 @@ Before searching, we first refine the language tag through the following steps.
 1. Normalize Language Codes
 
    If the language code subtag in the current language tag is not registered in the IANA Language Subtag Registry, 
-   HMCL will try to map it to a registered tag.
+   ZeroLauncher will try to map it to a registered tag.
 
-   For example, HMCL will replace the language code `eng` with `en`.
+   For example, ZeroLauncher will replace the language code `eng` with `en`.
 
 2. Map Macrolanguages to Individual Languages
 
    If the current language code is an [ISO 639 macrolanguage](https://en.wikipedia.org/wiki/ISO_639_macrolanguage), 
-   and the macrolanguage usually refers to a specific individual language, HMCL will replace it with that individual language.
+   and the macrolanguage usually refers to a specific individual language, ZeroLauncher will replace it with that individual language.
 
    For example, `zh` (Chinese) usually actually refers to `cmn` (Mandarin), so we replace the language code `zh` with `cmn`.
 
 3. Derive Script
 
-   If the current language tag does not specify a script, HMCL will try to derive the script according to the following rules in order:
+   If the current language tag does not specify a script, ZeroLauncher will try to derive the script according to the following rules in order:
 
     1. If the current language tag specifies a variant, and the variant is registered in the IANA Language Subtag Registry, 
        and all its `Prefix` entries in the registry contain the same script, then set the current script to that script.
@@ -218,9 +218,9 @@ Before searching, we first refine the language tag through the following steps.
        If true, set the script to `Hant` (Traditional Chinese Characters);
        otherwise, set it to `Hans` (Simplified Chinese Characters).
 
-After refining the language code, HMCL will derive a list of language tags based on this language tag.
+After refining the language code, ZeroLauncher will derive a list of language tags based on this language tag.
 
-For example, for the language tag `en-US`, HMCL will refine it to `en-Latn-US` and derive the following search list:
+For example, for the language tag `en-US`, ZeroLauncher will refine it to `en-Latn-US` and derive the following search list:
 
 1. `en-Latn-US`
 2. `en-Latn`
@@ -228,7 +228,7 @@ For example, for the language tag `en-US`, HMCL will refine it to `en-Latn-US` a
 4. `en`
 5. `und`
 
-For the language tag `zh-CN`, HMCL will refine it to `cmn-Hans-CN` and derive the following search list:
+For the language tag `zh-CN`, ZeroLauncher will refine it to `cmn-Hans-CN` and derive the following search list:
 
 1. `cmn-Hans-CN`
 2. `cmn-Hans`
@@ -241,18 +241,18 @@ For the language tag `zh-CN`, HMCL will refine it to `cmn-Hans-CN` and derive th
 9. `und`
 
 For resources that can be merged (such as `.properties` files), 
-HMCL will merge resources according to the priority of this list; for resources that are difficult to merge (such as font files), 
-HMCL will load the highest-priority resource found in this list.
+ZeroLauncher will merge resources according to the priority of this list; for resources that are difficult to merge (such as font files), 
+ZeroLauncher will load the highest-priority resource found in this list.
 
 If the current language uses a three-letter ISO 639 code, but there is also a corresponding two-letter code, 
-HMCL will map it to the two-letter code before searching for resources.
+ZeroLauncher will map it to the two-letter code before searching for resources.
 
 For example, if the current environment's language tag is `eng-US`, 
-HMCL will map it to `en-US` and then search for localization resources according to the above rules.
+ZeroLauncher will map it to `en-US` and then search for localization resources according to the above rules.
 
 ### Additional Rules for Chinese
 
-HMCL always adds `zh-CN` to the search list for all Chinese environments, 
+ZeroLauncher always adds `zh-CN` to the search list for all Chinese environments, 
 and adds `zh-TW` to the search list for all Traditional Chinese environments.
 
 Below are the localization resource search lists for several common Chinese environments.
@@ -310,7 +310,7 @@ Below are the localization resource search lists for several common Chinese envi
 
 <!-- #BEGIN BLOCK -->
 <!-- #PROPERTY PROCESS_LINK=false -->
-To simplify documentation maintenance, HMCL uses a macro mechanism to automatically maintain parts of the documentation content.
+To simplify documentation maintenance, ZeroLauncher uses a macro mechanism to automatically maintain parts of the documentation content.
 Run the following command in the terminal:
 
 ```bash

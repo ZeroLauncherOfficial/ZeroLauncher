@@ -41,14 +41,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.util.Duration;
 import org.glavo.monetfx.ColorScheme;
-import org.zero.hmcl.setting.StyleSheets;
-import org.zero.hmcl.theme.Themes;
-import org.zero.hmcl.util.StringUtils;
+import org.zero.launcher.setting.StyleSheets;
+import org.zero.launcher.theme.Themes;
+import org.zero.launcher.util.StringUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
-import static org.zero.hmcl.util.i18n.I18n.i18n;
+import static org.zero.launcher.util.i18n.I18n.i18n;
 
 /**
  * @author Shadi Shaheen

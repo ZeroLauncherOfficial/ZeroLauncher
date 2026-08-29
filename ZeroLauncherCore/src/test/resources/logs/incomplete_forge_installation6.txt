@@ -2,7 +2,7 @@
 [authlib-injector] [INFO] Version: 1.2.4
 [authlib-injector] [INFO] Authentication server: http://localhost:37183
 [authlib-injector] [WARNING] You are using HTTP protocol, which is INSECURE! Please switch to HTTPS if possible.
-[14:44:51] [main/INFO]: ModLauncher running: args [--username, Zkitefky, --version, 1.20.4, --gameDir, /home/zkitefly/Desktop/.minecraft, --assetsDir, /home/zkitefly/Desktop/.minecraft/assets, --assetIndex, 12, --uuid, 627aa9226fd33670a0196027fa781599, --accessToken, **********, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, HMCL (PR Collection) 3.5.unofficial-99173a1 (PR Collection), --width, 854, --height, 480, --launchTarget, forge_client]
+[14:44:51] [main/INFO]: ModLauncher running: args [--username, Zkitefky, --version, 1.20.4, --gameDir, /home/zkitefly/Desktop/.minecraft, --assetsDir, /home/zkitefly/Desktop/.minecraft/assets, --assetIndex, 12, --uuid, 627aa9226fd33670a0196027fa781599, --accessToken, **********, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, ZeroLauncher (PR Collection) 3.5.unofficial-99173a1 (PR Collection), --width, 854, --height, 480, --launchTarget, forge_client]
 [14:44:51] [main/INFO]: JVM identified as BellSoft OpenJDK 64-Bit Client VM 17.0.6+10-LTS
 [14:44:51] [main/INFO]: ModLauncher 10.1.2 starting: java version 17.0.6 by BellSoft; OS Linux arch amd64 version 5.10.0-amd64-desktop
 [14:44:51] [main/INFO]: Loading ImmediateWindowProvider fmlearlywindow

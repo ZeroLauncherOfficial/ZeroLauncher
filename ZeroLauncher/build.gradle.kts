@@ -1,14 +1,14 @@
-import org.zero.hmcl.gradle.TerracottaConfigUpgradeTask
-import org.zero.hmcl.gradle.ci.GitHubActionUtils
-import org.zero.hmcl.gradle.ci.JenkinsUtils
-import org.zero.hmcl.gradle.l10n.CheckTranslations
-import org.zero.hmcl.gradle.l10n.CreateLanguageList
-import org.zero.hmcl.gradle.l10n.CreateLocaleNamesResourceBundle
-import org.zero.hmcl.gradle.l10n.UpsideDownTranslate
-import org.zero.hmcl.gradle.mod.ParseModDataTask
-import org.zero.hmcl.gradle.pack.CreateDeb
-import org.zero.hmcl.gradle.pack.ReleaseType
-import org.zero.hmcl.gradle.utils.PropertiesUtils
+import org.zero.launcher.gradle.TerracottaConfigUpgradeTask
+import org.zero.launcher.gradle.ci.GitHubActionUtils
+import org.zero.launcher.gradle.ci.JenkinsUtils
+import org.zero.launcher.gradle.l10n.CheckTranslations
+import org.zero.launcher.gradle.l10n.CreateLanguageList
+import org.zero.launcher.gradle.l10n.CreateLocaleNamesResourceBundle
+import org.zero.launcher.gradle.l10n.UpsideDownTranslate
+import org.zero.launcher.gradle.mod.ParseModDataTask
+import org.zero.launcher.gradle.pack.CreateDeb
+import org.zero.launcher.gradle.pack.ReleaseType
+import org.zero.launcher.gradle.utils.PropertiesUtils
 import java.net.URI
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -32,7 +32,7 @@ val versionRoot = System.getenv("VERSION_ROOT") ?: projectConfig.getProperty("ve
 val microsoftAuthId = System.getenv("MICROSOFT_AUTH_ID") ?: ""
 val curseForgeApiKey = System.getenv("CURSEFORGE_API_KEY") ?: ""
 
-val launcherExe = System.getenv("HMCL_LAUNCHER_EXE") ?: ""
+val launcherExe = System.getenv("ZeroLauncher_LAUNCHER_EXE") ?: ""
 
 val buildNumber = System.getenv("BUILD_NUMBER")?.toInt()
 if (buildNumber != null) {
@@ -94,7 +94,7 @@ fun createChecksum(file: File) {
 }
 
 fun attachSignature(jar: File) {
-    val keyLocation = System.getenv("HMCL_SIGNATURE_KEY")
+    val keyLocation = System.getenv("ZeroLauncher_SIGNATURE_KEY")
     if (keyLocation == null) {
         logger.warn("Missing signature key")
         return
@@ -106,7 +106,7 @@ fun attachSignature(jar: File) {
     ZipFile(jar).use { zip ->
         zip.stream()
             .sorted(Comparator.comparing { it.name })
-            .filter { it.name != "META-INF/hmcl_signature" }
+            .filter { it.name != "META-INF/zero_signature" }
             .forEach {
                 signer.update(digest("SHA-512", it.name.toByteArray()))
                 signer.update(digest("SHA-512", zip.getInputStream(it).readBytes()))
@@ -114,7 +114,7 @@ fun attachSignature(jar: File) {
     }
     val signature = signer.sign()
     FileSystems.newFileSystem(URI.create("jar:" + jar.toURI()), emptyMap<String, Any>()).use { zipfs ->
-        Files.newOutputStream(zipfs.getPath("META-INF/hmcl_signature")).use { it.write(signature) }
+        Files.newOutputStream(zipfs.getPath("META-INF/zero_signature")).use { it.write(signature) }
     }
 }
 
@@ -125,7 +125,7 @@ tasks.withType<JavaCompile> {
 
 tasks.checkstyleMain {
     // Third-party code is not checked
-    exclude("**/org/zero/hmcl/ui/image/apng/**")
+    exclude("**/org/zero/launcher/ui/image/apng/**")
 }
 
 val addOpens = listOf(
@@ -154,29 +154,29 @@ tasks.compileJava {
     options.compilerArgs.addAll(addOpens.map { "--add-exports=$it=ALL-UNNAMED" })
 }
 
-val hmclProperties = buildList {
-    add("hmcl.version" to project.version.toString())
-    add("hmcl.add-opens" to addOpens.joinToString(" "))
+val zeroProperties = buildList {
+    add("zero.version" to project.version.toString())
+    add("zero.add-opens" to addOpens.joinToString(" "))
     System.getenv("GITHUB_SHA")?.let {
-        add("hmcl.version.hash" to it)
+        add("zero.version.hash" to it)
     }
-    add("hmcl.version.type" to versionType)
-    add("hmcl.microsoft.auth.id" to microsoftAuthId)
-    add("hmcl.curseforge.apikey" to curseForgeApiKey)
-    add("hmcl.authlib-injector.version" to libs.authlib.injector.get().version!!)
-    add("hmcl.lwjgl-unsafe-agent.version" to libs.lwjgl.unsafe.agent.get().version!!)
+    add("zero.version.type" to versionType)
+    add("zero.microsoft.auth.id" to microsoftAuthId)
+    add("zero.curseforge.apikey" to curseForgeApiKey)
+    add("zero.authlib-injector.version" to libs.authlib.injector.get().version!!)
+    add("zero.lwjgl-unsafe-agent.version" to libs.lwjgl.unsafe.agent.get().version!!)
 }
 
-val hmclPropertiesFile = layout.buildDirectory.file("hmcl.properties")
+val zeroPropertiesFile = layout.buildDirectory.file("zero.properties")
 val createPropertiesFile by tasks.registering {
-    outputs.file(hmclPropertiesFile)
-    hmclProperties.forEach { (k, v) -> inputs.property(k, v) }
+    outputs.file(zeroPropertiesFile)
+    zeroProperties.forEach { (k, v) -> inputs.property(k, v) }
 
     doLast {
-        val targetFile = hmclPropertiesFile.get().asFile
+        val targetFile = zeroPropertiesFile.get().asFile
         targetFile.parentFile.mkdir()
         targetFile.bufferedWriter().use {
-            for ((k, v) in hmclProperties) {
+            for ((k, v) in zeroProperties) {
                 it.write("$k=$v\n")
             }
         }
@@ -221,7 +221,7 @@ tasks.shadowJar {
     manifest.attributes(
         "Created-By" to "Copyright(c) 2013-2025 Zero.",
         "Implementation-Version" to project.version.toString(),
-        "Main-Class" to "org.zero.hmcl.Main",
+        "Main-Class" to "org.zero.launcher.Main",
         "Multi-Release" to "true",
         "Add-Opens" to addOpens.joinToString(" "),
         "Enable-Native-Access" to "ALL-UNNAMED",
@@ -247,7 +247,7 @@ tasks.processResources {
     dependsOn(createLanguageList)
 
     into("assets/") {
-        from(hmclPropertiesFile)
+        from(zeroPropertiesFile)
         from(embedResources)
     }
 
@@ -279,8 +279,8 @@ val makeExecutables by tasks.registering {
         ZipFile(jarPath).use { zipFile ->
             for (extension in extensions) {
                 val output = artifactFile(extension)
-                val entry = zipFile.getEntry("assets/HMCLauncher.$extension")
-                    ?: throw GradleException("HMCLauncher.$extension not found")
+                val entry = zipFile.getEntry("assets/ZeroLauncherauncher.$extension")
+                    ?: throw GradleException("ZeroLauncherauncher.$extension not found")
 
                 output.outputStream().use { outputStream ->
                     zipFile.getInputStream(entry).use { it.copyTo(outputStream) }
@@ -307,7 +307,7 @@ val makeDeb by tasks.registering(CreateDeb::class) {
     version.set(project.version.toString())
     releaseType.set(debChannel)
     appShFile.set(layout.file(provider { artifactFile("sh") }))
-    iconFile.set(layout.projectDirectory.file("image/hmcl.png"))
+    iconFile.set(layout.projectDirectory.file("image/zero.png"))
     outputFile.set(debFile)
 
     doLast {
@@ -388,23 +388,23 @@ tasks.register<JavaExec>("run") {
     classpath = files(jarPath)
     workingDir = rootProject.rootDir
 
-    val vmOptions = parseToolOptions(System.getenv("HMCL_JAVA_OPTS") ?: "-Xmx1g")
-    if (vmOptions.none { it.startsWith("-Dhmcl.offline.auth.restricted=") })
-        vmOptions += "-Dhmcl.offline.auth.restricted=false"
+    val vmOptions = parseToolOptions(System.getenv("ZeroLauncher_JAVA_OPTS") ?: "-Xmx1g")
+    if (vmOptions.none { it.startsWith("-Dzero.offline.auth.restricted=") })
+        vmOptions += "-Dzero.offline.auth.restricted=false"
 
     jvmArgs(vmOptions)
 
-    val hmclJavaHome = System.getenv("HMCL_JAVA_HOME")
-    if (hmclJavaHome != null) {
+    val zeroJavaHome = System.getenv("ZeroLauncher_JAVA_HOME")
+    if (zeroJavaHome != null) {
         this.executable(
-            file(hmclJavaHome).resolve("bin")
+            file(zeroJavaHome).resolve("bin")
                 .resolve(if (System.getProperty("os.name").lowercase().startsWith("windows")) "java.exe" else "java")
         )
     }
 
     doFirst {
-        logger.quiet("HMCL_JAVA_OPTS: {}", vmOptions)
-        logger.quiet("HMCL_JAVA_HOME: {}", hmclJavaHome ?: System.getProperty("java.home"))
+        logger.quiet("ZeroLauncher_JAVA_OPTS: {}", vmOptions)
+        logger.quiet("ZeroLauncher_JAVA_HOME: {}", zeroJavaHome ?: System.getProperty("java.home"))
     }
 }
 

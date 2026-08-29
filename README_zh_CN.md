@@ -25,7 +25,7 @@
 
 ## 📖 关于 Zero Launcher
 
-**Zero Launcher** 是一个致力于提供现代化视觉美学与流畅体验的开源 Minecraft 启动器，项目建立于优秀强大的 HMCL 基础之上进行重构与定制开发。
+**Zero Launcher** 是一个致力于提供现代化视觉美学与流畅体验的开源 Minecraft 启动器，项目建立于优秀强大的 ZeroLauncher 基础之上进行重构与定制开发。
 
 ---
 

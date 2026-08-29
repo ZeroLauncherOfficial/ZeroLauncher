@@ -66,8 +66,8 @@
   ],
   "downloads_CN": [
     "https://gitee.com/burningtnt/Terracotta/releases/download/v${version}/terracotta-${version}-${classifier}-pkg.tar.gz",
-    "https://cnb.cool/HMCL-Terracotta/Terracotta/-/releases/download/v${version}/terracotta-${version}-${classifier}-pkg.tar.gz",
-    "https://alist.8mi.tech/d/mirror/HMCL-Terracotta/Auto/v${version}/terracotta-${version}-${classifier}-pkg.tar.gz"
+    "https://cnb.cool/ZeroLauncher-Terracotta/Terracotta/-/releases/download/v${version}/terracotta-${version}-${classifier}-pkg.tar.gz",
+    "https://alist.8mi.tech/d/mirror/ZeroLauncher-Terracotta/Auto/v${version}/terracotta-${version}-${classifier}-pkg.tar.gz"
   ],
   "links": [
     {

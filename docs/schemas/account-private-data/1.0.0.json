@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.glavo.site/hmcl/account-private-data/1.0.0",
-  "title": "HMCL Account Private Data",
+  "$id": "https://schemas.glavo.site/zero/account-private-data/1.0.0",
+  "title": "ZeroLauncher Account Private Data",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -18,7 +18,7 @@
       ],
       "properties": {
         "protection": {
-          "const": "hmcl-obfuscated-v1"
+          "const": "zero-obfuscated-v1"
         },
         "nonce": {
           "type": "string"
@@ -46,14 +46,14 @@
   "patternProperties": {
     "^\\$schema$": {
       "enum": [
-        "https://schemas.glavo.site/hmcl/account-private-data/1.0.0"
+        "https://schemas.glavo.site/zero/account-private-data/1.0.0"
       ]
     }
   },
   "properties": {
     "protection": {
       "enum": [
-        "hmcl-obfuscated-v1",
+        "zero-obfuscated-v1",
         "plain"
       ]
     },

@@ -1,4 +1,4 @@
-[19:59:16] [main/INFO]: ModLauncher running: args [--username, ljjjjj, --version, 1.20, --gameDir, F:\鎴戠殑涓栫晫\.minecraft\versions\1.20, --assetsDir, F:\鎴戠殑涓栫晫\.minecraft\assets, --assetIndex, 5, --uuid, dad18d8b1bc53620bb6b9288bee30929, --accessToken, 鉂勨潉鉂勨潉鉂勨潉鉂勨潉, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, HMCL **.**.**.**, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker, --launchTarget, forgeclient, --fml.forgeVersion, 46.0.14, --fml.mcVersion, 1.20, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230608.053357]
+[19:59:16] [main/INFO]: ModLauncher running: args [--username, ljjjjj, --version, 1.20, --gameDir, F:\鎴戠殑涓栫晫\.minecraft\versions\1.20, --assetsDir, F:\鎴戠殑涓栫晫\.minecraft\assets, --assetIndex, 5, --uuid, dad18d8b1bc53620bb6b9288bee30929, --accessToken, 鉂勨潉鉂勨潉鉂勨潉鉂勨潉, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, ZeroLauncher **.**.**.**, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker, --launchTarget, forgeclient, --fml.forgeVersion, 46.0.14, --fml.mcVersion, 1.20, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230608.053357]
 [19:59:16] [main/INFO]: ModLauncher 10.0.8+10.0.8+main.0ef7e830 starting: java version 17.0.7 by BellSoft; OS Windows 10 arch amd64 version 10.0
 [19:59:16] [main/INFO]: OptiFineTransformationService.onLoad
 [19:59:16] [main/INFO]: OptiFine ZIP file URL: union:/F:/鎴戠殑涓栫晫/.minecraft/libraries/optifine/OptiFine/1.20_HD_U_I5_pre3/OptiFine-1.20_HD_U_I5_pre3.jar%23106!/
@@ -22,7 +22,7 @@
 [19:59:17] [main/INFO]: OptiFineTransformationService.transformers
 [19:59:17] [main/INFO]: Targets: 410
 [19:59:17] [main/INFO]: additionalClassesLocator: [optifine., net.optifine.]
-[19:59:18] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.20, --gameDir, F:\鎴戠殑涓栫晫\.minecraft\versions\1.20, --assetsDir, F:\鎴戠殑涓栫晫\.minecraft\assets, --uuid, dad18d8b1bc53620bb6b9288bee30929, --username, ljjjjj, --assetIndex, 5, --accessToken, 鉂勨潉鉂勨潉鉂勨潉鉂勨潉, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, HMCL **.**.**.**, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker]
+[19:59:18] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.20, --gameDir, F:\鎴戠殑涓栫晫\.minecraft\versions\1.20, --assetsDir, F:\鎴戠殑涓栫晫\.minecraft\assets, --uuid, dad18d8b1bc53620bb6b9288bee30929, --username, ljjjjj, --assetIndex, 5, --accessToken, 鉂勨潉鉂勨潉鉂勨潉鉂勨潉, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, ZeroLauncher **.**.**.**, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker]
 2023-06-16 19:59:18,190 main WARN Error parsing URI F:\鎴戠殑涓栫晫\.minecraft\versions\1.20\log4j2.xml
 2023-06-16 19:59:18,229 main WARN Advanced terminal features are not available in this environment
 Completely ignored arguments: [--tweakClass, optifine.OptiFineTweaker]

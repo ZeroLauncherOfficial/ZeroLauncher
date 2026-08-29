@@ -125,12 +125,12 @@
 
     <module name="SuppressionSingleFilter">
         <property name="checks" value="RegexpHeader"/>
-        <property name="files" value="^(?!.*[\\/]org[\\/]zero[\\/]hmcl[\\/]).*$"/>
+        <property name="files" value="^(?!.*[\\/]org[\\/]zero[\\/]zero[\\/]).*$"/>
     </module>
 
     <module name="SuppressionSingleFilter">
         <property name="checks" value="RegexpHeader"/>
-        <property name="files" value=".*[\\/]org[\\/]zero[\\/]hmcl[\\/]ui[\\/]skin[\\/].*"/>
+        <property name="files" value=".*[\\/]org[\\/]zero[\\/]zero[\\/]ui[\\/]skin[\\/].*"/>
     </module>
 
     <module name="SuppressionSingleFilter">
@@ -140,7 +140,7 @@
 
     <module name="SuppressionSingleFilter">
         <property name="checks" value="FileLength"/>
-        <property name="files" value=".*[\\/]org[\\/]zero[\\/]hmcl[\\/]ui[\\/]game[\\/]GameSettingsPage.java"/>
+        <property name="files" value=".*[\\/]org[\\/]zero[\\/]zero[\\/]ui[\\/]game[\\/]GameSettingsPage.java"/>
     </module>
 
     <module name="RegexpHeader">

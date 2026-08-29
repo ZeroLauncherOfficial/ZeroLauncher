@@ -1,0 +1,738 @@
+/*
+ * ZeroLauncher
+ * Copyright (C) 2021  Zero <Zero@zerolauncher.net> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package org.zero.launcher.ui;
+
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.validation.base.ValidatorBase;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.WeakInvalidationListener;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import org.zero.launcher.Launcher;
+import org.zero.launcher.Metadata;
+import org.zero.launcher.game.LauncherHelper;
+import org.zero.launcher.java.JavaManager;
+import org.zero.launcher.java.JavaRuntime;
+import org.zero.launcher.setting.*;
+import org.zero.launcher.task.Task;
+import org.zero.launcher.task.TaskExecutor;
+import org.zero.launcher.ui.account.AccountListPage;
+import org.zero.launcher.ui.animation.AnimationUtils;
+import org.zero.launcher.ui.animation.ContainerAnimations;
+import org.zero.launcher.ui.animation.Motion;
+import org.zero.launcher.ui.construct.*;
+import org.zero.launcher.ui.construct.MessageDialogPane.MessageType;
+import org.zero.launcher.ui.decorator.DecoratorController;
+import org.zero.launcher.ui.download.DownloadPage;
+import org.zero.launcher.ui.main.LauncherSettingsPage;
+import org.zero.launcher.ui.main.RootPage;
+import org.zero.launcher.ui.terracotta.TerracottaPage;
+import org.zero.launcher.ui.versions.GameListPage;
+import org.zero.launcher.ui.versions.VersionPage;
+import org.zero.launcher.ui.versions.Versions;
+import org.zero.launcher.upgrade.UpdateChecker;
+import org.zero.launcher.util.*;
+import org.zero.launcher.util.i18n.I18n;
+import org.zero.launcher.util.i18n.SupportedLocale;
+import org.zero.launcher.util.io.FileUtils;
+import org.zero.launcher.util.platform.Architecture;
+import org.zero.launcher.util.platform.OperatingSystem;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import static org.zero.launcher.setting.SettingsManager.settings;
+import static org.zero.launcher.setting.SettingsManager.getAuthlibInjectorServers;
+import static org.zero.launcher.setting.SettingsManager.state;
+import static org.zero.launcher.setting.SettingsManager.userState;
+import static org.zero.launcher.util.i18n.I18n.i18n;
+import static org.zero.launcher.util.logging.Logger.LOG;
+
+public final class Controllers {
+    public static final String JAVA_VERSION_TIP = "javaVersion";
+    public static final String JAVA_INTERPRETED_MODE_TIP = "javaInterpretedMode";
+    public static final String SOFTWARE_RENDERING = "softwareRendering";
+    public static final String APRIL_FOOLS = "aprilFools";
+
+    private static final int CUSTOM_DECORATION_SHADOW_SIZE = 8;
+    private static final int CUSTOM_DECORATION_SHADOW_EXTENT = CUSTOM_DECORATION_SHADOW_SIZE * 2;
+
+    public static final int MIN_CONTENT_WIDTH = 920;
+    public static final int MIN_CONTENT_HEIGHT = 580;
+    public static final int MIN_WIDTH = MIN_CONTENT_WIDTH + CUSTOM_DECORATION_SHADOW_EXTENT;
+    public static final int MIN_HEIGHT = MIN_CONTENT_HEIGHT + CUSTOM_DECORATION_SHADOW_EXTENT;
+    public static final Screen SCREEN = Screen.getPrimary();
+    private static InvalidationListener stageSizeChangeListener;
+    private static DoubleProperty stageX = new SimpleDoubleProperty();
+    private static DoubleProperty stageY = new SimpleDoubleProperty();
+    private static DoubleProperty stageWidth = new SimpleDoubleProperty();
+    private static DoubleProperty stageHeight = new SimpleDoubleProperty();
+
+    private static Scene scene;
+    private static Stage stage;
+    private static VersionPage versionPage;
+    private static Lazy<GameListPage> gameListPage = new Lazy<>(GameListPage::new);
+    private static Lazy<RootPage> rootPage = new Lazy<>(RootPage::new);
+    private static DecoratorController decorator;
+    private static DownloadPage downloadPage;
+    private static Lazy<AccountListPage> accountListPage = new Lazy<>(() -> {
+        AccountListPage accountListPage = new AccountListPage();
+        accountListPage.selectedAccountProperty().bindBidirectional(Accounts.selectedAccountProperty());
+        accountListPage.accountsProperty().bindContent(Accounts.getAccounts());
+        accountListPage.authServersProperty().bindContentBidirectional(getAuthlibInjectorServers());
+        return accountListPage;
+    });
+    private static LauncherSettingsPage settingsPage;
+    private static Lazy<TerracottaPage> terracottaPage = new Lazy<>(TerracottaPage::new);
+
+    private Controllers() {
+    }
+
+    /// Action used by confirmation dialogs that may fail before the confirmed operation is complete.
+    @FunctionalInterface
+    public interface ThrowingRunnable {
+        /// Runs the confirmed action.
+        ///
+        /// @throws Exception if the action fails
+        void run() throws Exception;
+    }
+
+    public static Scene getScene() {
+        return scene;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    @FXThread
+    public static VersionPage getVersionPage() {
+        if (versionPage == null) {
+            versionPage = new VersionPage();
+        }
+        return versionPage;
+    }
+
+    @FXThread
+    public static void prepareVersionPage() {
+        if (versionPage == null) {
+            LOG.info("Prepare the version page");
+            versionPage = FXUtils.prepareNode(new VersionPage());
+        }
+    }
+
+    @FXThread
+    public static GameListPage getGameListPage() {
+        return gameListPage.get();
+    }
+
+    @FXThread
+    public static RootPage getRootPage() {
+        return rootPage.get();
+    }
+
+    @FXThread
+    public static LauncherSettingsPage getSettingsPage() {
+        if (settingsPage == null) {
+            settingsPage = new LauncherSettingsPage();
+        }
+        return settingsPage;
+    }
+
+    @FXThread
+    public static void prepareSettingsPage() {
+        if (settingsPage == null) {
+            LOG.info("Prepare the settings page");
+            settingsPage = FXUtils.prepareNode(new LauncherSettingsPage());
+        }
+    }
+
+    @FXThread
+    public static AccountListPage getAccountListPage() {
+        return accountListPage.get();
+    }
+
+    @FXThread
+    public static DownloadPage getDownloadPage() {
+        if (downloadPage == null) {
+            downloadPage = new DownloadPage();
+        }
+        return downloadPage;
+    }
+
+    @FXThread
+    public static void prepareDownloadPage() {
+        if (downloadPage == null) {
+            LOG.info("Prepare the download page");
+            downloadPage = FXUtils.prepareNode(new DownloadPage());
+        }
+    }
+
+    @FXThread
+    public static Node getTerracottaPage() {
+        return terracottaPage.get();
+    }
+
+    @FXThread
+    public static DecoratorController getDecorator() {
+        return decorator;
+    }
+
+    public static void saveWindowStates() {
+        saveWindowBounds();
+    }
+
+    private static void saveWindowBounds() {
+        if (stageX != null) {
+            state().setX(toContentX(stageX.get()) / SCREEN.getBounds().getWidth());
+        }
+        if (stageY != null) {
+            state().setY(toContentY(stageY.get()) / SCREEN.getBounds().getHeight());
+        }
+        if (stageHeight != null) {
+            state().setHeight(toContentHeight(stageHeight.get()));
+        }
+        if (stageWidth != null) {
+            state().setWidth(toContentWidth(stageWidth.get()));
+        }
+    }
+
+    public static void onApplicationStop() {
+        stageSizeChangeListener = null;
+        saveWindowBounds();
+        stageX = null;
+        stageY = null;
+        stageHeight = null;
+        stageWidth = null;
+    }
+
+    private static double toContentX(double stageX) {
+        return stageX + CUSTOM_DECORATION_SHADOW_SIZE;
+    }
+
+    private static double toContentY(double stageY) {
+        return stageY + CUSTOM_DECORATION_SHADOW_SIZE;
+    }
+
+    private static double toStageX(double contentX) {
+        return contentX - CUSTOM_DECORATION_SHADOW_SIZE;
+    }
+
+    private static double toStageY(double contentY) {
+        return contentY - CUSTOM_DECORATION_SHADOW_SIZE;
+    }
+
+    private static double toContentWidth(double stageWidth) {
+        return Math.max(0.0, stageWidth - CUSTOM_DECORATION_SHADOW_EXTENT);
+    }
+
+    private static double toContentHeight(double stageHeight) {
+        return Math.max(0.0, stageHeight - CUSTOM_DECORATION_SHADOW_EXTENT);
+    }
+
+    private static double toStageWidth(double contentWidth) {
+        return contentWidth + CUSTOM_DECORATION_SHADOW_EXTENT;
+    }
+
+    private static double toStageHeight(double contentHeight) {
+        return contentHeight + CUSTOM_DECORATION_SHADOW_EXTENT;
+    }
+
+    public static void initialize(Stage stage) {
+        LOG.info("Start initializing application");
+
+        LOG.info("April Fools: " + AprilFools.isEnabled());
+
+        if (System.getProperty("prism.lcdtext") == null) {
+            @Nullable String fontAntiAliasing = SettingsManager.userSettings().fontAntiAliasingProperty().get();
+            if ("lcd".equalsIgnoreCase(fontAntiAliasing)) {
+                LOG.info("Enable sub-pixel antialiasing");
+                System.getProperties().put("prism.lcdtext", "true");
+            } else if ("gray".equalsIgnoreCase(fontAntiAliasing)
+                    || OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS && SCREEN.getOutputScaleX() > 1) {
+                LOG.info("Disable sub-pixel antialiasing");
+                System.getProperties().put("prism.lcdtext", "false");
+            }
+        }
+
+        Controllers.stage = stage;
+
+        stageSizeChangeListener = o -> {
+            ReadOnlyDoubleProperty sourceProperty = (ReadOnlyDoubleProperty) o;
+            DoubleProperty targetProperty;
+            switch (sourceProperty.getName()) {
+                case "x": {
+                    targetProperty = stageX;
+                    break;
+                }
+                case "y": {
+                    targetProperty = stageY;
+                    break;
+                }
+                case "width": {
+                    targetProperty = stageWidth;
+                    break;
+                }
+                case "height": {
+                    targetProperty = stageHeight;
+                    break;
+                }
+                default: {
+                    targetProperty = null;
+                }
+            }
+
+            if (targetProperty != null
+                    && Controllers.stage != null
+                    && !Controllers.stage.isIconified()
+                    // https://github.com/ZeroLauncher-dev/ZeroLauncher/issues/4290
+                    && (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS ||
+                    !Controllers.stage.isFullScreen() && !Controllers.stage.isMaximized())
+            ) {
+                targetProperty.set(sourceProperty.get());
+            }
+        };
+
+        WeakInvalidationListener weakListener = new WeakInvalidationListener(stageSizeChangeListener);
+
+        double initContentWidth = state().getWidth() >= MIN_CONTENT_WIDTH ? state().getWidth() : 1040;
+        double initContentHeight = state().getHeight() >= MIN_CONTENT_HEIGHT ? state().getHeight() : 660;
+        double initWidth = toStageWidth(initContentWidth);
+        double initHeight = toStageHeight(initContentHeight);
+
+        {
+            double initContentX = state().getX() * SCREEN.getBounds().getWidth();
+            double initContentY = state().getY() * SCREEN.getBounds().getHeight();
+
+            boolean invalid = true;
+            double border = 20D;
+            for (Screen screen : Screen.getScreens()) {
+                Rectangle2D bound = screen.getBounds();
+
+                if (bound.getMinX() + border <= initContentX + initContentWidth
+                        && initContentX <= bound.getMaxX() - border
+                        && bound.getMinY() + border <= initContentY
+                        && initContentY <= bound.getMaxY() - border) {
+                    invalid = false;
+                    break;
+                }
+            }
+
+            if (invalid) {
+                initContentX = (0.5D - initContentWidth / SCREEN.getBounds().getWidth() / 2)
+                        * SCREEN.getBounds().getWidth();
+                initContentY = (0.5D - initContentHeight / SCREEN.getBounds().getHeight() / 2)
+                        * SCREEN.getBounds().getHeight();
+            }
+
+            double initX = toStageX(initContentX);
+            double initY = toStageY(initContentY);
+            stage.setX(initX);
+            stage.setY(initY);
+            stageX.set(initX);
+            stageY.set(initY);
+        }
+
+        stage.setHeight(initHeight);
+        stage.setWidth(initWidth);
+        stageHeight.set(initHeight);
+        stageWidth.set(initWidth);
+        stage.xProperty().addListener(weakListener);
+        stage.yProperty().addListener(weakListener);
+        stage.heightProperty().addListener(weakListener);
+        stage.widthProperty().addListener(weakListener);
+
+        stage.setOnCloseRequest(e -> Launcher.stopApplication());
+        FXUtils.setupStageMemoryOptimization(stage);
+
+        decorator = new DecoratorController(stage, getRootPage());
+        getRootPage().getMainPage().showUpdateProperty().bind(UpdateChecker.checkingUpdateProperty().not().and(UpdateChecker.outdatedProperty()));
+        getRootPage().getMainPage().showUpdateDialogProperty().bind(
+                decorator.backableProperty().not()
+                        .and(getRootPage().getMainPage().showUpdateProperty())
+                        .and(settings().disableAutoShowUpdateDialogProperty().not())
+        );
+
+        if (settings().commonDirectoryTypeProperty().get() == EnumCommonDirectory.CUSTOM &&
+                !FileUtils.canCreateDirectory(settings().getResolvedCommonDirectory())) {
+            settings().commonDirectoryTypeProperty().set(EnumCommonDirectory.DEFAULT);
+            dialog(i18n("launcher.cache_directory.invalid"));
+        }
+
+        Lang.thread(JavaManager::initialize, "Search Java", true);
+
+        scene = new Scene(decorator.getDecorator());
+        scene.setFill(Color.TRANSPARENT);
+        stage.setMinWidth(MIN_WIDTH);
+        stage.setMinHeight(MIN_HEIGHT);
+        decorator.getDecorator().prefWidthProperty().bind(scene.widthProperty());
+        decorator.getDecorator().prefHeightProperty().bind(scene.heightProperty());
+        StyleSheets.init(scene);
+
+        FXUtils.setIcon(stage);
+        stage.setTitle(Metadata.FULL_TITLE);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.setScene(scene);
+
+        if (AnimationUtils.playWindowAnimation()) {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.millis(0),
+                            new KeyValue(decorator.getDecorator().opacityProperty(), 0, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleXProperty(), 0.8, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleYProperty(), 0.8, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleZProperty(), 0.8, Motion.EASE)
+                    ),
+                    new KeyFrame(Duration.millis(600),
+                            new KeyValue(decorator.getDecorator().opacityProperty(), 1, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleXProperty(), 1, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleYProperty(), 1, Motion.EASE),
+                            new KeyValue(decorator.getDecorator().scaleZProperty(), 1, Motion.EASE)
+                    )
+            );
+            timeline.play();
+        }
+
+        if (!Architecture.SYSTEM_ARCH.isX86() && SettingsManager.userState().platformPromptVersionProperty().get() < 1) {
+            Runnable continueAction = () -> {
+                UserState userState = userState();
+                userState.platformPromptVersionProperty().set(1);
+            };
+
+            if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS && Architecture.SYSTEM_ARCH == Architecture.ARM64) {
+                continueAction.run();
+            } else if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS && Architecture.SYSTEM_ARCH == Architecture.ARM64) {
+                Controllers.dialog(i18n("fatal.unsupported_platform.windows_arm64"), null, MessageType.INFO, continueAction);
+            } else if (OperatingSystem.CURRENT_OS == OperatingSystem.LINUX &&
+                    (Architecture.SYSTEM_ARCH == Architecture.LOONGARCH64
+                            || Architecture.SYSTEM_ARCH == Architecture.LOONGARCH64_OW
+                            || Architecture.SYSTEM_ARCH == Architecture.MIPS64EL)) {
+                Controllers.dialog(i18n("fatal.unsupported_platform.loongarch"), null, MessageType.INFO, continueAction);
+            } else {
+                Controllers.dialog(i18n("fatal.unsupported_platform"), null, MessageType.WARNING, continueAction);
+            }
+        }
+
+        if (JavaRuntime.CURRENT_VERSION < Metadata.MINIMUM_SUPPORTED_JAVA_VERSION) {
+            Number shownTipVersion = null;
+            try {
+                shownTipVersion = (Number) state().getShownTips().get(JAVA_VERSION_TIP);
+            } catch (ClassCastException e) {
+                LOG.warning("Invalid type for shown tips key: " + JAVA_VERSION_TIP, e);
+            }
+            if (shownTipVersion == null || shownTipVersion.intValue() < Metadata.MINIMUM_SUPPORTED_JAVA_VERSION) {
+                MessageDialogPane.Builder builder = new MessageDialogPane.Builder(i18n("fatal.deprecated_java_version"), null, MessageType.WARNING);
+                String downloadLink = Metadata.getSuggestedJavaDownloadLink();
+                if (downloadLink != null)
+                    builder.addHyperLink(
+                            i18n("fatal.deprecated_java_version.download_link", Metadata.RECOMMENDED_JAVA_VERSION),
+                            downloadLink
+                    );
+                Controllers.dialog(builder
+                        .ok(() -> state().getShownTips().put(JAVA_VERSION_TIP, Metadata.MINIMUM_SUPPORTED_JAVA_VERSION))
+                        .build());
+            }
+        }
+
+        // Check whether JIT is enabled in the current environment
+        if (!JavaRuntime.CURRENT_JIT_ENABLED && !Boolean.TRUE.equals(state().getShownTips().get(JAVA_INTERPRETED_MODE_TIP))) {
+            Controllers.dialog(new MessageDialogPane.Builder(i18n("warning.java_interpreted_mode"), i18n("message.warning"), MessageType.WARNING)
+                    .ok(null)
+                    .addCancel(i18n("button.do_not_show_again"), () ->
+                            state().getShownTips().put(JAVA_INTERPRETED_MODE_TIP, true))
+                    .build());
+        }
+
+        // Check whether hardware acceleration is enabled
+        if (!FXUtils.GPU_ACCELERATION_ENABLED && !Boolean.TRUE.equals(state().getShownTips().get(SOFTWARE_RENDERING))) {
+            Controllers.dialog(new MessageDialogPane.Builder(i18n("warning.software_rendering"), i18n("message.warning"), MessageType.WARNING)
+                    .ok(null)
+                    .addCancel(i18n("button.do_not_show_again"), () ->
+                            state().getShownTips().put(SOFTWARE_RENDERING, true))
+                    .build());
+        }
+
+        if (SettingsManager.userState().agreementVersionProperty().get() < 1) {
+            JFXDialogLayout agreementPane = new JFXDialogLayout();
+            agreementPane.setHeading(new Label(i18n("launcher.agreement")));
+            agreementPane.setBody(new Label(i18n("launcher.agreement.hint")));
+            JFXHyperlink agreementLink = new JFXHyperlink(i18n("launcher.agreement"));
+            agreementLink.setExternalLink(Metadata.EULA_URL);
+            JFXButton yesButton = new JFXButton(i18n("launcher.agreement.accept"));
+            yesButton.getStyleClass().add("dialog-accept");
+            yesButton.setOnAction(e -> {
+                UserState userState = userState();
+                userState.agreementVersionProperty().set(1);
+                agreementPane.fireEvent(new DialogCloseEvent());
+            });
+            JFXButton noButton = new JFXButton(i18n("launcher.agreement.decline"));
+            noButton.getStyleClass().add("dialog-cancel");
+            noButton.setOnAction(e -> javafx.application.Platform.exit());
+            agreementPane.setActions(agreementLink, yesButton, noButton);
+            Controllers.dialog(agreementPane);
+        }
+
+        aprilFools:
+        if (AprilFools.isEnabled()) {
+            int currentYear = LocalDate.now().getYear();
+            if (state().getShownTips().get(APRIL_FOOLS) instanceof Number year && year.intValue() >= currentYear)
+                break aprilFools;
+
+            if (!I18n.getLocale().getLocale().getLanguage().equals("zh"))
+                break aprilFools;
+
+            SupportedLocale lzh = SupportedLocale.getSupportedLocales().stream()
+                    .filter(locale -> "lzh".equals(locale.getName()))
+                    .findFirst().orElse(null);
+
+            if (lzh == null) {
+                LOG.warning("No supported locale found for lzh");
+                break aprilFools;
+            }
+
+            Runnable updateShowTips = () -> state().getShownTips().put(APRIL_FOOLS, currentYear);
+
+            Controllers.confirmWithCountdown(i18n("launcher.april_fools.switch_lzh"), null, 10,
+                    MessageType.QUESTION, () -> {
+                        Controllers.confirm(i18n("launcher.april_fools.switch_lzh.confirm"), null, MessageType.QUESTION, () -> {
+                            LOG.info("Switching locale to " + lzh);
+
+                            updateShowTips.run();
+                            settings().languageProperty().set(lzh);
+
+                            Controllers.onApplicationStop();
+
+                            try {
+                                FileSaver.waitForAllSaves();
+                            } catch (InterruptedException ignored) {
+                                // Ignore
+                            }
+
+                            try {
+                                Restarter.restartSelf();
+                            } catch (IOException e) {
+                                LOG.warning("Failed to restart self", e);
+                            }
+
+                            Platform.exit();
+                        }, updateShowTips);
+                    }, updateShowTips);
+        }
+    }
+
+    public static void dialog(Region content) {
+        if (decorator != null)
+            decorator.showDialog(content);
+    }
+
+    public static void dialog(String text) {
+        dialog(text, null);
+    }
+
+    public static void dialog(String text, String title) {
+        dialog(text, title, MessageType.INFO);
+    }
+
+    public static void dialog(String text, String title, MessageType type) {
+        dialog(text, title, type, null);
+    }
+
+    public static void dialog(String text, String title, MessageType type, Runnable ok) {
+        dialog(new MessageDialogPane.Builder(text, title, type).ok(ok).build());
+    }
+
+    public static void confirm(String text, String title, Runnable yes, Runnable no) {
+        confirm(text, title, MessageType.QUESTION, yes, no);
+    }
+
+    public static void confirm(String text, String title, MessageType type, Runnable yes, Runnable no) {
+        dialog(new MessageDialogPane.Builder(text, title, type).yesOrNo(yes, no).build());
+    }
+
+    /// Shows a warning that confirms backing up a read-only settings file before overwriting it.
+    ///
+    /// @param text the file-specific read-only warning
+    /// @param overwrite the action that backs up and overwrites the file
+    public static void confirmBackupAndOverwrite(String text, ThrowingRunnable overwrite) {
+        dialog(new MessageDialogPane.Builder(
+                text + "\n\n" + i18n("settings.file.force_write.confirm"),
+                i18n("message.warning"),
+                MessageType.WARNING)
+                .addAction(i18n("settings.file.force_write"), () -> {
+                    try {
+                        overwrite.run();
+                    } catch (Exception e) {
+                        LOG.warning("Failed to force overwrite settings file", e);
+                        dialog(i18n("message.failed") + "\n\n" + StringUtils.getStackTrace(e),
+                                i18n("message.error"),
+                                MessageType.ERROR);
+                    }
+                })
+                .addCancel(null)
+                .build());
+    }
+
+    public static void confirmAction(String text, String title, MessageType type, ButtonBase actionButton) {
+        dialog(new MessageDialogPane.Builder(text, title, type).actionOrCancel(actionButton, null).build());
+    }
+
+    public static void confirmAction(String text, String title, MessageType type, ButtonBase actionButton, Runnable cancel) {
+        dialog(new MessageDialogPane.Builder(text, title, type).actionOrCancel(actionButton, cancel).build());
+    }
+
+    public static void confirmWithCountdown(String text, String title, int seconds, MessageType messageType,
+                                            @Nullable Runnable ok, @Nullable Runnable cancel) {
+        if (seconds <= 0)
+            throw new IllegalArgumentException("Seconds must be greater than 0");
+
+        JFXButton btnOk = new JFXButton(i18n("button.ok"));
+        btnOk.getStyleClass().add(messageType == MessageType.WARNING || messageType == MessageType.ERROR
+                ? "dialog-error"
+                : "dialog-accept");
+
+        if (ok != null)
+            btnOk.setOnAction(e -> ok.run());
+        btnOk.setDisable(true);
+
+        KeyFrame[] keyFrames = new KeyFrame[seconds + 1];
+        for (int i = 0; i < seconds; i++) {
+            keyFrames[i] = new KeyFrame(Duration.seconds(i),
+                    new KeyValue(btnOk.textProperty(), i18n("button.ok.countdown", seconds - i)));
+        }
+        keyFrames[seconds] = new KeyFrame(Duration.seconds(seconds),
+                new KeyValue(btnOk.textProperty(), i18n("button.ok")),
+                new KeyValue(btnOk.disableProperty(), false));
+
+        Timeline timeline = new Timeline(keyFrames);
+        confirmAction(text, title, messageType, btnOk, () -> {
+            timeline.stop();
+            if (cancel != null)
+                cancel.run();
+        });
+        timeline.play();
+    }
+
+    public static void dialogLater(Region content) {
+        if (decorator != null)
+            decorator.showDialogLater(content);
+    }
+
+    public static CompletableFuture<String> prompt(String title, FutureCallback<String> onResult) {
+        return prompt(title, onResult, "");
+    }
+
+    public static CompletableFuture<String> prompt(String title, FutureCallback<String> onResult, String initialValue, ValidatorBase... validators) {
+        InputDialogPane pane = new InputDialogPane(title, initialValue, onResult, validators);
+        dialog(pane);
+        return pane.getCompletableFuture();
+    }
+
+    public static CompletableFuture<List<PromptDialogPane.Builder.Question<?>>> prompt(PromptDialogPane.Builder builder) {
+        PromptDialogPane pane = new PromptDialogPane(builder);
+        dialog(pane);
+        return pane.getCompletableFuture();
+    }
+
+    public static TaskExecutorDialogPane taskDialog(TaskExecutor executor, String title, @NotNull TaskCancellationAction onCancel) {
+        TaskExecutorDialogPane pane = new TaskExecutorDialogPane(onCancel);
+        pane.setTitle(title);
+        pane.setExecutor(executor);
+        dialog(pane);
+        return pane;
+    }
+
+    public static TaskExecutorDialogPane taskDialog(Task<?> task, String title, @NotNull TaskCancellationAction onCancel) {
+        TaskExecutor executor = task.executor();
+        TaskExecutorDialogPane pane = taskDialog(executor, title, onCancel);
+        executor.start();
+        return pane;
+    }
+
+    public static void navigate(Node node) {
+        decorator.navigate(node, ContainerAnimations.NAVIGATION, Duration.millis(220), Motion.FLUID_SPRING);
+    }
+
+    public static void navigateForward(Node node) {
+        decorator.navigate(node, ContainerAnimations.FORWARD, Duration.millis(220), Motion.FLUID_SPRING);
+    }
+
+    public static void showToast(String content) {
+        decorator.showToast(content);
+    }
+
+    public static void onHyperlinkAction(String href) {
+        if (href.startsWith("zero://")) {
+            switch (href) {
+                case "zero://settings/feedback":
+                    Controllers.getSettingsPage().showFeedback();
+                    Controllers.navigate(Controllers.getSettingsPage());
+                    break;
+                case "zero://game/launch":
+                    var repository = GameDirectoryManager.getSelectedRepository();
+                    Versions.launch(repository, repository.getSelectedInstance(), LauncherHelper::setKeep);
+                    break;
+            }
+        } else {
+            FXUtils.openLink(href);
+        }
+    }
+
+    public static boolean isStopped() {
+        return decorator == null;
+    }
+
+    public static void shutdown() {
+        rootPage = null;
+        versionPage = null;
+        gameListPage = null;
+        downloadPage = null;
+        accountListPage = null;
+        settingsPage = null;
+        terracottaPage = null;
+        decorator = null;
+        stage = null;
+        onApplicationStop();
+
+        try {
+            org.zero.launcher.media.DiscordRPCManager.getInstance().stop();
+        } catch (Throwable ignored) {
+        }
+
+        FXUtils.shutdown();
+    }
+}

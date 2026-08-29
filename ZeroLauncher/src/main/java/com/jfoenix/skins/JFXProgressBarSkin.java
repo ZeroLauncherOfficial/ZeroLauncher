@@ -27,7 +27,7 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import org.zero.hmcl.ui.animation.AnimationUtils;
+import org.zero.launcher.ui.animation.AnimationUtils;
 
 /// # Material Design ProgressBar Skin
 ///

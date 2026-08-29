@@ -1046,12 +1046,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
             "sha1": "c47df34b6a0414b2d9972f602d0c85191129d69c",
             "size": 7346768
           }
@@ -1067,12 +1067,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
             "sha1": "c47df34b6a0414b2d9972f602d0c85191129d69c",
             "size": 7346768
           }
@@ -1088,12 +1088,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm64/lwjgl2-natives-2.9.3-linux-arm64.jar",
             "sha1": "c47df34b6a0414b2d9972f602d0c85191129d69c",
             "size": 7346768
           }
@@ -1655,12 +1655,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm32": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
             "sha1": "b3017961cf4ff2ce189b64903e52025a88ed9229",
             "size": 580670
           }
@@ -1676,12 +1676,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm32": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
             "sha1": "b3017961cf4ff2ce189b64903e52025a88ed9229",
             "size": 580670
           }
@@ -1697,12 +1697,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3",
       "downloads": {
         "classifiers": {
           "linux-arm32": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3/lwjgl2-natives-2.9.3-linux-arm32.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-linux-arm32/lwjgl2-natives-2.9.3-linux-arm32.jar",
             "sha1": "b3017961cf4ff2ce189b64903e52025a88ed9229",
             "size": 580670
           }
@@ -1725,12 +1725,12 @@
   },
   "linux-mips64el": {
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
             "sha1": "8e96ae0b3ca2b566d4aa1ef737f1a11fde34636c",
             "size": 947858
           }
@@ -1746,12 +1746,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
             "sha1": "8e96ae0b3ca2b566d4aa1ef737f1a11fde34636c",
             "size": 947858
           }
@@ -1767,12 +1767,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-mips64el/lwjgl2-natives-2.9.3-rc2-linux-mips64el.jar",
             "sha1": "8e96ae0b3ca2b566d4aa1ef737f1a11fde34636c",
             "size": 947858
           }
@@ -1799,12 +1799,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.1.6:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
             "sha1": "babec61846d8feb7a60cce1c9909281b1a3e0640",
             "size": 2464146
           }
@@ -1903,12 +1903,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
             "sha1": "babec61846d8feb7a60cce1c9909281b1a3e0640",
             "size": 2464146
           }
@@ -2001,12 +2001,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.2:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
             "sha1": "babec61846d8feb7a60cce1c9909281b1a3e0640",
             "size": 2464146
           }
@@ -2094,12 +2094,12 @@
     },
     "org.lwjgl:lwjgl-tinyfd:3.2.2:natives": null,
     "org.lwjgl:lwjgl:3.3.1:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc2",
       "downloads": {
         "classifiers": {
           "linux-mips64el": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc2/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc2-linux-mips64el/lwjgl3-natives-3.3.1-rc2-linux-mips64el.jar",
             "sha1": "babec61846d8feb7a60cce1c9909281b1a3e0640",
             "size": 2464146
           }
@@ -2128,12 +2128,12 @@
   },
   "linux-loongarch64": {
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
             "sha1": "f4d42d89b31d8c6c60e847042e350883c2cdaa25",
             "size": 623682
           }
@@ -2149,12 +2149,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
             "sha1": "f4d42d89b31d8c6c60e847042e350883c2cdaa25",
             "size": 623682
           }
@@ -2170,12 +2170,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc2",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc2",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc2/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc2-linux-loongarch64/lwjgl2-natives-2.9.3-rc2-linux-loongarch64.jar",
             "sha1": "f4d42d89b31d8c6c60e847042e350883c2cdaa25",
             "size": 623682
           }
@@ -2202,12 +2202,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.1.6:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
             "sha1": "2375ec8e8094a765ef61f3c4f2f832b1b8dfed4b",
             "size": 2651163
           }
@@ -2306,12 +2306,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
             "sha1": "2375ec8e8094a765ef61f3c4f2f832b1b8dfed4b",
             "size": 2651163
           }
@@ -2410,12 +2410,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.2:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
             "sha1": "2375ec8e8094a765ef61f3c4f2f832b1b8dfed4b",
             "size": 2651163
           }
@@ -2503,12 +2503,12 @@
     },
     "org.lwjgl:lwjgl-tinyfd:3.2.2:natives": null,
     "org.lwjgl:lwjgl:3.3.1:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64/lwjgl3-natives-3.3.1-rc1-linux-loongarch64.jar",
             "sha1": "2375ec8e8094a765ef61f3c4f2f832b1b8dfed4b",
             "size": 2651163
           }
@@ -2541,12 +2541,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.3.2:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.4-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.4-rc2",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.4-rc2/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.4-rc2-linux-loongarch64/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.4-rc2/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.4-rc2-linux-loongarch64/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
             "sha1": "34a7f913c6750f2bede863f59c074cc4d540fb64",
             "size": 12234234
           }
@@ -2645,12 +2645,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.3.3:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.4-rc2",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.4-rc2",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.4-rc2/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.4-rc2-linux-loongarch64/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.4-rc2/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.4-rc2-linux-loongarch64/lwjgl3-natives-3.3.4-rc2-linux-loongarch64.jar",
             "sha1": "34a7f913c6750f2bede863f59c074cc4d540fb64",
             "size": 12234234
           }
@@ -2750,12 +2750,12 @@
     },
     "org.lwjgl:lwjgl-freetype:3.3.3:natives-linux": null,
     "org.lwjgl:lwjgl:3.4.1:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.4.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.4.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.4.1-rc1/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.4.1-rc1-linux-loongarch64/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.4.1-rc1/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.4.1-rc1-linux-loongarch64/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
             "sha1": "3fed872fc2f9929d2be25389dd312dfb48e9f89e",
             "size": 22854580
           }
@@ -2793,12 +2793,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.4.2:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.4.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.4.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.4.1-rc1/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.4.1-rc1-linux-loongarch64/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.4.1-rc1/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.4.1-rc1-linux-loongarch64/lwjgl3-natives-3.4.1-rc1-linux-loongarch64.jar",
             "sha1": "3fed872fc2f9929d2be25389dd312dfb48e9f89e",
             "size": 22854580
           }
@@ -3030,12 +3030,12 @@
   },
   "linux-loongarch64_ow": {
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
             "sha1": "135e7e557431be70fa590eb6feffebb078d34728",
             "size": 594335
           }
@@ -3051,12 +3051,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
             "sha1": "135e7e557431be70fa590eb6feffebb078d34728",
             "size": 594335
           }
@@ -3072,12 +3072,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-linux-loongarch64/lwjgl2-natives-2.9.3-rc1-linux-loongarch64.jar",
             "sha1": "135e7e557431be70fa590eb6feffebb078d34728",
             "size": 594335
           }
@@ -3104,12 +3104,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.1.6:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64_ow": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
             "sha1": "4c7d6978dae411e5041f478d78cc329c4c75fc73",
             "size": 2311861
           }
@@ -3208,12 +3208,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64_ow": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
             "sha1": "4c7d6978dae411e5041f478d78cc329c4c75fc73",
             "size": 2311861
           }
@@ -3312,12 +3312,12 @@
       }
     },
     "org.lwjgl:lwjgl:3.2.2:natives": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64_ow": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
             "sha1": "4c7d6978dae411e5041f478d78cc329c4c75fc73",
             "size": 2311861
           }
@@ -3405,12 +3405,12 @@
     },
     "org.lwjgl:lwjgl-tinyfd:3.2.2:natives": null,
     "org.lwjgl:lwjgl:3.3.1:natives-linux": {
-      "name": "org.glavo.hmcl:lwjgl3-natives:3.3.1-rc1",
+      "name": "org.glavo.zero:lwjgl3-natives:3.3.1-rc1",
       "downloads": {
         "classifiers": {
           "linux-loongarch64_ow": {
-            "path": "org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "path": "org/glavo/zero/lwjgl3-natives/3.3.1-rc1/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl3-natives/3.3.1-rc1-linux-loongarch64_ow/lwjgl3-natives-3.3.1-rc1-linux-loongarch64_ow.jar",
             "sha1": "4c7d6978dae411e5041f478d78cc329c4c75fc73",
             "size": 2311861
           }
@@ -3432,11 +3432,11 @@
     "org.lwjgl:lwjgl-stb:3.3.1:natives-linux": null,
     "org.lwjgl:lwjgl-tinyfd:3.3.1:natives-linux": null,
     "net.java.dev.jna:jna:5.8.0": {
-      "name": "org.glavo.hmcl:jna:5.13.0-rc1-linux-loongarch64_ow",
+      "name": "org.glavo.zero:jna:5.13.0-rc1-linux-loongarch64_ow",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "path": "org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
           "sha1": "42894c00949063f26752264288f2f2ab5179e21d",
           "size": 1886827
         }
@@ -3454,11 +3454,11 @@
       }
     },
     "net.java.dev.jna:jna:5.10.0": {
-      "name": "org.glavo.hmcl:jna:5.13.0-rc1-linux-loongarch64_ow",
+      "name": "org.glavo.zero:jna:5.13.0-rc1-linux-loongarch64_ow",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "path": "org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
           "sha1": "42894c00949063f26752264288f2f2ab5179e21d",
           "size": 1886827
         }
@@ -3476,11 +3476,11 @@
       }
     },
     "net.java.dev.jna:jna:5.12.1": {
-      "name": "org.glavo.hmcl:jna:5.13.0-rc1-linux-loongarch64_ow",
+      "name": "org.glavo.zero:jna:5.13.0-rc1-linux-loongarch64_ow",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "path": "org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/jna/5.13.0-rc1-linux-loongarch64_ow/jna-5.13.0-rc1-linux-loongarch64_ow.jar",
           "sha1": "42894c00949063f26752264288f2f2ab5179e21d",
           "size": 1886827
         }
@@ -4913,12 +4913,12 @@
   },
   "windows-arm64": {
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.0:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "windows-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
             "sha1": "e0948a3692856d47854f3cd5a698d5c0233606d7",
             "size": 617106
           }
@@ -4934,12 +4934,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "windows-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
             "sha1": "e0948a3692856d47854f3cd5a698d5c0233606d7",
             "size": 617106
           }
@@ -4955,12 +4955,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "windows-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-windows-arm64/lwjgl2-natives-2.9.3-rc1-windows-arm64.jar",
             "sha1": "e0948a3692856d47854f3cd5a698d5c0233606d7",
             "size": 617106
           }
@@ -5302,12 +5302,12 @@
   },
   "macos-arm64": {
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1-nightly-20130708-debug3:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "osx-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
             "sha1": "042ef2024a9a4054952c496c9ebcdb83345dabe0",
             "size": 500107
           }
@@ -5323,12 +5323,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.1:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "osx-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
             "sha1": "042ef2024a9a4054952c496c9ebcdb83345dabe0",
             "size": 500107
           }
@@ -5344,12 +5344,12 @@
       }
     },
     "org.lwjgl.lwjgl:lwjgl-platform:2.9.2-nightly-20140822:natives": {
-      "name": "org.glavo.hmcl:lwjgl2-natives:2.9.3-rc1",
+      "name": "org.glavo.zero:lwjgl2-natives:2.9.3-rc1",
       "downloads": {
         "classifiers": {
           "osx-arm64": {
-            "path": "org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
-            "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "path": "org/glavo/zero/lwjgl2-natives/2.9.3-rc1/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
+            "url": "https://repo1.maven.org/maven2/org/glavo/zero/lwjgl2-natives/2.9.3-rc1-osx-arm64/lwjgl2-natives-2.9.3-rc1-osx-arm64.jar",
             "sha1": "042ef2024a9a4054952c496c9ebcdb83345dabe0",
             "size": 500107
           }
@@ -5453,11 +5453,11 @@
       }
     },
     "org.lwjgl:lwjgl-glfw:3.1.6": {
-      "name": "org.glavo.hmcl.mmachina:lwjgl-glfw:3.3.1-mmachina.1",
+      "name": "org.glavo.zero.mmachina:lwjgl-glfw:3.3.1-mmachina.1",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
+          "path": "org/glavo/zero/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
           "sha1": "e9a101bca4fa30d26b21b526ff28e7c2d8927f1b",
           "size": 130128
         }
@@ -5607,11 +5607,11 @@
       }
     },
     "org.lwjgl:lwjgl-glfw:3.2.1": {
-      "name": "org.glavo.hmcl.mmachina:lwjgl-glfw:3.3.1-mmachina.1",
+      "name": "org.glavo.zero.mmachina:lwjgl-glfw:3.3.1-mmachina.1",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
+          "path": "org/glavo/zero/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/mmachina/lwjgl-glfw/3.3.1-mmachina.1/lwjgl-glfw-3.3.1-mmachina.1.jar",
           "sha1": "e9a101bca4fa30d26b21b526ff28e7c2d8927f1b",
           "size": 130128
         }
@@ -5673,11 +5673,11 @@
       }
     },
     "ca.weblite:java-objc-bridge:1.0.0": {
-      "name": "org.glavo.hmcl.mmachina:java-objc-bridge:1.1.0-mmachina.1",
+      "name": "org.glavo.zero.mmachina:java-objc-bridge:1.1.0-mmachina.1",
       "downloads": {
         "artifact": {
-          "path": "org/glavo/hmcl/mmachina/java-objc-bridge/1.1.0-mmachina.1/java-objc-bridge-1.1.0-mmachina.1.jar",
-          "url": "https://repo1.maven.org/maven2/org/glavo/hmcl/mmachina/java-objc-bridge/1.1.0-mmachina.1/java-objc-bridge-1.1.0-mmachina.1.jar",
+          "path": "org/glavo/zero/mmachina/java-objc-bridge/1.1.0-mmachina.1/java-objc-bridge-1.1.0-mmachina.1.jar",
+          "url": "https://repo1.maven.org/maven2/org/glavo/zero/mmachina/java-objc-bridge/1.1.0-mmachina.1/java-objc-bridge-1.1.0-mmachina.1.jar",
           "sha1": "369a83621e3c65496348491e533cb97fe5f2f37d",
           "size": 91947
         }

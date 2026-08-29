@@ -85,7 +85,7 @@
     "classic": [
       {
         "module": "javafx.base",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-base",
         "version": "18.0.2+1-arm64",
         "classifier": "win",
@@ -93,7 +93,7 @@
       },
       {
         "module": "javafx.graphics",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-graphics",
         "version": "18.0.2+1-arm64",
         "classifier": "win",
@@ -101,7 +101,7 @@
       },
       {
         "module": "javafx.controls",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-controls",
         "version": "18.0.2+1-arm64",
         "classifier": "win",
@@ -357,7 +357,7 @@
     "classic": [
       {
         "module": "javafx.base",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-base",
         "version": "17.0.8-loongarch64",
         "classifier": "linux",
@@ -365,7 +365,7 @@
       },
       {
         "module": "javafx.graphics",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-graphics",
         "version": "17.0.8-loongarch64",
         "classifier": "linux",
@@ -373,7 +373,7 @@
       },
       {
         "module": "javafx.controls",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-controls",
         "version": "17.0.8-loongarch64",
         "classifier": "linux",
@@ -385,7 +385,7 @@
     "classic": [
       {
         "module": "javafx.base",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-base",
         "version": "19-ea+10-loongson64",
         "classifier": "linux",
@@ -393,7 +393,7 @@
       },
       {
         "module": "javafx.graphics",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-graphics",
         "version": "19-ea+10-loongson64",
         "classifier": "linux",
@@ -401,7 +401,7 @@
       },
       {
         "module": "javafx.controls",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-controls",
         "version": "19-ea+10-loongson64",
         "classifier": "linux",
@@ -413,7 +413,7 @@
     "classic": [
       {
         "module": "javafx.base",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-base",
         "version": "19.0.2.1-riscv64",
         "classifier": "linux",
@@ -421,7 +421,7 @@
       },
       {
         "module": "javafx.graphics",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-graphics",
         "version": "19.0.2.1-riscv64",
         "classifier": "linux",
@@ -429,7 +429,7 @@
       },
       {
         "module": "javafx.controls",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-controls",
         "version": "19.0.2.1-riscv64",
         "classifier": "linux",
@@ -441,7 +441,7 @@
     "classic": [
       {
         "module": "javafx.base",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-base",
         "version": "14.0.2.1-freebsd",
         "classifier": "freebsd",
@@ -449,7 +449,7 @@
       },
       {
         "module": "javafx.graphics",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-graphics",
         "version": "14.0.2.1-freebsd",
         "classifier": "freebsd",
@@ -457,7 +457,7 @@
       },
       {
         "module": "javafx.controls",
-        "groupId": "org.glavo.hmcl.openjfx",
+        "groupId": "org.glavo.zero.openjfx",
         "artifactId": "javafx-controls",
         "version": "14.0.2.1-freebsd",
         "classifier": "freebsd",

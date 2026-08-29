@@ -3,7 +3,7 @@
 [20:24:25] [main/INFO]: Calling tweak class net.minecraftforge.fml.common.launcher.FMLTweaker
 [20:24:25] [main/INFO]: Forge Mod Loader version 14.23.5.2808 for Minecraft 1.12.2 loading
 [20:24:25] [main/INFO]: Java is OpenJDK 64-Bit Server VM, version 1.8.0_382, running on Windows 11:amd64:10.0, installed at C:\Program Files\BellSoft\LibericaJRE-8-Full
-[20:24:25] [main/INFO]: Searching E:\Mc\HMCL-3.5.5\.minecraft\versions\Modern Skyblock 3\mods for mods
+[20:24:25] [main/INFO]: Searching E:\Mc\ZeroLauncher-3.5.5\.minecraft\versions\Modern Skyblock 3\mods for mods
 [20:24:25] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in AppleCore-mc1.12.2-3.2.0.jar. This is not recommended, @Mods should be in a separate jar from the coremod.
 [20:24:25] [main/WARN]: The coremod AppleCore (squeek.applecore.AppleCore) is not signed!
 [20:24:25] [main/WARN]: Found FMLCorePluginContainsFMLMod marker in astralsorcery-1.12.2-1.10.11.jar. This is not recommended, @Mods should be in a separate jar from the coremod.

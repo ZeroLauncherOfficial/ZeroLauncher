@@ -26,9 +26,9 @@
         <br>
         ✅️ Fully supported (Windows Server 2008 R2 ~ 2025)
         <br>
-        🕰️ <a href="https://github.com/HMCL-dev/HMCL/releases?q=3.6">HMCL 3.6</a> (Windows Vista)
+        🕰️ <a href="https://github.com/ZeroLauncher-dev/ZeroLauncher/releases?q=3.6">ZeroLauncher 3.6</a> (Windows Vista)
         <br>
-        🕰️ <a href="https://github.com/HMCL-dev/HMCL/releases?q=3.6">HMCL 3.6</a> (Windows Server 2003 ~ 2008) 
+        🕰️ <a href="https://github.com/ZeroLauncher-dev/ZeroLauncher/releases?q=3.6">ZeroLauncher 3.6</a> (Windows Server 2003 ~ 2008) 
       </td>
       <td>✅️ Fully supported</td>
       <td>✅️ Fully supported</td>
@@ -39,7 +39,7 @@
       <td>
         🕰️ Limited support (Windows 7 ~ Windows 10)
         <br>
-        🕰️ <a href="https://github.com/HMCL-dev/HMCL/releases?q=3.6">HMCL 3.6</a> (Windows XP/Vista)
+        🕰️ <a href="https://github.com/ZeroLauncher-dev/ZeroLauncher/releases?q=3.6">ZeroLauncher 3.6</a> (Windows XP/Vista)
       </td>
       <td>🕰️ Limited support</td>
       <td>/</td>
@@ -92,26 +92,26 @@ Legend:
 
 * ✅️ Fully supported
 
-  Platforms that are fully supported. HMCL will provide support for these platforms as much as possible.
+  Platforms that are fully supported. ZeroLauncher will provide support for these platforms as much as possible.
 
 * 🕰️ Limited support
 
   These platforms are usually legacy platforms.
 
-  HMCL can work on these platforms, but some features may not be available.
+  ZeroLauncher can work on these platforms, but some features may not be available.
 
   We may drop some features for these platforms to reduce maintenance costs.
 
-* 🕰️ HMCL 3.6 (Limited support)
+* 🕰️ ZeroLauncher 3.6 (Limited support)
 
-  The main branch of HMCL no longer supports these platforms.
+  The main branch of ZeroLauncher no longer supports these platforms.
 
-  We continue to provide security patches and bug fixes for these platforms through the HMCL 3.6 LTS branch,
+  We continue to provide security patches and bug fixes for these platforms through the ZeroLauncher 3.6 LTS branch,
   but no feature updates will be available.
 
 * / (Not supported)
 
-  HMCL does not support these platforms yet. We may support them in the future.
+  ZeroLauncher does not support these platforms yet. We may support them in the future.
 
 ## Game Compatibility
 
@@ -139,13 +139,13 @@ Legend:
 
 * 👌: Supported platforms.
 
-  Support is provided by HMCL, tested to work, but may have more problems than a fully supported platform.  
+  Support is provided by ZeroLauncher, tested to work, but may have more problems than a fully supported platform.  
   Support for versions below Minecraft 1.6 is not guaranteed.  
-  If you encounter a problem that does not exist on fully supported platforms, you can report it to HMCL.
+  If you encounter a problem that does not exist on fully supported platforms, you can report it to ZeroLauncher.
 
 * ❔: Low-level supported platforms.
 
-  HMCL can run on this platform and has some basic support. However, launching the game directly is not yet available.  
+  ZeroLauncher can run on this platform and has some basic support. However, launching the game directly is not yet available.  
   If you want to start the game, you will need to get the native libraries needed by Minecraft in another way and specify the native path in the instance settings.
 
 * `/`: Not applicable.

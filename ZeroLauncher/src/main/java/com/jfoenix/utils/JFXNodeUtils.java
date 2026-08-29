@@ -37,7 +37,7 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.function.Function;
 
-import static org.zero.hmcl.util.logging.Logger.LOG;
+import static org.zero.launcher.util.logging.Logger.LOG;
 
 /// @author Shadi Shaheen
 /// @version 1.0

@@ -421,7 +421,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
                        * zerocore|API|multiblock|tier (1.10.2-0.0.2) from 大反应前置zerocore-1.12.2-0.1.2.8.jar
                        * zerocore|API|multiblock|validation (1.10.2-0.0.2) from 大反应前置zerocore-1.12.2-0.1.2.8.jar
   Suspected Mods: Unknown
-  Launched Version: HMCL 3.3.181
+  Launched Version: ZeroLauncher 3.3.181
   LWJGL: 2.9.4
   OpenGL: GeForce GTX 750 Ti/PCIe/SSE2 GL version 4.6.0 NVIDIA 456.71, NVIDIA Corporation
   GL Caps: Using GL 1.3 multitexturing.

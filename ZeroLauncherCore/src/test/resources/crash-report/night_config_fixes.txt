@@ -1,5 +1,5 @@
 Java HotSpot(TM) 64-Bit Server VM warning: Option --illegal-access is deprecated and will be removed in a future release.
-[22:55:37] [main/INFO]: ModLauncher running: args [--username, fmtt1, --version, 1.17.1, --gameDir, F:\新我的世界, --assetsDir, F:\新我的世界\assets, --assetIndex, 1.17, --uuid, 118884b8837d3e2eaf1d48eb68883f95, --accessToken, ❄❄❄❄❄❄❄❄, --userType, legacy, --versionType, HMCL 3.5.4, --width, 854, --height, 480, --launchTarget, forgeclient, --fml.forgeVersion, 37.1.1, --fml.mcVersion, 1.17.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20210706.113038]
+[22:55:37] [main/INFO]: ModLauncher running: args [--username, fmtt1, --version, 1.17.1, --gameDir, F:\新我的世界, --assetsDir, F:\新我的世界\assets, --assetIndex, 1.17, --uuid, 118884b8837d3e2eaf1d48eb68883f95, --accessToken, ❄❄❄❄❄❄❄❄, --userType, legacy, --versionType, ZeroLauncher 3.5.4, --width, 854, --height, 480, --launchTarget, forgeclient, --fml.forgeVersion, 37.1.1, --fml.mcVersion, 1.17.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20210706.113038]
 [22:55:37] [main/INFO]: ModLauncher 9.0.7+91+master.8569cdf starting: java version 16.0.1 by Oracle Corporation
 [22:55:37] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.4 Source=union:/F:/新我的世界/libraries/org/spongepowered/mixin/0.8.4/mixin-0.8.4.jar%2319! Service=ModLauncher Env=CLIENT
 [22:55:37] [main/INFO]: Found mod file jei-1.17.1-8.3.1.1002.jar of type MOD with locator {mods folder locator at F:\新我的世界\mods}
@@ -10,7 +10,7 @@ Java HotSpot(TM) 64-Bit Server VM warning: Option --illegal-access is deprecated
 [22:55:37] [main/INFO]: Found mod file client-1.17.1-20210706.113038-srg.jar of type MOD with locator net.minecraftforge.fml.loading.moddiscovery.MinecraftLocator@18245eb0
 [22:55:37] [main/INFO]: Found mod file forge-1.17.1-37.1.1-universal.jar of type MOD with locator net.minecraftforge.fml.loading.moddiscovery.MinecraftLocator@18245eb0
 2023-04-26 22:55:37,463 main WARN Error parsing URI F:\新我的世界\versions\1.17.1\log4j2.xml
-[22:55:38] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.17.1, --gameDir, F:\新我的世界, --assetsDir, F:\新我的世界\assets, --uuid, 118884b8837d3e2eaf1d48eb68883f95, --username, fmtt1, --assetIndex, 1.17, --accessToken, ❄❄❄❄❄❄❄❄, --userType, legacy, --versionType, HMCL 3.5.4, --width, 854, --height, 480]
+[22:55:38] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.17.1, --gameDir, F:\新我的世界, --assetsDir, F:\新我的世界\assets, --uuid, 118884b8837d3e2eaf1d48eb68883f95, --username, fmtt1, --assetIndex, 1.17, --accessToken, ❄❄❄❄❄❄❄❄, --userType, legacy, --versionType, ZeroLauncher 3.5.4, --width, 854, --height, 480]
 2023-04-26 22:55:38,406 main WARN Error parsing URI F:\新我的世界\versions\1.17.1\log4j2.xml
 SLF4J: No SLF4J providers were found.
 SLF4J: Defaulting to no-operation (NOP) logger implementation

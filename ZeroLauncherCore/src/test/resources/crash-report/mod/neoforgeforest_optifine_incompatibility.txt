@@ -1,4 +1,4 @@
-[14:42:15] [main/INFO]: ModLauncher running: args [--username, Zkitefly, --version, 1.20.4-of, --gameDir, /home/zkitefly/.minecraft, --assetsDir, /home/zkitefly/.minecraft/assets, --assetIndex, 12, --uuid, 4453d157b2b8488c8be610fe8d34ef8c, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, HMCL (PR Collection) 3.5.unofficial-eb0b16b (PR Collection), --width, 854, --height, 480, --fml.neoForgeVersion, 20.4.223, --fml.fmlVersion, 2.0.17, --fml.mcVersion, 1.20.4, --fml.neoFormVersion, 20231207.154220, --launchTarget, forgeclient]
+[14:42:15] [main/INFO]: ModLauncher running: args [--username, Zkitefly, --version, 1.20.4-of, --gameDir, /home/zkitefly/.minecraft, --assetsDir, /home/zkitefly/.minecraft/assets, --assetIndex, 12, --uuid, 4453d157b2b8488c8be610fe8d34ef8c, --accessToken, ❄❄❄❄❄❄❄❄, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, msa, --versionType, ZeroLauncher (PR Collection) 3.5.unofficial-eb0b16b (PR Collection), --width, 854, --height, 480, --fml.neoForgeVersion, 20.4.223, --fml.fmlVersion, 2.0.17, --fml.mcVersion, 1.20.4, --fml.neoFormVersion, 20231207.154220, --launchTarget, forgeclient]
 [14:42:15] [main/INFO]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.10 by BellSoft; OS Linux arch amd64 version 5.10.0-amd64-desktop
 [14:42:15] [main/INFO]: Loading ImmediateWindowProvider fmlearlywindow
 [14:42:15] [main/INFO]: Trying GL version 4.6
@@ -52,4 +52,4 @@ Exception in thread "main" cpw.mods.modlauncher.InvalidLauncherSetupException: I
 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
 	at cpw.mods.bootstraplauncher@1.1.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141)
-[HMCL ProcessListener] Minecraft exit with code 1(0x1), type is APPLICATION_ERROR.
+[ZeroLauncher ProcessListener] Minecraft exit with code 1(0x1), type is APPLICATION_ERROR.

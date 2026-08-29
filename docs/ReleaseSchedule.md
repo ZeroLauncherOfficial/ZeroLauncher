@@ -4,24 +4,24 @@
 **English** | 中文 ([简体](ReleaseSchedule_zh.md), [繁體](ReleaseSchedule_zh_Hant.md))
 <!-- #END LANGUAGE_SWITCHER -->
 
-This document describes the HMCL version release schedule starting from October 2025.
+This document describes the ZeroLauncher version release schedule starting from October 2025.
 
 ## Versioning Rules
 
 ### Version Branches
 
-HMCL has multiple **version branches**, each named in the format `<major>.<minor>` (e.g., `3.7`).
+ZeroLauncher has multiple **version branches**, each named in the format `<major>.<minor>` (e.g., `3.7`).
 
-The major version is incremented only when there are significant architectural changes in HMCL,
+The major version is incremented only when there are significant architectural changes in ZeroLauncher,
 while the minor version is incremented regularly according to the release schedule.
 
 ### Version Types
 
-HMCL has two types of versions: **Stable** and **Beta**.
+ZeroLauncher has two types of versions: **Stable** and **Beta**.
 
 #### Stable Version
 
-The HMCL stable version is suitable for users who prioritize software stability.
+The ZeroLauncher stable version is suitable for users who prioritize software stability.
 New features are merged into the stable version only after thorough testing.
 
 The stable version number follows the naming rule `<version branch>.<build number>` (e.g., `3.7.1`).
@@ -29,7 +29,7 @@ The build number is calculated independently for each version branch.
 
 #### Beta Version
 
-The HMCL beta version is suitable for users who want to experience new features first.
+The ZeroLauncher beta version is suitable for users who want to experience new features first.
 The beta version includes the latest features and bug fixes,
 but may also have more issues due to insufficient testing.
 
@@ -38,11 +38,11 @@ The build number is shared globally across all version branches.
 
 ## Release Channels
 
-HMCL has two main release channels: **Stable Channel** and **Beta Channel**.
-They are used to release the HMCL stable and beta versions, respectively.
+ZeroLauncher has two main release channels: **Stable Channel** and **Beta Channel**.
+They are used to release the ZeroLauncher stable and beta versions, respectively.
 
-To test HMCL versions before official release, we will push updates to some users in advance.
-Users can enable the "Preview HMCL releases early" option on the "Settings > General" page to receive preview updates from the corresponding channel.
+To test ZeroLauncher versions before official release, we will push updates to some users in advance.
+Users can enable the "Preview ZeroLauncher releases early" option on the "Settings > General" page to receive preview updates from the corresponding channel.
 
 ## Release Model
 
@@ -51,7 +51,7 @@ Users can enable the "Preview HMCL releases early" option on the "Settings > Gen
 displayMode: compact
 ---
 gantt
-    title HMCL Version Lifecycle (Example)
+    title ZeroLauncher Version Lifecycle (Example)
     section 3.11
         today: vert, 2026-02-20, 0d
         Beta Phase: done, c1, after b1, 31d

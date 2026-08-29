@@ -32,8 +32,8 @@ import javafx.scene.control.Skin;
 import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
-import org.zero.hmcl.ui.animation.AnimationUtils;
-import org.zero.hmcl.ui.animation.Motion;
+import org.zero.launcher.ui.animation.AnimationUtils;
+import org.zero.launcher.ui.animation.Motion;
 
 /// # Material Design Popup Skin
 /// TODO: REWORK

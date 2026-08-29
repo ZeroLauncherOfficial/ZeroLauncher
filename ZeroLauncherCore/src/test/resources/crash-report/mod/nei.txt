@@ -221,7 +221,7 @@ Details:
                  This may have caused the error. Try reproducing the crash WITHOUT this/these mod(s) before reporting it.
 	Stencil buffer state: Function set: GL30, pool: forge, bits: 8
 	AE2 Integration: IC2:OFF, RotaryCraft:OFF, RC:OFF, BC:OFF, RF:ON, RFItem:ON, MFR:OFF, DSU:ON, FZ:OFF, FMP:OFF, RB:OFF, CLApi:OFF, Waila:ON, InvTweaks:ON, NEI:ON, CraftGuide:ON, Mekanism:OFF, ImmibisMicroblocks:OFF, BetterStorage:OFF
-	Launched Version: HMCL 2.4.0.32
+	Launched Version: ZeroLauncher 2.4.0.32
 	LWJGL: 2.9.1
 	OpenGL: Intel(R) HD Graphics 3000 GL version 3.1.0 - Build 9.17.10.4229, Intel
 	GL Caps: Using GL 1.3 multitexturing.

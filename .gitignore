@@ -15,9 +15,9 @@ gradle.properties
 /externalgames
 NVIDIA
 minecraft-exported-crash-info*
-hmcl-exported-logs-*
+zero-exported-logs-*
 terracotta-log-*
-*.hmcl-theme
+*.zero-theme
 /.java/
 /.local/
 /.cache/
@@ -65,9 +65,9 @@ language-subtag-registry
 .vscode/
 
 # test
-/hmcl.json
-/.hmcl.json
-/.hmcl/
+/zero.json
+/.zero.json
+/.zero/
 /zero.json
 /.zero.json
 /.zero/

@@ -25,7 +25,7 @@ import com.jfoenix.effects.JFXDepthManager;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.skin.ListViewSkin;
 import javafx.scene.control.skin.VirtualFlow;
-import org.zero.hmcl.ui.FXUtils;
+import org.zero.launcher.ui.FXUtils;
 
 public class JFXListViewSkin<T> extends ListViewSkin<T> {
 

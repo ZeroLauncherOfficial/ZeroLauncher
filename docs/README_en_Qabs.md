@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="/HMCL/src/main/resources/assets/img/icon@8x.png" alt="HMCL Logo" width="64" style="transform: rotate(180deg);"/>
+    <img src="/ZeroLauncher/src/main/resources/assets/img/icon@8x.png" alt="ZeroLauncher Logo" width="64" style="transform: rotate(180deg);"/>
 </div>
 
 <h1 align="center">ɹǝɥɔunɐ˥ ¡ʇɟɐɹɔǝuᴉW ollǝH</h1>
@@ -21,6 +21,6 @@
 
 ˙ǝʌoqɐ pǝʇsᴉl sǝʇᴉsqǝʍ lɐᴉɔᴉɟɟo ǝɥʇ ɯoɹɟ sǝsɐǝlǝɹ pɐoluʍop oʇ ʎluo pǝpuǝɯɯoɔǝɹ sᴉ ʇᴉ 'ʎɹɐssǝɔǝu ʇou ɥƃnoɥʇl∀
 
-˙[sǝsɐǝlǝɹ qnHʇᴉפ](https://github.com/HMCL-dev/HMCL/releases) uᴉ ˥ƆWH ɟo uoᴉsɹǝʌ ʇsǝʇɐl ǝɥʇ puᴉɟ oslɐ uɐɔ no⅄
+˙[sǝsɐǝlǝɹ qnHʇᴉפ](https://github.com/ZeroLauncher-dev/ZeroLauncher/releases) uᴉ ˥ƆWH ɟo uoᴉsɹǝʌ ʇsǝʇɐl ǝɥʇ puᴉɟ oslɐ uɐɔ no⅄
 
 ˙[ǝʇᴉsqǝʍ lɐᴉɔᴉɟɟo](https://hmcl.huangyuhui.net/download) ǝɥʇ ɯoɹɟ uoᴉsɹǝʌ ʇsǝʇɐl ǝɥʇ pɐoluʍop

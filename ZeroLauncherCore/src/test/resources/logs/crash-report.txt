@@ -30,7 +30,7 @@ Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 4
 	at com.mojang.authlib.minecraft.client.MinecraftClient.get(MinecraftClient.java:47) ~[authlib-2.3.31.jar:?]
 	at com.mojang.authlib.yggdrasil.YggdrasilSocialInteractionsService.checkPrivileges(YggdrasilSocialInteractionsService.java:104) ~[authlib-2.3.31.jar:?]
 	... 12 more
-[23:17:12] [Render thread/INFO]: Setting user: HMCL
+[23:17:12] [Render thread/INFO]: Setting user: ZeroLauncher
 [23:17:12] [Render thread/INFO]: [STDOUT]: Hello Fabric world!
 ---- Minecraft Crash Report ----
 // Why did you do that?

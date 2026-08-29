@@ -28,7 +28,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
-import org.zero.hmcl.ui.FXUtils;
+import org.zero.launcher.ui.FXUtils;
 
 public class JFXButtonSkin extends ButtonSkin {
     private final StackPane buttonContainer = new StackPane();

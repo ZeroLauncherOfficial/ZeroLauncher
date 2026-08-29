@@ -27,7 +27,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import org.zero.hmcl.ui.animation.AnimationUtils;
+import org.zero.launcher.ui.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

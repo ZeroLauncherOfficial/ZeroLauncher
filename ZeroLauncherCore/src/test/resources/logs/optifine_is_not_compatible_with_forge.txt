@@ -1,18 +1,18 @@
-[17:39:15] [main/INFO]: ModLauncher running: args [--username, xjy, --version, 1.18.2（2), --gameDir, D:\hmcl启动器\.minecraft, --assetsDir, D:\hmcl启动器\.minecraft\assets, --assetIndex, 1.18, --uuid, f879573aee333778962e2a175ad0c481, --accessToken, �7�6�7�6�7�6�7�6�7�6�7�6�7�6�7�6, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, legacy, --versionType, HMCL 3.5.dev-1ec9e41, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker, --launchTarget, forgeclient, --fml.forgeVersion, 40.1.59, --fml.mcVersion, 1.18.2, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20220404.173914]
+[17:39:15] [main/INFO]: ModLauncher running: args [--username, xjy, --version, 1.18.2（2), --gameDir, D:\zero启动器\.minecraft, --assetsDir, D:\zero启动器\.minecraft\assets, --assetIndex, 1.18, --uuid, f879573aee333778962e2a175ad0c481, --accessToken, �7�6�7�6�7�6�7�6�7�6�7�6�7�6�7�6, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, legacy, --versionType, ZeroLauncher 3.5.dev-1ec9e41, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker, --launchTarget, forgeclient, --fml.forgeVersion, 40.1.59, --fml.mcVersion, 1.18.2, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20220404.173914]
 [17:39:15] [main/INFO]: ModLauncher 9.1.3+9.1.3+main.9b69c82a starting: java version 17.0.2 by BellSoft
 [17:39:15] [main/INFO]: OptiFineTransformationService.onLoad
-[17:39:15] [main/INFO]: OptiFine ZIP file URL: union:/D:/hmcl启动器/.minecraft/libraries/optifine/OptiFine/1.18.2_HD_U_H7/OptiFine-1.18.2_HD_U_H7.jar%2317!/
-[17:39:15] [main/INFO]: OptiFine ZIP file: D:\hmcl启动器\.minecraft\libraries\optifine\OptiFine\1.18.2_HD_U_H7\OptiFine-1.18.2_HD_U_H7.jar
+[17:39:15] [main/INFO]: OptiFine ZIP file URL: union:/D:/zero启动器/.minecraft/libraries/optifine/OptiFine/1.18.2_HD_U_H7/OptiFine-1.18.2_HD_U_H7.jar%2317!/
+[17:39:15] [main/INFO]: OptiFine ZIP file: D:\zero启动器\.minecraft\libraries\optifine\OptiFine\1.18.2_HD_U_H7\OptiFine-1.18.2_HD_U_H7.jar
 [17:39:15] [main/INFO]: Target.PRE_CLASS is available
-[17:39:15] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/D:/hmcl启动器/.minecraft/libraries/org/spongepowered/mixin/0.8.5/mixin-0.8.5.jar%2314!/ Service=ModLauncher Env=CLIENT
+[17:39:15] [main/INFO]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/D:/zero启动器/.minecraft/libraries/org/spongepowered/mixin/0.8.5/mixin-0.8.5.jar%2314!/ Service=ModLauncher Env=CLIENT
 [17:39:15] [main/INFO]: OptiFineTransformationService.initialize
-[17:39:15] [main/INFO]: Found mod file balm-3.2.0+0.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file buildinggadgets-3.13.1-build.18+mc1.18.2.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file cgm-1.2.7-1.18.2.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file framework-0.2.4-1.18.2.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file ironchest-1.18.2-13.2.11.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file jei-1.18.2-forge-10.2.1.283.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
-[17:39:15] [main/INFO]: Found mod file waystones-forge-1.18.2-10.1.0.jar of type MOD with locator {mods folder locator at D:\hmcl启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file balm-3.2.0+0.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file buildinggadgets-3.13.1-build.18+mc1.18.2.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file cgm-1.2.7-1.18.2.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file framework-0.2.4-1.18.2.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file ironchest-1.18.2-13.2.11.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file jei-1.18.2-forge-10.2.1.283.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
+[17:39:15] [main/INFO]: Found mod file waystones-forge-1.18.2-10.1.0.jar of type MOD with locator {mods folder locator at D:\zero启动器\.minecraft\mods}
 [17:39:15] [main/INFO]: Found mod file fmlcore-1.18.2-40.1.59.jar of type LIBRARY with locator net.minecraftforge.fml.loading.moddiscovery.MinecraftLocator@235f4c10
 [17:39:15] [main/INFO]: Found mod file javafmllanguage-1.18.2-40.1.59.jar of type LANGPROVIDER with locator net.minecraftforge.fml.loading.moddiscovery.MinecraftLocator@235f4c10
 [17:39:15] [main/INFO]: Found mod file lowcodelanguage-1.18.2-40.1.59.jar of type LANGPROVIDER with locator net.minecraftforge.fml.loading.moddiscovery.MinecraftLocator@235f4c10
@@ -23,9 +23,9 @@
 [17:39:15] [main/INFO]: Targets: 350
 [17:39:16] [main/INFO]: additionalClassesLocator: [optifine., net.optifine.]
 [17:39:16] [main/INFO]: Compatibility level set to JAVA_17
-[17:39:16] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.18.2（2), --gameDir, D:\hmcl启动器\.minecraft, --assetsDir, D:\hmcl启动器\.minecraft\assets, --uuid, f879573aee333778962e2a175ad0c481, --username, xjy, --assetIndex, 1.18, --accessToken, �7�6�7�6�7�6�7�6�7�6�7�6�7�6�7�6, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, legacy, --versionType, HMCL 3.5.dev-1ec9e41, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker]
-[17:39:21] [Render thread/WARN]: Assets URL 'union:/D:/hmcl启动器/.minecraft/libraries/net/minecraft/client/1.18.2-20220404.173914/client-1.18.2-20220404.173914-srg.jar%2363!/assets/.mcassetsroot' uses unexpected schema
-[17:39:21] [Render thread/WARN]: Assets URL 'union:/D:/hmcl启动器/.minecraft/libraries/net/minecraft/client/1.18.2-20220404.173914/client-1.18.2-20220404.173914-srg.jar%2363!/data/.mcassetsroot' uses unexpected schema
+[17:39:16] [main/INFO]: Launching target 'forgeclient' with arguments [--version, 1.18.2（2), --gameDir, D:\zero启动器\.minecraft, --assetsDir, D:\zero启动器\.minecraft\assets, --uuid, f879573aee333778962e2a175ad0c481, --username, xjy, --assetIndex, 1.18, --accessToken, �7�6�7�6�7�6�7�6�7�6�7�6�7�6�7�6, --clientId, ${clientid}, --xuid, ${auth_xuid}, --userType, legacy, --versionType, ZeroLauncher 3.5.dev-1ec9e41, --width, 854, --height, 480, --tweakClass, optifine.OptiFineTweaker]
+[17:39:21] [Render thread/WARN]: Assets URL 'union:/D:/zero启动器/.minecraft/libraries/net/minecraft/client/1.18.2-20220404.173914/client-1.18.2-20220404.173914-srg.jar%2363!/assets/.mcassetsroot' uses unexpected schema
+[17:39:21] [Render thread/WARN]: Assets URL 'union:/D:/zero启动器/.minecraft/libraries/net/minecraft/client/1.18.2-20220404.173914/client-1.18.2-20220404.173914-srg.jar%2363!/data/.mcassetsroot' uses unexpected schema
 [17:39:21] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
 [17:39:23] [Render thread/ERROR]: Failed to verify authentication
 com.mojang.authlib.exceptions.InvalidCredentialsException: Status: 401
@@ -119,14 +119,14 @@ Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 4
 [17:39:24] [modloading-worker-0/INFO]: Forge mod loading, version 40.1.59, for MC 1.18.2 with MCP 20220404.173914
 [17:39:24] [modloading-worker-0/INFO]: MinecraftForge v40.1.59 Initialized
 [17:39:26] [Render thread/INFO]: Narrator library for x64 successfully loaded
-[17:39:26] [Render thread/INFO]: Saving config file: D:\hmcl启动器\.minecraft\config\jei\jei-client.ini
+[17:39:26] [Render thread/INFO]: Saving config file: D:\zero启动器\.minecraft\config\jei\jei-client.ini
 [17:39:26] [Render thread/INFO]: Reloading ResourceManager: Mod Resources, Default
 [17:39:26] [Render thread/INFO]: [OptiFine] *** Reloading textures ***
 [17:39:26] [Render thread/INFO]: [OptiFine] Resource packs: Mod Resources
-[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\hmcl启动器\.minecraft\config\buildinggadgets-client.toml is not correct. Correcting
+[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\zero启动器\.minecraft\config\buildinggadgets-client.toml is not correct. Correcting
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key general was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key general.Default to absolute Coord-Mode was corrected from null to its default, false. 
-[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\hmcl启动器\.minecraft\config\cgm-client.toml is not correct. Correcting
+[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\zero启动器\.minecraft\config\cgm-client.toml is not correct. Correcting
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client.sounds was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client.sounds.playSoundWhenHeadshot was corrected from null to its default, true. 
@@ -153,7 +153,7 @@ Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 4
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client.particle.impactParticleDistance was corrected from null to its default, 32.0. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client.controls was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key client.controls.aimDownSightSensitivity was corrected from null to its default, 0.75. 
-[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\hmcl启动器\.minecraft\config\cgm-common.toml is not correct. Correcting
+[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\zero启动器\.minecraft\config\cgm-common.toml is not correct. Correcting
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common.gameplay was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common.gameplay.griefing was corrected from null to its default, SimpleCommentedConfig:{}. 
@@ -201,7 +201,7 @@ Caused by: com.mojang.authlib.exceptions.MinecraftClientHttpException: Status: 4
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common.projectile_spread was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common.projectile_spread.spreadThreshold was corrected from null to its default, 300. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key common.projectile_spread.maxCount was corrected from null to its default, 10. 
-[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\hmcl启动器\.minecraft\config\waystones-common.toml is not correct. Correcting
+[17:39:26] [modloading-worker-0/WARN]: Configuration file D:\zero启动器\.minecraft\config\waystones-common.toml is not correct. Correcting
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key xpCost was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key xpCost.inverseXpCost was corrected from null to its default, false. 
 [17:39:26] [modloading-worker-0/WARN]: Incorrect key xpCost.blocksPerXpLevel was corrected from null to its default, 1000. 
@@ -500,7 +500,7 @@ Caused by: java.nio.channels.UnresolvedAddressException
 [17:39:54] [Render thread/INFO]: Environment: authHost='https://authserver.mojang.com', accountsHost='https://api.mojang.com', sessionHost='https://sessionserver.mojang.com', servicesHost='https://api.minecraftservices.com', name='PROD'
 [17:39:54] [Server thread/INFO]: Starting integrated minecraft server version 1.18.2
 [17:39:54] [Server thread/INFO]: Generating keypair
-[17:39:54] [Server thread/WARN]: Configuration file D:\hmcl启动器\.minecraft\saves\新的世界\serverconfig\buildinggadgets-server.toml is not correct. Correcting
+[17:39:54] [Server thread/WARN]: Configuration file D:\zero启动器\.minecraft\saves\新的世界\serverconfig\buildinggadgets-server.toml is not correct. Correcting
 [17:39:54] [Server thread/WARN]: Incorrect key general was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key general.Allow Absolute Coords was corrected from null to its default, true. 
 [17:39:54] [Server thread/WARN]: Incorrect key general.MaxBuildDistance was corrected from null to its default, 32.0. 
@@ -534,7 +534,7 @@ Caused by: java.nio.channels.UnresolvedAddressException
 [17:39:54] [Server thread/WARN]: Incorrect key Paste Containers.T1 Container Capacity was corrected from null to its default, 512. 
 [17:39:54] [Server thread/WARN]: Incorrect key Paste Containers.T2 Container Capacity was corrected from null to its default, 2048. 
 [17:39:54] [Server thread/WARN]: Incorrect key Paste Containers.T3 Container Capacity was corrected from null to its default, 8192. 
-[17:39:54] [Server thread/WARN]: Configuration file D:\hmcl启动器\.minecraft\saves\新的世界\serverconfig\cgm-server.toml is not correct. Correcting
+[17:39:54] [Server thread/WARN]: Configuration file D:\zero启动器\.minecraft\saves\新的世界\serverconfig\cgm-server.toml is not correct. Correcting
 [17:39:54] [Server thread/WARN]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.grenade was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.grenade.alphaOverlay was corrected from null to its default, 255. 
@@ -549,12 +549,12 @@ Caused by: java.nio.channels.UnresolvedAddressException
 [17:39:54] [Server thread/WARN]: Incorrect key server.cooldownThreshold was corrected from null to its default, 0. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.experimental was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.experimental.forceDyeableAttachments was corrected from null to its default, false. 
-[17:39:54] [Server thread/WARN]: Configuration file D:\hmcl启动器\.minecraft\saves\新的世界\serverconfig\jei-server.toml is not correct. Correcting
+[17:39:54] [Server thread/WARN]: Configuration file D:\zero启动器\.minecraft\saves\新的世界\serverconfig\jei-server.toml is not correct. Correcting
 [17:39:54] [Server thread/WARN]: Incorrect key cheat mode was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key cheat mode.enableCheatModeForOp was corrected from null to its default, true. 
 [17:39:54] [Server thread/WARN]: Incorrect key cheat mode.enableCheatModeForCreative was corrected from null to its default, true. 
 [17:39:54] [Server thread/WARN]: Incorrect key cheat mode.enableCheatModeForGive was corrected from null to its default, false. 
-[17:39:54] [Server thread/WARN]: Configuration file D:\hmcl启动器\.minecraft\saves\新的世界\serverconfig\forge-server.toml is not correct. Correcting
+[17:39:54] [Server thread/WARN]: Configuration file D:\zero启动器\.minecraft\saves\新的世界\serverconfig\forge-server.toml is not correct. Correcting
 [17:39:54] [Server thread/WARN]: Incorrect key server was corrected from null to its default, SimpleCommentedConfig:{}. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.removeErroringBlockEntities was corrected from null to its default, false. 
 [17:39:54] [Server thread/WARN]: Incorrect key server.removeErroringEntities was corrected from null to its default, false. 
@@ -578,7 +578,7 @@ java.lang.NoSuchMethodError: 'void net.minecraft.server.level.DistanceManager.ad
 	at java.lang.Thread.run(Unknown Source) [?:?]
 [17:39:54] [Server thread/FATAL]: Preparing crash report with UUID 498c0444-95f8-4efc-8096-527b083f1739
 [17:39:55] [Server thread/FATAL]: Preparing crash report with UUID 442dec9f-c942-443e-83e5-f93583cb0c12
-[17:39:55] [Server thread/ERROR]: This crash report has been saved to: D:\hmcl启动器\.minecraft\crash-reports\crash-2022-12-06_17.39.54-server.txt
+[17:39:55] [Server thread/ERROR]: This crash report has been saved to: D:\zero启动器\.minecraft\crash-reports\crash-2022-12-06_17.39.54-server.txt
 [17:39:55] [Server thread/INFO]: Stopping server
 [17:39:55] [Server thread/INFO]: Saving players
 [17:39:55] [Server thread/INFO]: Saving worlds

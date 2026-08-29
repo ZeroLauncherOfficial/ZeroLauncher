@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.zero.hmcl.ui.FXUtils.useJFXContextMenu;
+import static org.zero.launcher.ui.FXUtils.useJFXContextMenu;
 
 /**
  * JFXPasswordField is the material design implementation of a password Field.
@@ -71,7 +71,7 @@ public class JFXPasswordField extends PasswordField {
     }
 
     /// Prevents the legacy JFoenix skin from continuously requesting another layout pass.
-    // https://github.com/HMCL-dev/HMCL/issues/5822
+    // https://github.com/ZeroLauncher-dev/ZeroLauncher/issues/5822
     // TODO: This method may no longer be needed after we update JFXTextFieldSkin
     @Override
     protected void layoutChildren() {
