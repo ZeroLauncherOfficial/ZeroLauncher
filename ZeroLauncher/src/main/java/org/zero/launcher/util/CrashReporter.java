@@ -32,6 +32,8 @@ import static org.zero.launcher.util.logging.Logger.LOG;
  */
 public final class CrashReporter implements Thread.UncaughtExceptionHandler {
 
+    private static final java.util.concurrent.atomic.AtomicBoolean HAS_SHOWN_CRASH = new java.util.concurrent.atomic.AtomicBoolean(false);
+
     // Lazy initialization resources
     private static final class Hole {
         @SuppressWarnings("unchecked")
@@ -48,7 +50,6 @@ public final class CrashReporter implements Thread.UncaughtExceptionHandler {
                 pair("netscape.javascript.JSException", i18n("crash.NoClassDefFound")),
                 pair("java.lang.IncompatibleClassChangeError", i18n("crash.NoClassDefFound")),
                 pair("java.lang.ClassFormatError", i18n("crash.NoClassDefFound")),
-                pair("com.sun.javafx.css.StyleManager.findMatchingStyles", i18n("launcher.update_java")),
                 pair("NoSuchAlgorithmException", "Has your operating system been installed completely or is a ghost system?")
         };
     }
@@ -60,13 +61,15 @@ public final class CrashReporter implements Thread.UncaughtExceptionHandler {
                 if (StringUtils.isNotBlank(entry.getValue())) {
                     String info = entry.getValue();
                     LOG.error(info);
-                    try {
-                        Alert alert = new Alert(AlertType.INFORMATION, info);
-                        alert.setTitle(i18n("message.info"));
-                        alert.setHeaderText(i18n("message.info"));
-                        alert.showAndWait();
-                    } catch (Throwable t) {
-                        LOG.error("Unable to show message", t);
+                    if (HAS_SHOWN_CRASH.compareAndSet(false, true)) {
+                        try {
+                            Alert alert = new Alert(AlertType.INFORMATION, info);
+                            alert.setTitle(i18n("message.info"));
+                            alert.setHeaderText(i18n("message.info"));
+                            alert.showAndWait();
+                        } catch (Throwable t) {
+                            LOG.error("Unable to show message", t);
+                        }
                     }
                 }
                 return false;
