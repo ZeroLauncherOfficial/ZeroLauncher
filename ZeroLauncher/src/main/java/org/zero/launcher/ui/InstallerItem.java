@@ -274,6 +274,7 @@ public class InstallerItem extends Control {
             pane.getStyleClass().add("installer-item");
             StackPane paneWrapper = new StackPane(pane);
             paneWrapper.getStyleClass().add("installer-item-wrapper");
+            org.zero.launcher.ui.animation.PclAnimationEngine.applyPclInteractive(paneWrapper);
             getChildren().setAll(paneWrapper);
 
             pane.pseudoClassStateChanged(LIST_ITEM, control.style == Style.LIST_ITEM);

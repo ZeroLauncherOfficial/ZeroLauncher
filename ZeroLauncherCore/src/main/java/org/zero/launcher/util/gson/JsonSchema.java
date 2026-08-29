@@ -63,6 +63,7 @@ public record JsonSchema(String value, @Nullable Parsed parsed) {
 
     /// The ZeroLauncher schema URL prefix.
     private static final String URL_PREFIX = "https://schemas.glavo.site/zero/";
+    private static final String LEGACY_URL_PREFIX = "https://schemas.glavo.site/hmcl/";
 
     /// @param value the raw JSON schema string
     /// @param parsed the parsed ZeroLauncher schema identifier, or `null` when the string is not parseable
@@ -181,11 +182,15 @@ public record JsonSchema(String value, @Nullable Parsed parsed) {
     private static @Nullable Parsed parseSchemaUrl(String value) {
         Objects.requireNonNull(value);
 
-        if (!value.startsWith(URL_PREFIX)) {
+        String path;
+        if (value.startsWith(URL_PREFIX)) {
+            path = value.substring(URL_PREFIX.length());
+        } else if (value.startsWith(LEGACY_URL_PREFIX)) {
+            path = value.substring(LEGACY_URL_PREFIX.length());
+        } else {
             return null;
         }
 
-        String path = value.substring(URL_PREFIX.length());
         int slash = path.indexOf('/');
         if (slash <= 0 || slash != path.lastIndexOf('/') || slash == path.length() - 1) {
             return null;

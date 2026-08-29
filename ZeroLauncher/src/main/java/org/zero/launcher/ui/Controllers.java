@@ -555,7 +555,10 @@ public final class Controllers {
         }
     }
 
+    private static final java.util.Set<String> SHOWN_DIALOGS = java.util.Collections.newSetFromMap(new java.util.concurrent.ConcurrentHashMap<>());
+
     public static void dialog(Region content) {
+        if (content == null) return;
         if (decorator != null)
             decorator.showDialog(content);
     }
@@ -573,7 +576,17 @@ public final class Controllers {
     }
 
     public static void dialog(String text, String title, MessageType type, Runnable ok) {
-        dialog(new MessageDialogPane.Builder(text, title, type).ok(ok).build());
+        if (text == null || text.trim().isEmpty()) {
+            return;
+        }
+        String key = (title != null ? title : "") + "::" + text.trim();
+        if (!SHOWN_DIALOGS.add(key)) {
+            return;
+        }
+        dialog(new MessageDialogPane.Builder(text, title, type).ok(() -> {
+            SHOWN_DIALOGS.remove(key);
+            if (ok != null) ok.run();
+        }).build());
     }
 
     public static void confirm(String text, String title, Runnable yes, Runnable no) {
