@@ -4,8 +4,7 @@
 
 # Zero Launcher
 
-**现代、丝滑、极致美观的 Minecraft 启动器**  
-*采用 Fluent 磨砂玻璃拟物风美学、内置原版 C418 音乐引擎与高性能架构打造。*
+**现代、极致美观的 Minecraft 启动器**
 
 [![Release](https://img.shields.io/badge/Release-v1.0.0-38BDF8?style=for-the-badge&logo=github)](https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases)
 [![License: GPL v3.0](https://img.shields.io/badge/License-GPL%20v3.0-blue.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0)
@@ -18,38 +17,24 @@
 
 ---
 
-## 🌟 核心特色功能
+### ⚠️ 作者的心里话（求生指南）
 
-### 🎨 1. 顶级磨砂玻璃质感 & 120 FPS 灵动动画
-- **满版边框沉浸式壁纸**：无论切换深色或浅色模式，首页皆完美融合深色亚克力磨砂卡片，与自定义 Minecraft 壁纸相得益彰。
-- **PCL2 级别灵动弹簧动画**：高响应贝塞尔曲线转场，页面切换利落丝滑、无任何卡顿掉帧。
-- **Windows 11 圆润抗锯齿字体**：全域采用微软最新 *Segoe UI Variable* 与 *微软雅黑 UI*，并启用 LCD 次像素平滑渲染。
+> **本项目作者对编程几乎一窍不通，各位编程大佬请勿喷，求求你了，这个项目是 AI 做的！！！🙏🥺**
 
-### 🎵 2. 内置 Minecraft 官方原版 C418 原声音乐引擎
-- **官方高音质原声**：完整收录 C418 最经典曲目（*Sweden「灯..等等..灯」*、*Wet Hands*、*Subwoofer Lullaby*、*Haggstrom* 等）。
-- **智慧动态音量调节**：根据系统音量自适应调节，舒适微柔、动听不吵闹。
-- **游戏生命周期联动**：进入 Minecraft 游戏时自动暂停，关闭游戏回到启动器时自动无缝恢复播放。
-- **顶部胶囊迷你播放器**：导航栏右上角 `[ 🎵 Sweden ]` 胶囊，左键随时暂停/播放，右键一秒切换下一首。
+---
 
-### 🧩 3. PCL2 风格模组批量管理
-- **一键全选与实时选取计数**：支持全选、多选与动态标签计数。
-- **强大批量操作**：一键批量启用、批量停用、联网 Modrinth/CurseForge 检查更新与安全批量移除。
+## 📖 关于 Zero Launcher
 
-### 📸 4. 游戏截图相册画廊 & 一键直贴社群
-- **实时同步相册**：自动扫描游戏内按下 `F2` 的所有截图，依时间由新至旧呈现美观瀑布流。
-- **超便利一键直贴**：点击 **`[ 📋 复制图片 ]`** 立即将图片写入系统剪贴板，在 Discord、微信、QQ、浏览器按 `Ctrl+V` 即可直接粘贴分享！
-- **沉浸式大图灯箱**：全屏暗色灯箱预览，支持键盘方向键切换照片与快速定位文件。
+**Zero Launcher** 是一个致力于提供现代化视觉美学与流畅体验的开源 Minecraft 启动器，项目建立于优秀强大的 HMCL 基础之上进行重构与定制开发。
 
-### ⏳ 5. 世界存档时光机 & 一键备份还原
-- **一键快照备份**：一键将世界存档压缩备份至 `.zero/backups/`。
-- **历史存档时光倒流**：遭遇掉岩浆或坏档时，可一秒还原至任意历史存档点。
-- **存档可视化卡片**：直接展示世界名称、游戏模式标签（*生存 / 创造 / 极限*）、最后游玩时间与存档大小。
+---
 
-### 📂 6. 全新纯净 `.zero` 架构与跨平台兼容
-- **零残留纯净目录**：所有设置、缓存与实例元数据全面统一存放于 `.zero` 与 `zero.json`。
-- **100% 无损向下兼容自动迁移**：初次启动自动无缝迁移旧版配置，账号与实例完全不受影响。
-- **全加载器支持**：支持 Vanilla、Fabric、Forge、NeoForge、Quilt、Cleanroom、LiteLoader 与 OptiFine。
-- **多账号体系**：支持微软官方 OAuth、离线账号与第三方 Authlib-Injector 外置登录。
+## 💖 特别鸣谢与致谢
+
+在此向以下团队与开源社区致上最崇高的敬意与感谢：
+
+- **HMCL 开发团队与全体开源贡献者**（huanghongxun、Glavo 以及历来所有贡献者）— 非常感谢你们打造了如此强大、稳定且卓越的开源 Minecraft 启动器基石。没有 HMCL 团队多年的付出与心血，就绝对不会有本项目的诞生！
+- **Minecraft 模组与开源社区** — 感谢为 Minecraft 生态提供丰富工具、库与灵感的每一个人。
 
 ---
 
@@ -66,38 +51,19 @@
 
 ## 🛠️ 从源码编译
 
-### 前置需求
-- **JDK 17** 或 **JDK 21**（推荐 Eclipse Temurin 或 Liberica JDK Full）
-- Git 工具
+```bash
+git clone https://github.com/ZeroLauncherOfficial/ZeroLauncher.git
+cd ZeroLauncher
 
-### 编译步骤
+# Windows
+.\gradlew.bat jar -x test
 
-1. **克隆项目仓库：**
-   ```bash
-   git clone https://github.com/ZeroLauncherOfficial/ZeroLauncher.git
-   cd ZeroLauncher
-   ```
+# Linux / macOS
+chmod +x ./gradlew
+./gradlew jar -x test
+```
 
-2. **使用 Gradle Wrapper 执行构建：**
-   - **Windows:**
-     ```cmd
-     .\gradlew.bat jar -x test
-     ```
-   - **Linux / macOS:**
-     ```bash
-     chmod +x ./gradlew
-     ./gradlew jar -x test
-     ```
-
-3. **获取编译产物：**
-   编译产出的 JAR 文件位于 `HMCL/build/libs/HMCL-1.0.0.SNAPSHOT.jar`（或项目根目录之 `ZeroLauncher.jar`）。
-
----
-
-## 🤝 参与贡献
-
-欢迎提交 Pull Request、报告 Bug 或提出新功能建议！  
-请至 [Issues](https://github.com/ZeroLauncherOfficial/ZeroLauncher/issues) 页面参与讨论。
+编译产出的 JAR 文件位于 `ZeroLauncher/build/libs/` 或项目根目录之 `ZeroLauncher.jar`。
 
 ---
 
