@@ -170,11 +170,13 @@ public class RootPage extends StackPane implements DecoratorPage {
         btn.setGraphic(icon.createIcon(16));
         btn.getStyleClass().add("zero-nav-tab");
         btn.setOnAction(e -> selectTab(tabId));
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclTab(btn);
         tabButtons.put(tabId, btn);
         container.getChildren().add(btn);
     }
 
     public void selectTab(TabId tabId) {
+        TabId prevTab = this.currentTab;
         this.currentTab = tabId;
 
         // Update active style on tabs
@@ -222,7 +224,16 @@ public class RootPage extends StackPane implements DecoratorPage {
             }
         };
 
-        contentContainer.setContent(pageNode, ContainerAnimations.FADE, Motion.SHORT4);
+        TransitionPane.AnimationProducer transition;
+        if (prevTab == tabId) {
+            transition = ContainerAnimations.FADE;
+        } else if (tabId.ordinal() > prevTab.ordinal()) {
+            transition = ContainerAnimations.FORWARD;
+        } else {
+            transition = ContainerAnimations.BACKWARD;
+        }
+
+        contentContainer.setContent(pageNode, transition, javafx.util.Duration.millis(260), org.zero.launcher.ui.animation.Motion.PCL_HOVER);
     }
 
     @Override

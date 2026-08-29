@@ -144,6 +144,16 @@ public final class PclAnimationEngine {
     // =========================================================================
 
     /**
+     * <b>【PCL2 規範：超平滑懸停三次貝氏曲線 (0.25, 1.0, 0.5, 1.0)】</b>
+     */
+    public static final Interpolator PCL_HOVER = new PclCubicBezier(0.25, 1.0, 0.5, 1.0);
+
+    /**
+     * <b>【PCL2 規範：物理回彈三次貝氏曲線 (BackEaseOut: 0.175, 0.885, 0.32, 1.275)】</b>
+     */
+    public static final Interpolator PCL_SPRING = new PclCubicBezier(0.175, 0.885, 0.32, 1.275);
+
+    /**
      * PCL2 靈動彈簧曲線：初速極快，在接近終點時伴隨空氣阻力般強烈減速 (0.08, 0.85, 0.18, 1.0)
      */
     public static final Interpolator PCL_FLUID_SPRING = new PclCubicBezier(0.08, 0.85, 0.18, 1.0);
@@ -185,13 +195,6 @@ public final class PclAnimationEngine {
 
     /**
      * 可中斷的平滑屬性過渡核心（自動捕獲瞬態值為起點，動態計算剩餘時長）
-     *
-     * @param node         目標節點
-     * @param property     目標屬性（例如 scaleXProperty, opacityProperty 等）
-     * @param targetVal    目標數值
-     * @param defaultDuration 基礎預設時長
-     * @param interpolator 插值器
-     * @param onFinished   完成回調（可為 null）
      */
     public static void animatePropertyInterruptible(
             Node node,
@@ -254,116 +257,149 @@ public final class PclAnimationEngine {
     // =========================================================================
 
     /**
-     * <b>【PCL2 級別懸浮微縮放與動態回彈效果】</b>
+     * <b>【PCL2 桌面端專用按鈕手感】</b>
      * <p>
-     * 當滑鼠移入時，按鈕在 200ms 內平滑膨脹至目標倍率（如 1.04x）；
-     * 當滑鼠中途移出時，即刻自當前膨脹點無縫收縮回 1.0x，完全不掉幀、不跳格。
-     *
-     * @param target      目標節點（按鈕、卡片、圖標等）
-     * @param targetScale 懸浮放大倍率（推薦 1.03 ~ 1.05）
-     * @param durationMs  過渡時長（毫秒，推薦 180 ~ 240ms）
+     * 懸停 1.025x 浮空 + 點擊 0.96x 物理下壓與 BackEase 回彈
      */
-    public static void applyPclHoverEffect(Node target, double targetScale, double durationMs) {
-        if (target == null) return;
+    public static void applyPclButton(Node button) {
+        if (button == null) return;
 
-        Duration duration = Duration.millis(durationMs);
+        Duration hoverDuration = Duration.millis(180);
+        Duration pressDuration = Duration.millis(120);
+        Duration releaseDuration = Duration.millis(240);
 
-        EventHandler<MouseEvent> enterHandler = event -> {
-            NodeAnimationState state = getState(target);
+        button.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+            NodeAnimationState state = getState(button);
             state.isHovered = true;
+            if (!state.isPressed) {
+                animateScale(button, 1.025, hoverDuration, PCL_HOVER);
+            }
+        });
 
-            // 雙軸硬體加速縮放
-            animateScale(target, targetScale, duration, PCL_FLUID_SPRING);
-        };
-
-        EventHandler<MouseEvent> exitHandler = event -> {
-            NodeAnimationState state = getState(target);
+        button.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+            NodeAnimationState state = getState(button);
             state.isHovered = false;
+            if (!state.isPressed) {
+                animateScale(button, 1.0, hoverDuration, PCL_DECELERATE);
+            }
+        });
 
-            animateScale(target, 1.0, duration, PCL_DECELERATE);
-        };
+        button.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+            NodeAnimationState state = getState(button);
+            state.isPressed = true;
+            animateScale(button, 0.96, pressDuration, PCL_SNAP_BACK);
+        });
 
-        // 使用 EventFilter 確保不干擾組件原有點擊業務事件
-        target.addEventFilter(MouseEvent.MOUSE_ENTERED, enterHandler);
-        target.addEventFilter(MouseEvent.MOUSE_EXITED, exitHandler);
+        button.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+            NodeAnimationState state = getState(button);
+            state.isPressed = false;
+            double target = state.isHovered ? 1.025 : 1.0;
+            animateScale(button, target, releaseDuration, PCL_SPRING);
+        });
     }
 
     /**
-     * <b>【PCL2 級別卡片彈性點擊回饋 (Click Feedback)】</b>
+     * <b>【PCL2 桌面端專用卡片手感 (Cards & Panes)】</b>
      * <p>
-     * 滑鼠按下時微幅內縮 (0.96x)，滑鼠釋放時帶有微幅呼吸彈跳 (Overshoot: 102% -> 100%)。
-     *
-     * @param target 目標節點
+     * 懸停 1.018x 微懸浮 + 點擊 0.975x 下壓
      */
-    public static void applyPclPressEffect(Node target) {
-        if (target == null) return;
+    public static void applyPclCard(Node card) {
+        if (card == null) return;
 
-        target.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            animateScale(target, 0.96, Duration.millis(120), PCL_SNAP_BACK);
+        Duration hoverDuration = Duration.millis(200);
+        Duration pressDuration = Duration.millis(130);
+        Duration releaseDuration = Duration.millis(260);
+
+        card.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+            NodeAnimationState state = getState(card);
+            state.isHovered = true;
+            if (!state.isPressed) {
+                animateScale(card, 1.018, hoverDuration, PCL_HOVER);
+            }
         });
 
-        target.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> {
-            NodeAnimationState state = getState(target);
-            double restoreScale = state.isHovered ? 1.03 : 1.0;
-            animateScale(target, restoreScale, Duration.millis(240), PCL_OVERSHOOT);
+        card.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+            NodeAnimationState state = getState(card);
+            state.isHovered = false;
+            if (!state.isPressed) {
+                animateScale(card, 1.0, hoverDuration, PCL_DECELERATE);
+            }
+        });
+
+        card.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+            NodeAnimationState state = getState(card);
+            state.isPressed = true;
+            animateScale(card, 0.975, pressDuration, PCL_SNAP_BACK);
+        });
+
+        card.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+            NodeAnimationState state = getState(card);
+            state.isPressed = false;
+            double target = state.isHovered ? 1.018 : 1.0;
+            animateScale(card, target, releaseDuration, PCL_SPRING);
         });
     }
 
     /**
-     * <b>【PCL2 級別全功能互動一鍵封裝】</b>
-     * <p>
-     * 同步附加「懸浮靈動放大」與「按下彈性回彈」，賦予按鈕宛如實體開關般的極致手感。
-     *
-     * @param target 目標節點（按鈕、版本卡片、自訂列表項）
+     * <b>【PCL2 頂部導航 Tab 專用手感】</b>
+     */
+    public static void applyPclTab(Node tab) {
+        if (tab == null) return;
+
+        Duration hoverDuration = Duration.millis(160);
+        Duration pressDuration = Duration.millis(110);
+        Duration releaseDuration = Duration.millis(220);
+
+        tab.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+            NodeAnimationState state = getState(tab);
+            state.isHovered = true;
+            if (!state.isPressed) {
+                animateScale(tab, 1.03, hoverDuration, PCL_HOVER);
+            }
+        });
+
+        tab.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+            NodeAnimationState state = getState(tab);
+            state.isHovered = false;
+            if (!state.isPressed) {
+                animateScale(tab, 1.0, hoverDuration, PCL_DECELERATE);
+            }
+        });
+
+        tab.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+            NodeAnimationState state = getState(tab);
+            state.isPressed = true;
+            animateScale(tab, 0.95, pressDuration, PCL_SNAP_BACK);
+        });
+
+        tab.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+            NodeAnimationState state = getState(tab);
+            state.isPressed = false;
+            double target = state.isHovered ? 1.03 : 1.0;
+            animateScale(tab, target, releaseDuration, PCL_SPRING);
+        });
+    }
+
+    /**
+     * <b>【PCL2 級別通用全功能互動一鍵封裝】</b>
      */
     public static void applyPclInteractive(Node target) {
-        applyPclHoverEffect(target, 1.035, 200);
-        applyPclPressEffect(target);
+        applyPclButton(target);
     }
 
     /**
-     * <b>【PCL2 級別頁面/彈窗噴射式滑入 (Slide-Up & Fade-In)】</b>
-     * <p>
-     * 採用非線性空氣阻力物理曲線，從 Y 軸位移快速噴射並極速煞車淡入。
-     *
-     * @param target     進場節點
-     * @param offsetY    起始 Y 軸偏移量（例如 18px）
-     * @param durationMs 動畫時長（例如 250ms）
+     * <b>【PCL2 數值/進度平滑滑動 (Smooth Number Glide)】</b>
      */
-    public static void applyPclEntrance(Node target, double offsetY, double durationMs) {
-        if (target == null) return;
-
+    public static void smoothNumber(DoubleProperty property, double targetVal, Duration duration) {
+        if (property == null) return;
         if (!AnimationUtils.isAnimationEnabled()) {
-            target.setTranslateY(0);
-            target.setOpacity(1.0);
-            target.setScaleX(1.0);
-            target.setScaleY(1.0);
+            property.set(targetVal);
             return;
         }
 
-        target.setCache(true);
-        target.setCacheHint(CacheHint.SPEED);
-
-        target.setTranslateY(offsetY);
-        target.setOpacity(0.0);
-        target.setScaleX(0.975);
-        target.setScaleY(0.975);
-
-        Duration duration = Duration.millis(durationMs);
-
         Timeline timeline = new Timeline(
-                new KeyFrame(duration,
-                        new KeyValue(target.translateYProperty(), 0.0, PCL_FLUID_SPRING),
-                        new KeyValue(target.opacityProperty(), 1.0, PCL_FLUID_SPRING),
-                        new KeyValue(target.scaleXProperty(), 1.0, PCL_OVERSHOOT),
-                        new KeyValue(target.scaleYProperty(), 1.0, PCL_OVERSHOOT)
-                )
+                new KeyFrame(duration, new KeyValue(property, targetVal, PCL_HOVER))
         );
-
-        timeline.setOnFinished(e -> {
-            target.setCache(false);
-        });
-
         timeline.play();
     }
 

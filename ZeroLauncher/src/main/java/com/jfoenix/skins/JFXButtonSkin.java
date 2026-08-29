@@ -29,6 +29,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 import org.zero.launcher.ui.FXUtils;
+import org.zero.launcher.ui.animation.PclAnimationEngine;
 
 public class JFXButtonSkin extends ButtonSkin {
     private final StackPane buttonContainer = new StackPane();
@@ -47,14 +48,7 @@ public class JFXButtonSkin extends ButtonSkin {
         }
 
         private void initListeners() {
-            this.ripplerPane.setOnMousePressed((event) -> {
-                if (JFXButtonSkin.this.releaseManualRippler != null) {
-                    JFXButtonSkin.this.releaseManualRippler.run();
-                }
-
-                JFXButtonSkin.this.releaseManualRippler = null;
-                this.createRipple(event.getX(), event.getY());
-            });
+            // Disabled Android ripple
         }
     };
     private Transition clickedAnimation;
@@ -64,6 +58,8 @@ public class JFXButtonSkin extends ButtonSkin {
 
     public JFXButtonSkin(JFXButton button) {
         super(button);
+        this.buttonRippler.setRipplerFill(Color.TRANSPARENT);
+        PclAnimationEngine.applyPclButton(button);
         this.getSkinnable().armedProperty().addListener((o, oldVal, newVal) -> {
             if (newVal) {
                 this.releaseManualRippler = this.buttonRippler.createManualRipple();

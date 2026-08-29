@@ -168,11 +168,13 @@
 }
 
 .rippler-container {
-    -jfx-rippler-fill: -monet-on-surface-variant;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .advanced-list-item .rippler-container {
-    -jfx-rippler-fill: -monet-on-secondary-container;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .advanced-list-item {
@@ -283,7 +285,8 @@
 }
 
 .iconed-item {
-    -jfx-rippler-fill: -monet-secondary-container;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -fx-background-radius: 8px;
 }
 
@@ -295,7 +298,8 @@
 }
 
 .iconed-menu-item {
-    -jfx-rippler-fill: -monet-secondary-container;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -fx-background-radius: 8px;
 }
 
@@ -853,11 +857,13 @@
 
 /* TODO: It seems not actually used */
 .tab-rippler {
-    -jfx-rippler-fill: derive(-monet-primary-container, 30%);
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .jfx-tab-pane .jfx-rippler {
-    -jfx-rippler-fill: white;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .tab-label {
@@ -1125,7 +1131,8 @@
 }
 
 .jfx-tool-bar-second .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .jfx-tool-bar-button {
@@ -1217,61 +1224,74 @@
 
 /*******************************************************************************
 *                                                                              *
-* JFX Rippler                                                                  *
-*                                                                              *
-*******************************************************************************/
+/*******************************************************************************
+ *                                                                             *
+ * JFX Rippler (Disabled for desktop WPF/Fluent style)                         *
+ *                                                                             *
+ *******************************************************************************/
+
+.jfx-rippler {
+    -jfx-rippler-disabled: true;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
+}
 
 .jfx-rippler:hover {
     -fx-cursor: hand;
 }
 
 /*******************************************************************************
-*                                                                              *
-* JFX Button                                                                   *
-*                                                                              *
-*******************************************************************************/
+ *                                                                             *
+ * JFX Button (PCL2 Desktop Physics)                                           *
+ *                                                                             *
+ *******************************************************************************/
 
 .jfx-button {
     -jfx-disable-visual-focus: true;
     -fx-cursor: hand;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
 }
 
 .jfx-button:hover {
-    -fx-scale-x: 1.02;
-    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.025;
+    -fx-scale-y: 1.025;
 }
 
 .jfx-button:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
 }
 
 .jfx-button .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
-    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-disabled: true;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -fx-padding: 0.0;
 }
 
 .jfx-button-raised {
     -fx-background-color: -monet-primary;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0.08, 0, 2);
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 10, 0.12, 0, 3);
 }
 
 .jfx-button-raised:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 12, 0.15, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 16, 0.18, 0, 5);
     -fx-scale-x: 1.025;
     -fx-scale-y: 1.025;
 }
 
 .jfx-button-raised:pressed {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 3, 0.04, 0, 1);
-    -fx-scale-x: 0.975;
-    -fx-scale-y: 0.975;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.10), 4, 0.05, 0, 1);
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
 }
 
 .jfx-button-raised .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-primary;
-    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-disabled: true;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -fx-padding: 0.0;
 }
 
@@ -1283,20 +1303,22 @@
 .jfx-button-border {
     -fx-background-color: transparent;
     -fx-border-color: -monet-outline;
-    -fx-border-radius: 5px;
-    -fx-border-width: 0.2px;
-    -fx-padding: 8px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 14px;
 }
 
 .jfx-button-border:hover {
     -fx-background-color: -monet-secondary-container-transparent-50;
-    -fx-scale-x: 1.02;
-    -fx-scale-y: 1.02;
+    -fx-border-color: -monet-primary;
+    -fx-scale-x: 1.025;
+    -fx-scale-y: 1.025;
 }
 
 .jfx-button-border:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
 }
 
 .jfx-button-border, .jfx-button-border * {
@@ -1306,17 +1328,18 @@
 .jfx-button-raised-round {
     -fx-background-color: -monet-primary-container;
     -fx-background-radius: 50px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 8, 0.1, 0, 2);
 }
 
 .jfx-button-raised-round:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.12, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 14, 0.15, 0, 4);
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
 }
 
 .jfx-button-raised-round:pressed {
-    -fx-scale-x: 0.97;
-    -fx-scale-y: 0.97;
+    -fx-scale-x: 0.96;
+    -fx-scale-y: 0.96;
 }
 
 .menu-up-down-button .label {
@@ -1415,7 +1438,8 @@
 }
 
 .jfx-list-cell .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary-container;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 /*.list-cell:odd:selected > .jfx-rippler > StackPane,*/
@@ -1664,11 +1688,13 @@
 }
 
 .jfx-toggle-button .jfx-rippler {
-    -jfx-rippler-fill: -jfx-untoggle-line-color;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .jfx-toggle-button:selected .jfx-rippler {
-    -jfx-rippler-fill: -jfx-toggle-line-color;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 
@@ -1692,7 +1718,8 @@
 }
 
 .toggle-icon1 .jfx-rippler {
-    -jfx-rippler-fill: rgba(66.0, 133.0, 244.0, 0.29885056614875793);
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -1709,7 +1736,8 @@
 }
 
 .toggle-icon2 .jfx-rippler {
-    -jfx-rippler-fill: RED;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -1734,7 +1762,8 @@
 }
 
 .toggle-icon3 .jfx-rippler {
-    -jfx-rippler-fill: white;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -1759,7 +1788,8 @@
 }
 
 .toggle-icon4 .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -1788,7 +1818,8 @@
 }
 
 .toggle-icon-tiny .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -1805,7 +1836,8 @@
 }
 
 .announcement-close-button .jfx-rippler {
-    -jfx-rippler-fill: -monet-primary;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
     -jfx-mask-type: CIRCLE;
 }
 
@@ -2016,7 +2048,8 @@
 }
 
 /*.combo-box-popup .list-view .jfx-list-cell .jfx-rippler {*/
-/*    -jfx-rippler-fill: -monet-primary-container;*/
+/*    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;*/
 /*}*/
 
 /*******************************************************************************
@@ -2063,7 +2096,8 @@
 }
 
 .custom-color-dialog .tab .jfx-rippler {
-    -jfx-rippler-fill: -monet-on-surface;
+    -jfx-rippler-fill: transparent;
+    -jfx-rippler-disabled: true;
 }
 
 .custom-color-dialog .tab-selected-line {

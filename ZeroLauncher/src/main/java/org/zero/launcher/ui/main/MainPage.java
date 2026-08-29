@@ -221,6 +221,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         recentCard.getStyleClass().add("zero-recent-play-card");
         recentCard.setCursor(Cursor.HAND);
         FXUtils.onClicked(recentCard, this::openInstanceSettings);
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclCard(recentCard);
 
         Label lblRecentTitle = new Label("最近遊玩");
         lblRecentTitle.getStyleClass().add("zero-section-title");
@@ -256,6 +257,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         playerAccountCard.setAlignment(Pos.CENTER_LEFT);
         playerAccountCard.getStyleClass().add("zero-player-card");
         playerAccountCard.setCursor(Cursor.HAND);
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclCard(playerAccountCard);
 
         Node playerIcon = SVG.PERSON.createIcon(18);
 
@@ -317,6 +319,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         BorderPane instanceSelector = new BorderPane();
         instanceSelector.getStyleClass().add("zero-instance-selector-bar");
         instanceSelector.setCursor(Cursor.HAND);
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclCard(instanceSelector);
         FXUtils.onScroll(instanceSelector, versions, list -> {
             String currentId = getCurrentGame();
             return Lang.indexWhere(list, instance -> instance.getId().equals(currentId));
@@ -373,6 +376,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         // 3. Giant Hero Launch Button
         launchButton.getStyleClass().add("launch-button-hero");
         launchButton.setDefaultButton(true);
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(launchButton);
 
         launchLabel.setStyle("-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;");
         launchButton.setGraphic(launchLabel);
@@ -389,6 +393,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnFolder.getStyleClass().add("zero-quick-btn");
         btnFolder.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnFolder.setOnAction(e -> openCurrentDirectory());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnFolder);
         FXUtils.installFastTooltip(btnFolder, i18n("folder.game"));
 
         JFXButton btnMods = new JFXButton("模組");
@@ -396,6 +401,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnMods.getStyleClass().add("zero-quick-btn");
         btnMods.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnMods.setOnAction(e -> openModsPage());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnMods);
         FXUtils.installFastTooltip(btnMods, i18n("mods.manage"));
 
         JFXButton btnResources = new JFXButton("資源包");
@@ -403,6 +409,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnResources.getStyleClass().add("zero-quick-btn");
         btnResources.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnResources.setOnAction(e -> openResourcePacksPage());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnResources);
         FXUtils.installFastTooltip(btnResources, i18n("resourcepack.manage"));
 
         JFXButton btnScreenshots = new JFXButton("截圖");
@@ -410,6 +417,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnScreenshots.getStyleClass().add("zero-quick-btn");
         btnScreenshots.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnScreenshots.setOnAction(e -> openScreenshotsPage());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnScreenshots);
         FXUtils.installFastTooltip(btnScreenshots, "遊戲截圖相簿 (可一鍵複製貼到 Discord/LINE)");
 
         JFXButton btnWorlds = new JFXButton("存檔");
@@ -417,6 +425,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnWorlds.getStyleClass().add("zero-quick-btn");
         btnWorlds.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnWorlds.setOnAction(e -> openWorldsPage());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnWorlds);
         FXUtils.installFastTooltip(btnWorlds, "世界存檔時光機 (一鍵備份與還原)");
 
         JFXButton btnSettings = new JFXButton("設定");
@@ -424,6 +433,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
         btnSettings.getStyleClass().add("zero-quick-btn");
         btnSettings.setMinWidth(javafx.scene.layout.Region.USE_PREF_SIZE);
         btnSettings.setOnAction(e -> openInstanceSettings());
+        org.zero.launcher.ui.animation.PclAnimationEngine.applyPclButton(btnSettings);
         FXUtils.installFastTooltip(btnSettings, i18n("settings.game"));
 
         quickActionBar.getChildren().setAll(btnFolder, btnMods, btnResources, btnScreenshots, btnWorlds, btnSettings);

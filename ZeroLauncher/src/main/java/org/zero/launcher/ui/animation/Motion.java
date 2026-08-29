@@ -29,13 +29,13 @@ public final class Motion {
     //region Curves
 
     /// A linear animation curve.
-    ///
-    /// This is the identity map over the unit interval: its [Interpolator#curve(double)]
-    /// method returns its input unmodified. This is useful as a default curve for
-    /// cases where a [Interpolator] is required but no actual curve is desired.
-    ///
-    /// @see <a href="https://flutter.github.io/assets-for-api-docs/assets/animation/curve_linear.mp4">curve_linear.mp4</a>
     public static final Interpolator LINEAR = Interpolator.LINEAR;
+
+    /// PCL2-style ultra smooth hover cubic-bezier easing curve (0.25, 1.0, 0.5, 1.0).
+    public static final Interpolator PCL_HOVER = new Cubic(0.25, 1.0, 0.5, 1.0);
+
+    /// PCL2-style physical overshoot back-ease spring curve (0.175, 0.885, 0.32, 1.275).
+    public static final Interpolator PCL_SPRING = new Cubic(0.175, 0.885, 0.32, 1.275);
 
     /// PCL2-style high response fluid spring easing curve.
     public static final Interpolator FLUID_SPRING = new Cubic(0.08, 0.85, 0.18, 1.0);
