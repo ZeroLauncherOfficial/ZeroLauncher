@@ -1,0 +1,81 @@
+*.class
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+*.hprof
+
+.gradle
+gradle.properties
+
+*.lck
+*.1
+*.2
+*.log
+.mine*
+/externalgames
+NVIDIA
+minecraft-exported-crash-info*
+hmcl-exported-logs-*
+terracotta-log-*
+*.hmcl-theme
+/.java/
+/.local/
+/.cache/
+
+# IANA Language Subtag Registry
+language-subtag-registry
+
+# gradle build
+/build/
+/ZeroLauncher/build/
+/ZeroLauncherCore/build/
+/ZeroLauncherBoot/build/
+/minecraft/libraries/ZeroLauncherTransformerDiscoveryService/build/
+/minecraft/libraries/ZeroLauncherMultiMCBootstrap/build/
+/buildSrc/build/
+
+# idea
+.idea
+/out/
+/ZeroLauncher/out/
+/ZeroLauncherCore/out/
+/minecraft/libraries/ZeroLauncherTransformerDiscoveryService/out/
+/minecraft/libraries/ZeroLauncherMultiMCBootstrap/out/
+
+# eclipse
+/bin/
+/ZeroLauncher/bin/
+/ZeroLauncherBoot/bin/
+/ZeroLauncherCore/bin/
+/minecraft/libraries/ZeroLauncherTransformerDiscoveryService/bin/
+/minecraft/libraries/ZeroLauncherMultiMCBootstrap/bin/
+.classpath
+.project
+.settings
+
+# netbeans
+.nb-gradle
+
+*.exe
+
+# macos
+.DS_Store
+
+# vscode
+.vscode/
+
+# test
+/hmcl.json
+/.hmcl.json
+/.hmcl/
+/zero.json
+/.zero.json
+/.zero/
+zero-exported-logs-*
+*.zero-theme
+
+# AI
+/.gemini/
+!/.gemini/config.yaml
+.codex
+/.gradle-*/

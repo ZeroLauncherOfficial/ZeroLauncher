@@ -1,0 +1,338 @@
+.root {
+    -fx-font-family: "Segoe UI Variable Text", "Segoe UI Variable Display", "Segoe UI", "Microsoft JhengHei UI", "PingFang SC", "HarmonyOS Sans SC", "Inter", "Helvetica Neue", system-ui, sans-serif;
+    -fx-font-smoothing-type: lcd;
+}
+
+.hint {
+    -fx-hyperlink-fill: -monet-primary;
+}
+
+.two-line-list-item {
+    -fixed-warning-tag-background: #F1AEB5;
+}
+
+.log-window {
+    -fixed-log-background: #ffffff;
+    -fixed-log-toggle-selected: #000000;
+    -fixed-log-toggle-unselected: #6C757D;
+    -fixed-log-text-fill: #1f1f1f;
+    -fixed-log-trace-background: #EEE9E0;
+    -fixed-log-debug-background: #EEE9E0;
+    -fixed-log-info-background: #FFFFFF;
+    -fixed-log-warn-background: #fef6d5;
+    -fixed-log-warn-text-fill:  #3e2f00;
+    -fixed-log-error-background: #fcebeb;
+    -fixed-log-error-text-fill: #410e0b;
+    -fixed-log-fatal-background: #F7A699;
+    -fixed-log-selected: #f2f2f2;
+}
+
+.gray-background {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+    -fx-border-width: 0 1px 0 0;
+}
+
+.gray-background .label, .gray-background Text, .gray-background .svg {
+    -fx-text-fill: #1a1c1e;
+    -fx-fill: #1a1c1e;
+}
+
+.gray-background .subtitle-label, .gray-background .second-line .subtitle {
+    -fx-text-fill: #545963;
+}
+
+.gray-background .class-title Text {
+    -fx-fill: #0284c7;
+    -fx-font-weight: bold;
+}
+
+.gray-background .class-title Rectangle {
+    -fx-fill: rgba(2, 132, 199, 0.3);
+}
+
+.iconed-item:hover, .iconed-menu-item:hover {
+    -fx-background-color: rgba(2, 132, 199, 0.08);
+    -fx-background-radius: 8px;
+}
+
+.card, .card-no-padding {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.card-non-transparent {
+    -fx-background-color: #ffffff;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+}
+
+.card .label, .card Text, .card .svg {
+    -fx-text-fill: #1a1c1e;
+    -fx-fill: #1a1c1e;
+}
+
+.options-list-item {
+    -fx-background-color: rgba(255, 255, 255, 0.92);
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+}
+
+.options-list-item:hover {
+    -fx-background-color: rgba(2, 132, 199, 0.05);
+}
+
+.options-sublist {
+    -fx-background-color: rgba(245, 247, 250, 0.85);
+    -fx-background-radius: 12px;
+}
+
+/*******************************************************************************
+ * Zero Launcher Light Theme Tokens                                            *
+ ******************************************************************************/
+
+.zero-brand-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+}
+
+.zero-nav-tab {
+    -fx-text-fill: #FFFFFF !important;
+    -fx-opacity: 0.88;
+}
+
+.zero-nav-tab .svg {
+    -fx-fill: #FFFFFF !important;
+}
+
+.zero-nav-tab:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.22);
+    -fx-text-fill: #FFFFFF !important;
+    -fx-opacity: 1.0;
+}
+
+.zero-nav-tab:hover .svg {
+    -fx-fill: #FFFFFF !important;
+}
+
+.zero-nav-tab.active {
+    -fx-background-color: rgba(255, 255, 255, 0.30);
+    -fx-text-fill: #FFFFFF !important;
+    -fx-font-weight: bold;
+    -fx-opacity: 1.0;
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 0 0 3px 0;
+}
+
+.zero-nav-tab.active .svg {
+    -fx-fill: #FFFFFF !important;
+}
+
+.zero-greeting-prefix, .zero-greeting-big-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 8, 0, 0, 2);
+}
+
+.zero-greeting-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #38BDF8 !important;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.45), 10, 0, 0, 2);
+}
+
+.zero-greeting-sub, .zero-greeting-big-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #E2E8F0 !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 6, 0, 0, 1);
+}
+
+.zero-section-title {
+    -fx-font-size: 11.5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #94A3B8 !important;
+}
+
+.zero-game-brand-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #38BDF8 !important;
+}
+
+.zero-game-hero-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.45), 10, 0, 0, 2);
+}
+
+.zero-player-card {
+    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.zero-player-card:hover {
+    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
+    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+}
+
+.zero-player-name {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+}
+
+.zero-player-type {
+    -fx-font-size: 10.5px;
+    -fx-text-fill: #94A3B8 !important;
+}
+
+.zero-player-card .svg {
+    -fx-fill: #38BDF8 !important;
+}
+
+.zero-recent-play-card {
+    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-padding: 14px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 14, 0, 0, 3);
+    -fx-cursor: hand;
+}
+
+.zero-recent-play-card:hover {
+    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
+    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+}
+
+.zero-recent-instance-name {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+}
+
+.zero-recent-play-card .svg {
+    -fx-fill: #38BDF8 !important;
+}
+
+.zero-instance-selector-bar {
+    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 16px;
+    -fx-min-width: 370px;
+    -fx-max-width: 370px;
+    -fx-pref-height: 44px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.zero-instance-selector-bar:hover {
+    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
+    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+}
+
+.zero-instance-name {
+    -fx-font-size: 13.5px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF !important;
+}
+
+.zero-instance-selector-bar .svg {
+    -fx-fill: #38BDF8 !important;
+}
+
+.zero-sub-hint {
+    -fx-font-size: 11px;
+    -fx-text-fill: #94A3B8 !important;
+}
+
+.zero-quick-btn {
+    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
+    -fx-background-radius: 8px;
+    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #E2E8F0 !important;
+    -fx-cursor: hand;
+}
+
+.zero-quick-btn:hover {
+    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
+    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+    -fx-text-fill: #38BDF8 !important;
+}
+
+.zero-quick-btn .svg {
+    -fx-fill: #38BDF8 !important;
+}
+
+/* Light Theme Popup Menus */
+.popup-menu-content {
+    -fx-background-color: rgba(255, 255, 255, 0.96);
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(0, 0, 0, 0.12);
+    -fx-border-radius: 12px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.16), 18, 0, 0, 4);
+    -fx-padding: 4px;
+}
+
+.popup-menu-content .menu-container {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+}
+
+.popup-menu-content .menu-container:hover {
+    -fx-background-color: rgba(2, 132, 199, 0.08);
+}
+
+.popup-menu-content .menu-container .label,
+.popup-menu-content .menu-container Text,
+.popup-menu-content .title,
+.popup-menu-content .header-label {
+    -fx-text-fill: #0F172A !important;
+    -fx-fill: #0F172A !important;
+}
+
+.popup-menu-content .subtitle,
+.popup-menu-content .menu-container .subtitle {
+    -fx-text-fill: #64748B !important;
+    -fx-fill: #64748B !important;
+}
+
+.popup-menu-content .svg {
+    -fx-fill: #0284C7 !important;
+}
+
+.launch-button-hero {
+    -fx-min-width: 370px;
+    -fx-max-width: 370px;
+    -fx-min-height: 52px;
+    -fx-max-height: 52px;
+    -fx-background-color: linear-gradient(to bottom right, #0284c7, #0369a1);
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.35), 18, 0.2, 0, 4);
+}
+
+.launch-button-hero:hover {
+    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #0284c7);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.launch-button-hero:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
