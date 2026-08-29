@@ -33,6 +33,8 @@
 
 We would like to express our deepest gratitude and respect to:
 
+- **[羊咕 (yanggu0413)](https://github.com/yanggu0413)** — Special thanks for testing assistance!
+- **[貓貓 (cat6666-me)](https://github.com/cat6666-me)** — Special thanks for testing assistance!
 - **The HMCL Development Team & Contributors** (huanghongxun, Glavo, and all past and present contributors) — Thank you so much for creating such an incredible, powerful, and robust open-source Minecraft launcher. Without the years of dedication and hard work from the HMCL team, this project would not exist.
 - **The Minecraft Modding & Open-Source Community** — For providing continuous tools, libraries, and inspiration.
 
