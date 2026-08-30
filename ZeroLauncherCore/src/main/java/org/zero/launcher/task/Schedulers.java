@@ -19,6 +19,7 @@ package org.zero.launcher.task;
 
 import javafx.application.Platform;
 import org.zero.launcher.util.Lang;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandle;
@@ -29,7 +30,8 @@ import java.util.function.Function;
 
 import static org.zero.launcher.util.logging.Logger.LOG;
 
-/// @author Zero
+/// Central executor services and schedulers for UI and background tasks.
+@NotNullByDefault
 public final class Schedulers {
 
     private Schedulers() {
@@ -97,12 +99,17 @@ public final class Schedulers {
         return ForkJoinPool.commonPool();
     }
 
+    /// Shuts down all background thread pool executors.
     public static void shutdown() {
         LOG.info("Shutting down executor services.");
-
-        // shutdownNow will interrupt all threads.
-        // So when we want to close the app, no threads need to be waited for finish.
-        // Sometimes it resolves the problem that the app does not exit.
+        Holder.IO_EXECUTOR.shutdownNow();
+        try {
+            if (!Holder.IO_EXECUTOR.awaitTermination(2, TimeUnit.SECONDS)) {
+                LOG.warning("IO executor did not terminate cleanly within timeout");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     private static final class Holder {

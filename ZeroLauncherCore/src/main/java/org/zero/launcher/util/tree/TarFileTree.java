@@ -19,7 +19,8 @@ package org.zero.launcher.util.tree;
 
 import kala.compress.archivers.tar.TarArchiveEntry;
 import kala.compress.archivers.tar.TarArchiveReader;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -28,22 +29,23 @@ import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.zip.GZIPInputStream;
 
-/**
- * @author Glavo
- */
+/// Archive file tree implementation for reading `.tar` and `.tar.gz` archives.
+@NotNullByDefault
 public final class TarFileTree extends ArchiveFileTree<TarArchiveReader, TarArchiveEntry> {
 
+    /// Opens a TAR or TAR.GZ file.
     public static TarFileTree open(Path file) throws IOException {
         String fileName = file.getFileName().toString();
 
         if (fileName.endsWith(".tar.gz") || fileName.endsWith(".tgz")) {
             Path tempFile = Files.createTempFile("zero-", ".tar");
-            TarArchiveReader tarFile;
-            try (GZIPInputStream input = new GZIPInputStream(Files.newInputStream(file));
-                 OutputStream output = Files.newOutputStream(tempFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)
-            ) {
-                input.transferTo(output);
-                tarFile = new TarArchiveReader(tempFile);
+            try {
+                try (GZIPInputStream input = new GZIPInputStream(Files.newInputStream(file));
+                     OutputStream output = Files.newOutputStream(tempFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
+                    input.transferTo(output);
+                }
+                TarArchiveReader tarFile = new TarArchiveReader(tempFile);
+                return new TarFileTree(tarFile, tempFile);
             } catch (Throwable e) {
                 try {
                     Files.deleteIfExists(tempFile);
@@ -52,17 +54,15 @@ public final class TarFileTree extends ArchiveFileTree<TarArchiveReader, TarArch
                 }
                 throw e;
             }
-
-            return new TarFileTree(tarFile, tempFile);
         } else {
             return new TarFileTree(new TarArchiveReader(file), null);
         }
     }
 
-    private final Path tempFile;
-    private final Thread shutdownHook;
+    private final @Nullable Path tempFile;
+    private final @Nullable Thread shutdownHook;
 
-    public TarFileTree(TarArchiveReader file, Path tempFile) throws IOException {
+    public TarFileTree(TarArchiveReader file, @Nullable Path tempFile) throws IOException {
         super(file);
         this.tempFile = tempFile;
         try {
@@ -95,12 +95,13 @@ public final class TarFileTree extends ArchiveFileTree<TarArchiveReader, TarArch
                 }
             });
             Runtime.getRuntime().addShutdownHook(shutdownHook);
-        } else
+        } else {
             this.shutdownHook = null;
+        }
     }
 
     @Override
-    protected void copyAttributes(@NotNull TarArchiveEntry source, @NotNull Path targetFile) throws IOException {
+    protected void copyAttributes(TarArchiveEntry source, Path targetFile) throws IOException {
         var fileAttributeView = Files.getFileAttributeView(targetFile, BasicFileAttributeView.class);
         if (fileAttributeView == null)
             return;
@@ -138,7 +139,9 @@ public final class TarFileTree extends ArchiveFileTree<TarArchiveReader, TarArch
             reader.close();
         } finally {
             if (tempFile != null) {
-                Runtime.getRuntime().removeShutdownHook(shutdownHook);
+                if (shutdownHook != null) {
+                    Runtime.getRuntime().removeShutdownHook(shutdownHook);
+                }
                 Files.deleteIfExists(tempFile);
             }
         }

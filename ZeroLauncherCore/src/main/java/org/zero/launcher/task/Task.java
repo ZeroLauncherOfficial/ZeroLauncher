@@ -364,6 +364,12 @@ public abstract class Task<T> {
 
     @SuppressWarnings("FieldMayBeFinal")
     private volatile double pendingProgress = -1.0;
+    private volatile @Nullable DoubleConsumer progressListener;
+
+    /// Sets a listener to receive raw progress updates.
+    public void setProgressListener(@Nullable DoubleConsumer listener) {
+        this.progressListener = listener;
+    }
 
     /// @see Task#pendingProgress
     private static final VarHandle PENDING_PROGRESS_HANDLE;
@@ -379,9 +385,17 @@ public abstract class Task<T> {
     //endregion updateProgressImmediately
 
     protected void updateProgressImmediately(double progress) {
-        // assert progress >= 0 && progress <= 1.0;
+        DoubleConsumer listener = this.progressListener;
+        if (listener != null) {
+            listener.accept(progress);
+        }
         if ((double) PENDING_PROGRESS_HANDLE.getAndSet(this, progress) == -1.0) {
-            Platform.runLater(() -> this.progress.set((double) PENDING_PROGRESS_HANDLE.getAndSet(this, -1.0)));
+            Platform.runLater(() -> {
+                double val = (double) PENDING_PROGRESS_HANDLE.getAndSet(this, -1.0);
+                if (val != -1.0) {
+                    this.progress.set(val);
+                }
+            });
         }
     }
 
@@ -400,9 +414,12 @@ public abstract class Task<T> {
     }
 
     private void doSubTask(Task<?> task) throws Exception {
-        progress.bind(task.progress);
-        task.run();
-        progress.unbind();
+        task.setProgressListener(this::updateProgressImmediately);
+        try {
+            task.run();
+        } finally {
+            task.setProgressListener(null);
+        }
     }
 
     public final TaskExecutor executor() {

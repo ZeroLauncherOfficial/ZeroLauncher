@@ -36,8 +36,11 @@ import java.net.http.HttpRequest;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
@@ -160,11 +163,35 @@ public class CacheRepository {
         return Optional.empty();
     }
 
+    /// Restores a cached file by attempting to link original to cache safely.
+    /// If creating a hard link fails (e.g. cross-partition or unsupported filesystem),
+    /// it falls back to preserving or copying the file without destroying original.
     protected Path restore(Path original, ExceptionalSupplier<Path, ? extends IOException> cacheSupplier) throws IOException {
         Path cache = cacheSupplier.get();
-        Files.delete(original);
-        Files.createLink(original, cache);
-        return cache;
+        Path parent = original.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
+        }
+        Path tempLink = parent != null
+                ? parent.resolve(original.getFileName() + ".tmp." + System.nanoTime())
+                : original.resolveSibling(original.getFileName() + ".tmp." + System.nanoTime());
+        try {
+            Files.createLink(tempLink, cache);
+            try {
+                Files.move(tempLink, original, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (AtomicMoveNotSupportedException e) {
+                Files.move(tempLink, original, StandardCopyOption.REPLACE_EXISTING);
+            }
+            return cache;
+        } catch (FileSystemException | UnsupportedOperationException | SecurityException e) {
+            LOG.warning("Failed to create hard link from " + cache + " to " + original + ", falling back to copy/preserve: " + e.getMessage());
+            if (!Files.exists(original)) {
+                FileUtils.copyFile(cache, original);
+            }
+            return cache;
+        } finally {
+            Files.deleteIfExists(tempLink);
+        }
     }
 
     public Path getCachedRemoteFile(URI uri, boolean checkExpires) throws IOException {

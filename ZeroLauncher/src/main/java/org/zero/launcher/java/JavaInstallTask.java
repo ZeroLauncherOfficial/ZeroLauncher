@@ -24,12 +24,17 @@ import org.zero.launcher.util.io.FileUtils;
 import org.zero.launcher.util.io.IOUtils;
 import org.zero.launcher.util.tree.ArchiveFileTree;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.FileSystemException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.util.ArrayList;
@@ -37,13 +42,19 @@ import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * @author Glavo
- */
+import static org.zero.launcher.util.logging.Logger.LOG;
+
+/// Task that extracts and installs a Java runtime archive into a target directory.
+@NotNullByDefault
 public final class JavaInstallTask extends Task<JavaManifest> {
 
+    /// The destination directory for the installed Java runtime.
     private final Path targetDir;
+
+    /// Manifest update attributes.
     private final Map<String, Object> update;
+
+    /// The path to the downloaded archive file.
     private final Path archiveFile;
 
     private final Map<String, JavaLocalFiles.Local> files = new LinkedHashMap<>();
@@ -51,6 +62,11 @@ public final class JavaInstallTask extends Task<JavaManifest> {
     private final byte[] buffer = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
     private final MessageDigest messageDigest = DigestUtils.getDigest("SHA-1");
 
+    /// Creates a new Java installation task.
+    ///
+    /// @param targetDir the target directory
+    /// @param update the manifest update map
+    /// @param archiveFile the archive file path
     public JavaInstallTask(Path targetDir, Map<String, Object> update, Path archiveFile) {
         this.targetDir = targetDir;
         this.update = update;
@@ -70,7 +86,15 @@ public final class JavaInstallTask extends Task<JavaManifest> {
     }
 
     private <F, E extends ArchiveEntry> void copyDirContent(ArchiveFileTree<F, E> tree, Path targetDir) throws IOException {
-        copyDirContent(tree, tree.getRoot().getSubDirs().values().iterator().next(), targetDir);
+        ArchiveFileTree.Dir<E> root = JavaInfo.findJdkRoot(tree.getRoot());
+        if (root == null) {
+            if (!tree.getRoot().getSubDirs().isEmpty()) {
+                root = tree.getRoot().getSubDirs().values().iterator().next();
+            } else {
+                root = tree.getRoot();
+            }
+        }
+        copyDirContent(tree, root, targetDir);
     }
 
     private <F, E extends ArchiveEntry> void copyDirContent(ArchiveFileTree<F, E> tree, ArchiveFileTree.Dir<E> dir, Path targetDir) throws IOException {
@@ -84,7 +108,19 @@ public final class JavaInstallTask extends Task<JavaManifest> {
             if (tree.isLink(entry)) {
                 String linkTarget = tree.getLink(entry);
                 files.put(String.join("/", nameStack), new JavaLocalFiles.LocalLink(linkTarget));
-                Files.createSymbolicLink(path, Paths.get(linkTarget));
+                try {
+                    Files.createSymbolicLink(path, Paths.get(linkTarget));
+                } catch (FileSystemException | UnsupportedOperationException | SecurityException e) {
+                    LOG.warning("Failed to create symbolic link " + path + " -> " + linkTarget + ", attempting fallback copy: " + e.getMessage());
+                    Path resolvedTarget = path.getParent() != null ? path.getParent().resolve(linkTarget) : Paths.get(linkTarget);
+                    if (Files.exists(resolvedTarget)) {
+                        try {
+                            Files.copy(resolvedTarget, path, StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException copyEx) {
+                            LOG.warning("Fallback copy failed for link " + path, copyEx);
+                        }
+                    }
+                }
             } else {
                 long size = 0L;
 

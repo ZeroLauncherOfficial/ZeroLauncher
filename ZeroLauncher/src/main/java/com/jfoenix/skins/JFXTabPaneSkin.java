@@ -1240,5 +1240,18 @@ public class JFXTabPaneSkin extends TabPaneSkin {
         }
     }
 
+    @Override
+    public void dispose() {
+        if (header != null && header.timeline != null) {
+            header.timeline.stop();
+        }
+        if (tabContentHolders != null) {
+            for (TabContentHolder holder : tabContentHolders) {
+                holder.removeListeners(holder.tab);
+            }
+            tabContentHolders.clear();
+        }
+        super.dispose();
+    }
 }
 

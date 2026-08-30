@@ -215,4 +215,15 @@ public class JFXButtonSkin extends ButtonSkin {
             this.setDelay(Duration.seconds(0.0F));
         }
     }
+
+    @Override
+    public void dispose() {
+        if (this.clickedAnimation != null) {
+            this.clickedAnimation.stop();
+        }
+        this.buttonContainer.shapeProperty().unbind();
+        this.buttonContainer.borderProperty().unbind();
+        this.buttonContainer.backgroundProperty().unbind();
+        super.dispose();
+    }
 }

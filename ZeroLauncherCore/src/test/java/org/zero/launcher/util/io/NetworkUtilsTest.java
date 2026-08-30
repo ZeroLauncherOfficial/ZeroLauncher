@@ -73,4 +73,10 @@ public class NetworkUtilsTest {
         assertEquals(UTF_8, getCharsetFromContentType("text/html; charset=utf-8"));
         assertEquals(US_ASCII, getCharsetFromContentType("text/html; charset=ascii"));
     }
+
+    @Test
+    public void testDropQuery() {
+        assertEquals(URI.create("https://example.com/path"), dropQuery(URI.create("https://example.com/path?key=value#frag")));
+        assertEquals(URI.create("https://example.com/path"), dropQuery(URI.create("https://example.com/path")));
+    }
 }

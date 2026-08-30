@@ -85,14 +85,48 @@ public final class JavaInfo {
         return new JavaInfo(Platform.getPlatform(os, arch), javaVersion, vendor);
     }
 
-    public static <F, E extends ArchiveEntry> JavaInfo fromArchive(ArchiveFileTree<F, E> tree) throws IOException {
-        if (tree.getRoot().getSubDirs().size() != 1 || !tree.getRoot().getFiles().isEmpty())
-            throw new IOException();
+    /// Recursively finds the JDK root directory within an archive tree.
+    /// A directory is considered a JDK root if it contains a `release` file or a `bin` directory with a java binary.
+    public static <E extends ArchiveEntry> @Nullable ArchiveFileTree.Dir<E> findJdkRoot(ArchiveFileTree.Dir<E> dir) {
+        if (dir.getFiles().containsKey("release") && dir.getSubDirs().containsKey("bin")) {
+            return dir;
+        }
+        if (dir.getSubDirs().containsKey("Contents")) {
+            // macOS Home directory e.g., Contents/Home
+            ArchiveFileTree.Dir<E> contents = dir.getSubDirs().get("Contents");
+            if (contents != null && contents.getSubDirs().containsKey("Home")) {
+                ArchiveFileTree.Dir<E> home = contents.getSubDirs().get("Home");
+                if (home != null && (home.getFiles().containsKey("release") || home.getSubDirs().containsKey("bin"))) {
+                    return home;
+                }
+            }
+        }
+        for (ArchiveFileTree.Dir<E> subDir : dir.getSubDirs().values()) {
+            ArchiveFileTree.Dir<E> found = findJdkRoot(subDir);
+            if (found != null) {
+                return found;
+            }
+        }
+        if (dir.getFiles().containsKey("release")) {
+            return dir;
+        }
+        return null;
+    }
 
-        ArchiveFileTree.Dir<E> jdkRoot = tree.getRoot().getSubDirs().values().iterator().next();
+    /// Creates a JavaInfo instance from an archive file tree.
+    public static <F, E extends ArchiveEntry> JavaInfo fromArchive(ArchiveFileTree<F, E> tree) throws IOException {
+        ArchiveFileTree.Dir<E> jdkRoot = findJdkRoot(tree.getRoot());
+        if (jdkRoot == null) {
+            if (tree.getRoot().getSubDirs().size() == 1) {
+                jdkRoot = tree.getRoot().getSubDirs().values().iterator().next();
+            } else {
+                jdkRoot = tree.getRoot();
+            }
+        }
+
         E releaseEntry = jdkRoot.getFiles().get("release");
         if (releaseEntry == null)
-            throw new IOException("Missing release file");
+            throw new IOException("Missing release file in archive");
 
         JavaInfo info;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(tree.getInputStream(releaseEntry), StandardCharsets.UTF_8))) {

@@ -66,6 +66,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -88,7 +89,7 @@ public final class ZeroLauncherGameRepository extends DefaultGameRepository {
     private static final String INSTANCE_METADATA_DIRECTORY = ".zero";
 
     /// Legacy directory under the version root that stores ZeroLauncher-managed instance metadata.
-    private static final String LEGACY_INSTANCE_METADATA_DIRECTORY = ".zero";
+    private static final String LEGACY_INSTANCE_METADATA_DIRECTORY = ".hmcl";
 
     /// Directory under the instance metadata directory that stores instance configuration files.
     private static final String INSTANCE_CONFIG_DIRECTORY = "config";
@@ -106,11 +107,11 @@ public final class ZeroLauncherGameRepository extends DefaultGameRepository {
     private final StringBinding selectedInstance;
 
     // instance game settings
-    private final Map<String, GameSettings.Instance> instanceGameSettings = new HashMap<>();
+    private final Map<String, GameSettings.Instance> instanceGameSettings = new ConcurrentHashMap<>();
     /// Instance IDs whose local game settings file has already been checked.
-    private final Set<String> loadedInstanceGameSettings = new HashSet<>();
-    private final Set<String> readOnlyInstanceGameSettings = new HashSet<>();
-    private final Set<String> beingModpackVersions = new HashSet<>();
+    private final Set<String> loadedInstanceGameSettings = ConcurrentHashMap.newKeySet();
+    private final Set<String> readOnlyInstanceGameSettings = ConcurrentHashMap.newKeySet();
+    private final Set<String> beingModpackVersions = ConcurrentHashMap.newKeySet();
 
     public final EventManager<Event> onVersionIconChanged = new EventManager<>();
 

@@ -8,18 +8,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import org.jetbrains.annotations.NotNullByDefault;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+/// 3D model cube group representing multi-layered outer skin parts (hat, jacket, sleeves, pants).
+@NotNullByDefault
 public class SkinMultipleCubes extends Group {
 
+    /// Legacy Face group kept for API compatibility.
     public static class Face extends Group {
 
         public Face(Image image, int startX, int startY, int width, int height, int interval, boolean reverseX, boolean reverseY,
                     Supplier<Box> supplier, BiConsumer<Box, Point2D> consumer) {
             PixelReader reader = image.getPixelReader();
-            for (int x = 0; x < width; x++)
+            if (reader == null) return;
+            for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     int argb;
                     if ((argb = reader.getArgb(startX + (reverseX ? width - x - 1 : x) * interval,
@@ -31,6 +36,7 @@ public class SkinMultipleCubes extends Group {
                         getChildren().add(pixel);
                     }
                 }
+            }
         }
 
         protected Material createMaterial(Color color) {
@@ -39,9 +45,14 @@ public class SkinMultipleCubes extends Group {
 
     }
 
-    protected int width, height, depth;
-    protected float startX, startY;
-    protected double length, thick;
+    protected int width;
+    protected int height;
+    protected int depth;
+    protected float startX;
+    protected float startY;
+    protected double length;
+    protected double thick;
+    private final SkinCube meshView;
 
     public SkinMultipleCubes(int width, int height, int depth, float startX, float startY, double length, double thick) {
         this.width = width;
@@ -51,10 +62,22 @@ public class SkinMultipleCubes extends Group {
         this.startY = startY;
         this.length = length;
         this.thick = thick;
+
+        float scaleX = (float) ((width + depth) * 2) / 64.0F;
+        float scaleY = 16.0F / 64.0F;
+        this.meshView = new SkinCube(width, height, depth, scaleX, scaleY, startX, startY, (float) (thick * 2), false);
+        getChildren().add(this.meshView);
+    }
+
+    private void rebuildMesh() {
+        float scaleX = (float) ((width + depth) * 2) / 64.0F;
+        float scaleY = 16.0F / 64.0F;
+        this.meshView.setModel(new SkinCube.Model(width + (float) (thick * 2), height + (float) (thick * 2), depth + (float) (thick * 2), scaleX, scaleY, startX, startY, false));
     }
 
     public void setWidth(int width) {
         this.width = width;
+        rebuildMesh();
     }
 
     public int getWidth() {
@@ -63,6 +86,7 @@ public class SkinMultipleCubes extends Group {
 
     public void setHeight(int height) {
         this.height = height;
+        rebuildMesh();
     }
 
     public int getHeight() {
@@ -71,6 +95,7 @@ public class SkinMultipleCubes extends Group {
 
     public void setDepth(int depth) {
         this.depth = depth;
+        rebuildMesh();
     }
 
     public int getDepth() {
@@ -79,6 +104,7 @@ public class SkinMultipleCubes extends Group {
 
     public void setStartX(float startX) {
         this.startX = startX;
+        rebuildMesh();
     }
 
     public float getStartX() {
@@ -87,6 +113,7 @@ public class SkinMultipleCubes extends Group {
 
     public void setStartY(float startY) {
         this.startY = startY;
+        rebuildMesh();
     }
 
     public float getStartY() {
@@ -103,6 +130,7 @@ public class SkinMultipleCubes extends Group {
 
     public void setThick(double thick) {
         this.thick = thick;
+        rebuildMesh();
     }
 
     public double getThick() {
@@ -110,53 +138,9 @@ public class SkinMultipleCubes extends Group {
     }
 
     public void updateSkin(Image skin) {
-        getChildren().clear();
-        int start_x = (int) (startX * skin.getWidth()), start_y = (int) (startY * skin.getHeight()),
-                interval = (int) Math.max(skin.getWidth() / 64, 1),
-                width_interval = width * interval, height_interval = height * interval, depth_interval = depth * interval;
-        // FRONT
-        getChildren().add(new Face(skin, start_x + depth_interval, start_y + depth_interval, width, height, interval, false, false,
-                () -> new Box(length, length, thick), (b, p) -> {
-            b.setTranslateX(((width - 1) / 2.0 - p.getX()) * b.getWidth());
-            b.setTranslateY(-((height - 1) / 2.0 - p.getY()) * b.getHeight());
-            b.setTranslateZ((depth * length + thick) / 2.0);
-        }));
-        // BACK
-        getChildren().add(new Face(skin, start_x + width_interval + depth_interval * 2, start_y + depth_interval, width, height, interval, true, false,
-                () -> new Box(length, length, thick), (b, p) -> {
-            b.setTranslateX(((width - 1) / 2.0 - p.getX()) * b.getWidth());
-            b.setTranslateY(-((height - 1) / 2.0 - p.getY()) * b.getHeight());
-            b.setTranslateZ(-(depth * length + thick) / 2.0);
-        }));
-        // LEFT
-        getChildren().add(new Face(skin, start_x + width_interval + depth_interval, start_y + depth_interval, depth, height, interval, false, false,
-                () -> new Box(thick, length, length), (b, p) -> {
-            b.setTranslateX(-(width * length + thick) / 2.0);
-            b.setTranslateY(-((height - 1) / 2.0 - p.getY()) * b.getHeight());
-            b.setTranslateZ(((depth - 1) / 2.0 - p.getX()) * b.getDepth());
-        }));
-
-        // RIGHT
-        getChildren().add(new Face(skin, start_x, start_y + depth_interval, depth, height, interval, true, false,
-                () -> new Box(thick, length, length), (b, p) -> {
-            b.setTranslateX((width * length + thick) / 2.0);
-            b.setTranslateY(-((height - 1) / 2.0 - p.getY()) * b.getHeight());
-            b.setTranslateZ(((depth - 1) / 2.0 - p.getX()) * b.getDepth());
-        }));
-        // TOP
-        getChildren().add(new Face(skin, start_x + depth_interval, start_y, width, depth, interval, false, false,
-                () -> new Box(length, thick, length), (b, p) -> {
-            b.setTranslateX(((width - 1) / 2.0 - p.getX()) * b.getWidth());
-            b.setTranslateY(-(height * length + thick) / 2.0);
-            b.setTranslateZ(-((depth - 1) / 2.0 - p.getY()) * b.getDepth());
-        }));
-        // BOTTOM
-        getChildren().add(new Face(skin, start_x + width_interval + depth_interval, start_y, width, depth, interval, false, false,
-                () -> new Box(length, thick, length), (b, p) -> {
-            b.setTranslateX(((width - 1) / 2.0 - p.getX()) * b.getWidth());
-            b.setTranslateY((height * length + thick) / 2.0);
-            b.setTranslateZ(-((depth - 1) / 2.0 - p.getY()) * b.getDepth());
-        }));
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseMap(skin);
+        this.meshView.setMaterial(material);
     }
 
 }
