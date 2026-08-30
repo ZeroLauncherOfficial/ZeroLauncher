@@ -93,7 +93,7 @@ public class ClassicAccountLoginDialog extends StackPane {
             dialogLayout.setActions(lblCreationWarning, acceptButton, cancelButton);
         }
 
-        getChildren().setAll(dialogLayout);
+        getChildren().setAll(dialogLayout, progressBar);
 
         onEscPressed(this, this::onCancel);
     }

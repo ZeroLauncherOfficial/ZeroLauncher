@@ -60,8 +60,9 @@ public class DefaultGameBuilder extends GameBuilder {
             hints.add(new Task.StagesHint(String.format("zero.install.%s:%s", remoteVersion.getLibraryId(), remoteVersion.getSelfVersion())));
         }
 
+        boolean isNew = !dependencyManager.getGameRepository().hasVersion(name);
         return libraryTask.thenComposeAsync(dependencyManager.getGameRepository()::saveAsync).whenComplete(exception -> {
-            if (exception != null)
+            if (isNew && exception != null)
                 dependencyManager.getGameRepository().removeVersionFromDisk(name);
         }).withStagesHints(hints);
     }

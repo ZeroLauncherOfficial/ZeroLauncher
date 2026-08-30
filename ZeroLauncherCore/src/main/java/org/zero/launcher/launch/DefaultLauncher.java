@@ -606,6 +606,27 @@ public class DefaultLauncher extends Launcher {
 
             builder.environment().putAll(getEnvVars(nativeFolder));
             process = builder.start();
+
+            if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS && options.getProcessPriority() != ProcessPriority.NORMAL) {
+                try {
+                    int priorityFlag = switch (options.getProcessPriority()) {
+                        case HIGH -> 0x00000080; // HIGH_PRIORITY_CLASS
+                        case ABOVE_NORMAL -> 0x00008000; // ABOVE_NORMAL_PRIORITY_CLASS
+                        case BELOW_NORMAL -> 0x00004000; // BELOW_NORMAL_PRIORITY_CLASS
+                        case LOW -> 0x00000040; // IDLE_PRIORITY_CLASS
+                        default -> 0x00000020; // NORMAL_PRIORITY_CLASS
+                    };
+                    com.sun.jna.platform.win32.WinNT.HANDLE handle = com.sun.jna.platform.win32.Kernel32.INSTANCE.OpenProcess(
+                            0x0200 /* PROCESS_SET_INFORMATION */, false, (int) process.pid()
+                    );
+                    if (handle != null) {
+                        com.sun.jna.platform.win32.Kernel32.INSTANCE.SetPriorityClass(handle, new com.sun.jna.platform.win32.WinDef.DWORD(priorityFlag));
+                        com.sun.jna.platform.win32.Kernel32.INSTANCE.CloseHandle(handle);
+                    }
+                } catch (Throwable t) {
+                    LOG.warning("Failed to set process priority on Windows", t);
+                }
+            }
         } catch (IOException e) {
             throw new ProcessCreationException(e);
         }

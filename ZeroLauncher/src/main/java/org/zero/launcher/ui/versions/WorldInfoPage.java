@@ -33,6 +33,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.glavo.nbt.tag.*;
 import org.zero.launcher.game.World;
+import org.zero.launcher.task.Schedulers;
+import org.zero.launcher.task.Task;
 import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
@@ -475,14 +477,19 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                     Integer integer = Lang.toIntOrNull(newValue);
                     if (integer != null) {
                         intTag.setValue(integer);
-                        saveWorldData();
                     }
                 } catch (Exception e) {
                     jfxTextField.setText(oldValue);
-                    LOG.warning("Exception happened when saving world data", e);
+                    LOG.warning("Exception happened when updating world int value", e);
                 }
             }
         });
+        jfxTextField.focusedProperty().addListener((o, oldVal, focused) -> {
+            if (!focused) {
+                saveWorldData();
+            }
+        });
+        jfxTextField.setOnAction(e -> saveWorldData());
         FXUtils.setValidateWhileTextChanged(jfxTextField, true);
         jfxTextField.setValidators(new NumberValidator(i18n("input.number"), true));
     }
@@ -496,25 +503,32 @@ public final class WorldInfoPage extends SpinnerPane implements WorldManagePage.
                     Float floatValue = Lang.toFloatOrNull(newValue);
                     if (floatValue != null) {
                         floatTag.setValue(floatValue);
-                        saveWorldData();
                     }
                 } catch (Exception e) {
                     jfxTextField.setText(oldValue);
-                    LOG.warning("Exception happened when saving world data", e);
+                    LOG.warning("Exception happened when updating world float value", e);
                 }
             }
         });
+        jfxTextField.focusedProperty().addListener((o, oldVal, focused) -> {
+            if (!focused) {
+                saveWorldData();
+            }
+        });
+        jfxTextField.setOnAction(e -> saveWorldData());
         FXUtils.setValidateWhileTextChanged(jfxTextField, true);
         jfxTextField.setValidators(new DoubleValidator(i18n("input.number"), true));
     }
 
     private void saveWorldData() {
         LOG.info("Saving data of world " + world.getWorldName());
-        try {
-            this.world.writeWorldData();
-        } catch (IOException e) {
-            LOG.warning("Failed to save world data", e);
-        }
+        Task.runAsync(Schedulers.io(), () -> {
+            try {
+                this.world.writeWorldData();
+            } catch (IOException e) {
+                LOG.warning("Failed to save world data", e);
+            }
+        }).start();
     }
 
     @Override

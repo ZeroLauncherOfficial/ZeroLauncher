@@ -199,12 +199,12 @@ public enum Architecture {
 
         Architecture sysArch = null;
         if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
-            String processorIdentifier = System.getenv("PROCESSOR_IDENTIFIER");
-            if (processorIdentifier != null) {
-                int idx = processorIdentifier.indexOf(' ');
-                if (idx > 0) {
-                    sysArch = parseArchName(processorIdentifier.substring(0, idx));
-                }
+            String arch = System.getenv("PROCESSOR_ARCHITEW6432");
+            if (arch == null || arch.isBlank()) {
+                arch = System.getenv("PROCESSOR_ARCHITECTURE");
+            }
+            if (arch != null && !arch.isBlank()) {
+                sysArch = parseArchName(arch);
             }
         } else if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
             if (CURRENT_ARCH == X86_64) {

@@ -249,18 +249,14 @@ public class TerracottaControllerPage extends StackPane {
                     }, "", new RequiredValidator(i18n("input.not_empty")));
                 });
 
-                if (ThreadLocalRandom.current().nextDouble() < 0.02D) {
-                    var feedback = createLargeTitleLineButton();
-                    feedback.setLeading(SVG.FEEDBACK, ICON_SIZE);
-                    feedback.setTitle(i18n("terracotta.feedback.title"));
-                    feedback.setSubtitle(i18n("terracotta.feedback.desc"));
-                    feedback.setTrailingIcon(SVG.OPEN_IN_NEW, ICON_SIZE);
-                    FXUtils.onClicked(feedback, () -> FXUtils.openLink(TerracottaMetadata.FEEDBACK_LINK));
+                var feedback = createLargeTitleLineButton();
+                feedback.setLeading(SVG.FEEDBACK, ICON_SIZE);
+                feedback.setTitle(i18n("terracotta.feedback.title"));
+                feedback.setSubtitle(i18n("terracotta.feedback.desc"));
+                feedback.setTrailingIcon(SVG.OPEN_IN_NEW, ICON_SIZE);
+                FXUtils.onClicked(feedback, () -> FXUtils.openLink(TerracottaMetadata.FEEDBACK_LINK));
 
-                    nodesProperty.setAll(flow, host, guest, feedback);
-                } else {
-                    nodesProperty.setAll(flow, host, guest);
-                }
+                nodesProperty.setAll(flow, host, guest, feedback);
             } else if (state instanceof TerracottaState.HostScanning) {
                 statusProperty.set(i18n("terracotta.status.scanning"));
                 progressProperty.set(-1);
@@ -464,9 +460,7 @@ public class TerracottaControllerPage extends StackPane {
                             }
                         }
                         FXUtils.showFileInExplorer(path);
-                    }).thenRunAsync(
-                            () -> Thread.sleep(3000)
-                    ).whenComplete(
+                    }).whenComplete(
                             Schedulers.javafx(),
                             e -> exportLog.setLoading(false)
                     ).start();

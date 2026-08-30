@@ -60,7 +60,7 @@ public final class BGMManager {
     private int currentTrackIndex = 0;
 
     private final BooleanProperty playing = new SimpleBooleanProperty(false);
-    private final BooleanProperty enabled = new SimpleBooleanProperty(true);
+    private final BooleanProperty enabled = new SimpleBooleanProperty(false);
     private final StringProperty currentTrackTitle = new SimpleStringProperty("C418 - Sweden");
     private final DoubleProperty volume = new SimpleDoubleProperty(0.38); // Gentle, comfortable ambient level
 
@@ -77,16 +77,6 @@ public final class BGMManager {
 
     private BGMManager() {
         initPlaylist();
-        // Auto start playback in background
-        audioExecutor.submit(() -> {
-            try {
-                Thread.sleep(800);
-            } catch (InterruptedException ignored) {
-            }
-            if (enabled.get()) {
-                playTrack(0);
-            }
-        });
     }
 
     private void initPlaylist() {
@@ -241,7 +231,8 @@ public final class BGMManager {
             } else if (rawStream != null) {
                 in = AudioSystem.getAudioInputStream(rawStream);
             } else {
-                Platform.runLater(this::nextTrack);
+                org.zero.launcher.util.logging.Logger.LOG.warning("BGMManager: Track not available: " + track.name());
+                Platform.runLater(() -> playing.set(false));
                 return;
             }
 
@@ -284,6 +275,7 @@ public final class BGMManager {
             }
         } catch (Exception e) {
             org.zero.launcher.util.logging.Logger.LOG.warning("BGMManager playback failed for " + track.name(), e);
+            Platform.runLater(() -> playing.set(false));
         } finally {
             try {
                 if (din != null) din.close();

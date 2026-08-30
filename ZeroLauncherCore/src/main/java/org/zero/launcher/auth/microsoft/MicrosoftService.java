@@ -163,17 +163,15 @@ public class MicrosoftService {
         long notAfter = minecraftResponse.expiresIn * 1000L + System.currentTimeMillis();
 
         // Check MC ownership, this is necessary, see GitHub#2979
-        HttpURLConnection request = HttpRequest.GET("https://api.minecraftservices.com/entitlements/mcstore")
+        MinecraftStoreResponse storeResponse = HttpRequest.GET("https://api.minecraftservices.com/entitlements/mcstore")
                 .authorization("Bearer " + minecraftResponse.accessToken)
                 .retry(5)
-                .accept("application/json").createConnection();
+                .accept("application/json")
+                .getJson(MinecraftStoreResponse.class);
 
-        try {
-            if (request.getResponseCode() != 200) {
-                throw new ResponseCodeException("https://api.minecraftservices.com/entitlements/mcstore", request.getResponseCode());
-            }
-        } finally {
-            request.disconnect();
+        if (storeResponse == null || storeResponse.items == null || storeResponse.items.stream().noneMatch(item ->
+                "product_minecraft".equals(item.name) || "game_minecraft".equals(item.name))) {
+            throw new AuthenticationException(new MinecraftJavaEditionLicenseNotFoundException());
         }
 
         // Get Minecraft Account UUID

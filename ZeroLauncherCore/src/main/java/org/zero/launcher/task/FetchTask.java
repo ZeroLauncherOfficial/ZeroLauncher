@@ -667,14 +667,24 @@ public abstract class FetchTask<T> extends Task<T> {
     // For Java 21 or later, DOWNLOAD_EXECUTOR dispatches tasks to virtual threads, and concurrency is controlled by SEMAPHORE.
     // For versions earlier than Java 21, DOWNLOAD_EXECUTOR is a ThreadPoolExecutor, SEMAPHORE is null, and concurrency is controlled by the thread pool size.
 
+    private static final class DynamicSemaphore extends Semaphore {
+        public DynamicSemaphore(int permits) {
+            super(permits);
+        }
+
+        public void reduce(int reduction) {
+            reducePermits(reduction);
+        }
+    }
+
     private static final ExecutorService DOWNLOAD_EXECUTOR;
-    private static final @Nullable Semaphore SEMAPHORE;
+    private static final @Nullable DynamicSemaphore SEMAPHORE;
 
     static {
         ExecutorService executorService = Schedulers.newVirtualThreadPerTaskExecutor("Download");
         if (executorService != null) {
             DOWNLOAD_EXECUTOR = executorService;
-            SEMAPHORE = new Semaphore(DEFAULT_CONCURRENCY);
+            SEMAPHORE = new DynamicSemaphore(DEFAULT_CONCURRENCY);
         } else {
             DOWNLOAD_EXECUTOR = threadPool("Download", true, downloadExecutorConcurrency, 10, TimeUnit.SECONDS);
             SEMAPHORE = null;
@@ -682,7 +692,7 @@ public abstract class FetchTask<T> extends Task<T> {
     }
 
     @FXThread
-    public static void setDownloadExecutorConcurrency(int concurrency) {
+    public static synchronized void setDownloadExecutorConcurrency(int concurrency) {
         concurrency = Math.max(concurrency, 1);
 
         int prevDownloadExecutorConcurrency = downloadExecutorConcurrency;
@@ -695,18 +705,7 @@ public abstract class FetchTask<T> extends Task<T> {
             if (change > 0) {
                 SEMAPHORE.release(change);
             } else {
-                int permits = -change;
-                if (!SEMAPHORE.tryAcquire(permits)) {
-                    Schedulers.io().execute(() -> {
-                        try {
-                            for (int i = 0; i < permits; i++) {
-                                SEMAPHORE.acquire();
-                            }
-                        } catch (InterruptedException e) {
-                            throw new AssertionError("Unreachable", e);
-                        }
-                    });
-                }
+                SEMAPHORE.reduce(-change);
             }
         } else {
             var downloadExecutor = (ThreadPoolExecutor) DOWNLOAD_EXECUTOR;

@@ -41,6 +41,9 @@ import org.zero.launcher.ui.decorator.DecoratorPage;
 import org.zero.launcher.util.StringUtils;
 import org.zero.launcher.util.io.FileUtils;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -48,13 +51,14 @@ import static org.zero.launcher.ui.FXUtils.onEscPressed;
 import static org.zero.launcher.util.logging.Logger.LOG;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
-/**
- * @author Glavo
- */
+/// Visual tree editor page for Minecraft NBT files (.dat, .mca, .mcr).
+/// @author Glavo
+@NotNullByDefault
 public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
     private final ReadOnlyObjectWrapper<State> state;
     private final Path file;
     private final NBTFileType type;
+    private @Nullable NBTElement currentElement;
 
     private final BorderPane root = new BorderPane();
 
@@ -92,11 +96,13 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
         onEscPressed(this, cancelButton::fire);
 
         actions.getChildren().setAll(saveButton, cancelButton);
+        root.setBottom(actions);
 
         Task.supplyAsync(() -> type.read(file))
                 .whenComplete(Schedulers.javafx(), (result, exception) -> {
                     if (exception == null) {
                         setLoading(false);
+                        this.currentElement = result;
 
                         NBTTreeItem root = new NBTTreeItem(result, FileUtils.getName(file));
                         var view = new TreeView<>(root) {
@@ -127,8 +133,12 @@ public final class NBTEditorPage extends SpinnerPane implements DecoratorPage {
                 }).start();
     }
 
+    /// Saves the current NBT structure back to disk.
     public void save() throws IOException {
-        // TODO
+        if (currentElement != null) {
+            type.write(file, currentElement);
+            Controllers.toast(i18n("message.success"));
+        }
     }
 
     @Override

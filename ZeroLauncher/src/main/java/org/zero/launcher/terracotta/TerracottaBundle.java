@@ -185,9 +185,6 @@ public final class TerracottaBundle {
                 int n;
                 while ((n = is.read(buffer)) >= 0) {
                     total += n;
-                    if (total >= 50 * 1024 * 1024) { // >=50MB
-                        return false;
-                    }
                 }
             }
             if (!HexFormat.of().formatHex(digest.digest()).equalsIgnoreCase(check.checksum())) {

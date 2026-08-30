@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -47,7 +48,7 @@ public final class CrashReportAnalyzer {
 
         // Maybe software rendering? Suggest user for using a graphics card.
         OPENGL_NOT_SUPPORTED("The driver does not appear to support OpenGL"),
-        GRAPHICS_DRIVER("(Pixel format not accelerated|GLX: Failed to create context: GLXBadFBConfig|Couldn't set pixel format|net\\.minecraftforge\\.fml.client\\.SplashProgress|org\\.lwjgl\\.LWJGLException|EXCEPTION_ACCESS_VIOLATION(.|\\n|\\r)+# C {2}\\[(ig|atio|nvoglv))"),
+        GRAPHICS_DRIVER("(Pixel format not accelerated|GLX: Failed to create context: GLXBadFBConfig|Couldn't set pixel format|net\\.minecraftforge\\.fml\\.client\\.SplashProgress|org\\.lwjgl\\.LWJGLException|EXCEPTION_ACCESS_VIOLATION[\\s\\S]*?# C {2}\\[(ig|atio|nvoglv))"),
         // macOS initializing OpenGL window issues
         MACOS_FAILED_TO_FIND_SERVICE_PORT_FOR_DISPLAY("java\\.lang\\.IllegalStateException: GLFW error before init: \\[0x10008\\]Cocoa: Failed to find service port for display"),
         // Out of memory
@@ -73,9 +74,9 @@ public final class CrashReportAnalyzer {
         // Some mods duplicated
         DUPLICATED_MOD("Found a duplicate mod (?<name>.*) at (?<path>.*)", "name", "path"),
         // Fabric mod resolution
-        MOD_RESOLUTION("ModResolutionException: (?<reason>(.*)[\\n\\r]*( - (.*)[\\n\\r]*)+)", "reason"),
-        FORGEMOD_RESOLUTION("Missing or unsupported mandatory dependencies:(?<reason>(.*)[\\n\\r]*(\t(.*)[\\n\\r]*)+)", "reason"),
-        FORGE_FOUND_DUPLICATE_MODS("Found duplicate mods:(?<reason>(.*)\\R*(\t(.*)\\R*)+)", "reason"),
+        MOD_RESOLUTION("ModResolutionException: (?<reason>[^\\r\\n]+(?:\\R[ \\t]*-[ \\t]*[^\\r\\n]+)*)", "reason"),
+        FORGEMOD_RESOLUTION("Missing or unsupported mandatory dependencies:(?<reason>(?:\\R\\t[^\\r\\n]+)+)", "reason"),
+        FORGE_FOUND_DUPLICATE_MODS("Found duplicate mods:(?<reason>(?:\\R\\t[^\\r\\n]+)+)", "reason"),
         MOD_RESOLUTION_CONFLICT("ModResolutionException: Found conflicting mods: (?<sourcemod>.*) conflicts with (?<destmod>.*)", "sourcemod", "destmod"),
         MOD_RESOLUTION_MISSING("ModResolutionException: Could not find required mod: (?<sourcemod>.*) requires (?<destmod>.*)", "sourcemod", "destmod"),
         MOD_RESOLUTION_MISSING_MINECRAFT("ModResolutionException: Could not find required mod: (?<mod>.*) requires \\{minecraft @ (?<version>.*)}", "mod", "version"),
@@ -188,10 +189,12 @@ public final class CrashReportAnalyzer {
     public static String findCrashReport(String log) throws IOException, InvalidPathException {
         Matcher matcher = CRASH_REPORT_LOCATION_PATTERN.matcher(log);
         if (matcher.find()) {
-            return Files.readString(Paths.get(matcher.group("location").trim()));
-        } else {
-            return null;
+            Path path = Paths.get(matcher.group("location").trim()).toAbsolutePath().normalize();
+            if (Files.isRegularFile(path)) {
+                return Files.readString(path);
+            }
         }
+        return null;
     }
 
     public static String extractCrashReport(String rawLog) {

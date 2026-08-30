@@ -953,25 +953,6 @@ public final class LauncherHelper {
                     Thread.currentThread().interrupt();
                 }
             }
-
-            if (detectWindow) {
-                Task.supplyAsync(() -> {
-                    try {
-                        Thread.sleep(8000);
-                        lock.lock();
-                        try {
-                            if (!lwjgl) {
-                                lwjgl = true;
-                                finishLaunch();
-                            }
-                        } finally {
-                            lock.unlock();
-                        }
-                    } catch (InterruptedException ignored) {
-                    }
-                    return null;
-                }).start();
-            }
         }
 
         private void finishLaunch() {
@@ -1018,15 +999,10 @@ public final class LauncherHelper {
                     runLater(launchingLatch::countDown);
                     break;
                 case HIDE:
-                    launchingLatch.countDown();
                     runLater(() -> {
-                        // If application was stopped and execution services did not finish termination,
-                        // these codes will be executed.
                         if (Controllers.getStage() != null) {
-                            Controllers.getStage().close();
-                            Controllers.shutdown();
-                            Schedulers.shutdown();
-                            System.gc();
+                            Controllers.getStage().hide();
+                            launchingLatch.countDown();
                         }
                     });
                     break;
@@ -1041,7 +1017,7 @@ public final class LauncherHelper {
                 System.out.println(log);
 
             log = StringUtils.parseEscapeSequence(log);
-            if (forbiddenAccessToken != null)
+            if (StringUtils.isNotBlank(forbiddenAccessToken))
                 log = log.replace(forbiddenAccessToken, "<access token>");
 
             Log4jLevel level = isErrorStream && !log.startsWith("[authlib-injector]") ? Log4jLevel.ERROR : null;

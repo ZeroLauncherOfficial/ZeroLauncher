@@ -29,10 +29,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// macOS provider implementation for Terracotta integration.
+@NotNullByDefault
 public final class MacOSProvider extends AbstractTerracottaProvider {
     private final Path executable, installer;
 
@@ -40,6 +44,10 @@ public final class MacOSProvider extends AbstractTerracottaProvider {
         super(bundle);
         this.executable = executable;
         this.installer = installer;
+    }
+
+    private static String escapeAppleScriptString(String str) {
+        return str.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 
     @Override
@@ -64,11 +72,16 @@ public final class MacOSProvider extends AbstractTerracottaProvider {
                     .resolve(FileUtils.getName(installer));
             Files.copy(installer, movedInstaller, StandardCopyOption.REPLACE_EXISTING);
 
+            String escapedPath = escapeAppleScriptString(movedInstaller.toString());
+            String escapedPrompt = escapeAppleScriptString(i18n("terracotta.sudo_installing"));
+            String script = String.format(
+                    "do shell script \"installer -pkg \" & quoted form of \"%s\" & \" -target /\" with prompt \"%s\" with administrator privileges",
+                    escapedPath, escapedPrompt
+            );
+
             ManagedProcess process = new ManagedProcess(new ProcessBuilder(
-                    osascript.toString(), "-e", String.format(
-                    "do shell script \"installer -pkg '%s' -target /\" with prompt \"%s\" with administrator privileges",
-                    movedInstaller, i18n("terracotta.sudo_installing")
-            )));
+                    osascript.toString(), "-e", script
+            ));
             process.pumpInputStream(SystemUtils::onLogLine);
             process.pumpErrorStream(SystemUtils::onLogLine);
 
