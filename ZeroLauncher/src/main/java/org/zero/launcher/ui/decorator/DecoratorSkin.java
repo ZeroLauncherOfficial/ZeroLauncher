@@ -159,6 +159,11 @@ public class DecoratorSkin extends SkinBase<Decorator> {
                 skinnable.contentBackgroundProperty()));
         StackPane.setAlignment(backgroundNode, Pos.BOTTOM_CENTER);
 
+        javafx.scene.effect.ColorAdjust bgDimAdjust = new javafx.scene.effect.ColorAdjust();
+        bgDimAdjust.setBrightness(-0.16);
+        bgDimAdjust.setContrast(0.04);
+        backgroundNode.setEffect(bgDimAdjust);
+
         Region backgroundOverlay = new Region();
         backgroundOverlay.setMouseTransparent(true);
         backgroundOverlay.setStyle("-fx-background-color: transparent;");

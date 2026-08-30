@@ -2230,7 +2230,7 @@
 }
 
 .tree-view > .virtual-flow > .scroll-bar {
-    -fx-skin: "org.jackhuang.hmcl.ui.construct.FloatScrollBarSkin";
+    -fx-skin: "org.zero.launcher.ui.construct.FloatScrollBarSkin";
 }
 
 .tree-view > .virtual-flow > .scroll-bar .track {
@@ -2248,11 +2248,12 @@
 }
 
 .jfx-decorator-drawer {
-    -fx-background-color: rgba(244, 244, 244, 0.5);
+    -fx-background-color: transparent;
 }
 
 .jfx-decorator-title {
-    -fx-font-size: 14;
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
 }
 
 .window {
@@ -2266,12 +2267,12 @@
 }
 
 .content-background {
-    -fx-background-color: -monet-surface-transparent-50;
+    -fx-background-color: transparent;
 }
 
 .gray-background {
-    -fx-background-color: rgba(255, 255, 255, 0.78);
-    -fx-border-color: rgba(255, 255, 255, 0.5);
+    -fx-background-color: rgba(15, 23, 42, 0.88);
+    -fx-border-color: rgba(255, 255, 255, 0.08);
     -fx-border-width: 0 1px 0 0;
 }
 
@@ -2279,21 +2280,28 @@
  *                                                                             *
  * Scroll Bar			                                                       *
  *                                                                             *
- ******************************************************************************/
+ *******************************************************************************/
 
 .scroll-bar:vertical > .track-background, .scroll-bar:horizontal > .track-background {
-    -fx-background-color: #F1F1F1;
+    -fx-background-color: transparent;
     -fx-background-insets: 0.0;
 }
 
 .scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
-    -fx-background-color: #BCBCBC;
+    -fx-background-color: rgba(255, 255, 255, 0.22);
     -fx-background-insets: 0.0;
-    -fx-background-radius: 1.0;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar:vertical .thumb:hover, .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: rgba(56, 189, 248, 0.50);
 }
 
 .scroll-bar > .increment-button, .scroll-bar > .decrement-button {
-    -fx-padding: 5 2 5 2;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-pref-height: 0;
+    -fx-pref-width: 0;
 }
 
 .scroll-bar > .increment-button, .scroll-bar > .decrement-button, .scroll-bar:hover > .increment-button, .scroll-bar:hover > .decrement-button {
@@ -2301,19 +2309,11 @@
 }
 
 .scroll-bar > .increment-button > .increment-arrow, .scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-background-color: rgb(150.0, 150.0, 150.0);
-}
-
-.scroll-bar > .increment-button > .increment-arrow {
-    -fx-shape: "M298 426h428l-214 214z";
-}
-
-.scroll-bar > .decrement-button > .decrement-arrow {
-    -fx-shape: "M298 598l214-214 214 214h-428z";
+    -fx-background-color: transparent;
 }
 
 .jfx-combo-box .scroll-bar {
-    -fx-skin: "org.jackhuang.hmcl.ui.construct.FloatScrollBarSkin";
+    -fx-skin: "org.zero.launcher.ui.construct.FloatScrollBarSkin";
 }
 
 .jfx-combo-box .scroll-bar .track {
@@ -2324,10 +2324,10 @@
  *                                                                             *
  * Scroll Pane			                                                       *
  *                                                                             *
- ******************************************************************************/
+ *******************************************************************************/
 
 .scroll-pane {
-    -fx-background-color: null;
+    -fx-background-color: transparent;
     -fx-background-insets: 0;
     -fx-padding: 0;
     -fx-snap-to-pixel: false;
@@ -2338,15 +2338,16 @@
 }
 
 .scroll-pane .corner {
+    -fx-background-color: transparent;
     -fx-background-insets: 0;
 }
 
 .scroll-pane > .viewport {
-    -fx-background-color: null;
+    -fx-background-color: transparent;
 }
 
 .scroll-pane .scroll-bar {
-    -fx-skin: "org.jackhuang.hmcl.ui.construct.FloatScrollBarSkin";
+    -fx-skin: "org.zero.launcher.ui.construct.FloatScrollBarSkin";
 }
 
 .scroll-pane .scroll-bar .track {

@@ -409,8 +409,8 @@
     -fx-background-color: transparent;
 }
 
-.navigation-drawer {
-    -fx-background-color: rgba(255, 255, 255, 0.75);
+.navigation-drawer, .gray-background {
+    -fx-background-color: rgba(255, 255, 255, 0.90);
     -fx-border-color: rgba(0, 0, 0, 0.08);
     -fx-border-width: 0 1px 0 0;
 }
@@ -426,8 +426,24 @@
 }
 
 .navigation-drawer-item:selected {
-    -fx-background-color: rgba(2, 132, 199, 0.16);
-    -fx-text-fill: #0284c7;
+    -fx-background-color: linear-gradient(to right, #0284c7, #0ea5e9);
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.35), 8, 0, 0, 1);
+}
+
+.navigation-drawer-item:selected .label,
+.navigation-drawer-item:selected Text,
+.navigation-drawer-item:selected .svg {
+    -fx-text-fill: #ffffff !important;
+    -fx-fill: #ffffff !important;
+    -fx-font-weight: 700;
+}
+
+.component-list-title, .class-title, .class-title Text, .settings-group-title {
+    -fx-text-fill: #0284c7 !important;
+    -fx-fill: #0284c7 !important;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 800;
 }
 
 .advanced-list-box-content {

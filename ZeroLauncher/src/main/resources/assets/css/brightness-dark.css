@@ -448,9 +448,9 @@
 }
 
 .options-sublist {
-    -fx-background-color: rgba(15, 23, 42, 0.70);
+    -fx-background-color: rgba(15, 23, 42, 0.75);
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-color: rgba(255, 255, 255, 0.08);
     -fx-border-radius: 14px;
     -fx-border-width: 1px;
 }
@@ -463,8 +463,8 @@
     -fx-background-color: transparent;
 }
 
-.navigation-drawer {
-    -fx-background-color: rgba(15, 23, 42, 0.65);
+.navigation-drawer, .gray-background {
+    -fx-background-color: rgba(15, 23, 42, 0.88);
     -fx-border-color: rgba(255, 255, 255, 0.08);
     -fx-border-width: 0 1px 0 0;
 }
@@ -480,8 +480,58 @@
 }
 
 .navigation-drawer-item:selected {
-    -fx-background-color: rgba(56, 189, 248, 0.22);
-    -fx-text-fill: #38bdf8;
+    -fx-background-color: linear-gradient(to right, #0284c7, #0ea5e9);
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.45), 8, 0, 0, 1);
+}
+
+.navigation-drawer-item:selected .label,
+.navigation-drawer-item:selected Text,
+.navigation-drawer-item:selected .svg {
+    -fx-text-fill: #ffffff !important;
+    -fx-fill: #ffffff !important;
+    -fx-font-weight: 700;
+}
+
+.component-list-title, .class-title, .class-title Text, .settings-group-title {
+    -fx-text-fill: #38bdf8 !important;
+    -fx-fill: #38bdf8 !important;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 800;
+}
+
+.jfx-text-field, .jfx-password-field, .jfx-text-area {
+    -fx-background-color: rgba(10, 15, 29, 0.75);
+    -fx-background-radius: 8px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #ffffff !important;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-padding: 7px 12px;
+}
+
+.jfx-text-field:focused, .jfx-password-field:focused, .jfx-text-area:focused {
+    -fx-background-color: rgba(10, 15, 29, 0.90);
+    -fx-border-color: #38bdf8;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.35), 8, 0, 0, 1);
+}
+
+.jfx-combo-box {
+    -fx-background-color: rgba(10, 15, 29, 0.75);
+    -fx-background-radius: 8px;
+    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+}
+
+.jfx-combo-box:hover, .jfx-combo-box:focused {
+    -fx-border-color: #38bdf8;
+}
+
+.jfx-combo-box .cell .label, .jfx-combo-box .cell Text {
+    -fx-text-fill: #ffffff !important;
+    -fx-fill: #ffffff !important;
 }
 
 .advanced-list-box-content {
