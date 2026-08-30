@@ -36,6 +36,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
@@ -447,8 +449,9 @@ public final class CurseForgeRemoteAddonRepository implements RemoteAddonReposit
             public String downloadUrl() {
                 if (downloadUrl == null) {
                     // This addon is not allowed for distribution, and downloadUrl will be null.
-                    // We try to find its download url.
-                    return String.format("https://edge.forgecdn.net/files/%d/%d/%s", id / 1000, id % 1000, fileName);
+                    // We try to find its download url using Edge CDN.
+                    String encodedName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
+                    return String.format("https://edge.forgecdn.net/files/%d/%03d/%s", id / 1000, id % 1000, encodedName);
                 }
                 return downloadUrl;
             }

@@ -604,45 +604,66 @@ public final class FXUtils {
             "mozilla"
     };
 
-    /**
-     * Open URL in browser
-     *
-     * @param link null is allowed but will be ignored
-     */
-    public static void openLink(String link) {
-        if (link == null)
+    /// Opens an HTTP/HTTPS URL in the default browser safely.
+    ///
+    /// Validates that the link has an `http` or `https` scheme before attempting to open it,
+    /// avoiding arbitrary protocol handling or code execution vulnerabilities.
+    ///
+    /// @param link the URL string to open (nullable, will be ignored if null or non-HTTP/HTTPS)
+    public static void openLink(@Nullable String link) {
+        if (link == null || link.isBlank())
             return;
 
-        String uri = NetworkUtils.encodeLocation(link);
+        String trimmed = link.trim();
+        URI parsedUri;
+        try {
+            parsedUri = new URI(trimmed);
+            String scheme = parsedUri.getScheme();
+            if (scheme == null || (!scheme.equalsIgnoreCase("http") && !scheme.equalsIgnoreCase("https"))) {
+                LOG.warning("Rejected non-http/https link navigation: " + link);
+                return;
+            }
+        } catch (URISyntaxException e) {
+            LOG.warning("Invalid URI syntax in openLink: " + link, e);
+            return;
+        }
+
+        String uri = NetworkUtils.encodeLocation(trimmed);
         thread(() -> {
             try {
+                if (java.awt.Desktop.isDesktopSupported() && java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE)) {
+                    java.awt.Desktop.getDesktop().browse(new URI(uri));
+                    return;
+                }
+            } catch (Throwable e) {
+                LOG.warning("Failed to open link via Desktop.browse: " + link, e);
+            }
+
+            try {
                 if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
-                    Runtime.getRuntime().exec(new String[]{"rundll32.exe", "url.dll,FileProtocolHandler", uri});
+                    new ProcessBuilder("cmd.exe", "/c", "start", "", uri).start();
                     return;
                 } else if (OperatingSystem.CURRENT_OS == OperatingSystem.MACOS) {
-                    Runtime.getRuntime().exec(new String[]{"open", uri});
+                    new ProcessBuilder("open", uri).start();
                     return;
                 } else {
                     for (String browser : linuxBrowsers) {
                         Path path = SystemUtils.which(browser);
                         if (path != null) {
                             try {
-                                Runtime.getRuntime().exec(new String[]{path.toString(), uri});
+                                new ProcessBuilder(path.toString(), uri).start();
                                 return;
                             } catch (Throwable ignored) {
                             }
                         }
                     }
-                    LOG.warning("No known browser found");
+                    if (SystemUtils.which("xdg-open") != null) {
+                        new ProcessBuilder("xdg-open", uri).start();
+                        return;
+                    }
                 }
             } catch (Throwable e) {
-                LOG.warning("Failed to open link: " + link + ", fallback to java.awt.Desktop", e);
-            }
-
-            try {
-                java.awt.Desktop.getDesktop().browse(new URI(uri));
-            } catch (Throwable e) {
-                LOG.warning("Failed to open link: " + link, e);
+                LOG.warning("Failed to open link with system browser: " + link, e);
             }
         });
     }

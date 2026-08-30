@@ -19,6 +19,8 @@ package org.zero.launcher.util.io;
 
 import kala.compress.archivers.zip.ZipArchiveEntry;
 import kala.compress.archivers.zip.ZipArchiveReader;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.zero.launcher.util.StringUtils;
 import org.zero.launcher.util.platform.OperatingSystem;
 
@@ -28,12 +30,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
+/// Utility for safely decompressing zip archives with directory containment and symlink validations.
+@NotNullByDefault
 public final class Unzipper {
     private final Path zipFile, dest;
     private boolean replaceExistentFile = false;
     private boolean terminateIfSubDirectoryNotExists = false;
     private String subDirectory = "/";
-    private EntryFilter filter;
+    private @Nullable EntryFilter filter;
     private Charset encoding = StandardCharsets.UTF_8;
 
     /// Decompress the given zip file to a directory.
@@ -80,12 +84,27 @@ public final class Unzipper {
         return this;
     }
 
+    /// Verifies that any existing ancestor directories of the destination path resolve within the real destination directory.
+    private static void verifyPathInsideDest(Path file, Path realDestDir) throws IOException {
+        Path current = file.getParent();
+        while (current != null && !Files.exists(current)) {
+            current = current.getParent();
+        }
+        if (current != null) {
+            Path realCurrent = current.toRealPath();
+            if (!realCurrent.startsWith(realDestDir)) {
+                throw new IOException("Zip entry target directory resolves outside destination via symlink: " + file);
+            }
+        }
+    }
+
     /// Decompress the given zip file to a directory.
     ///
     /// @throws IOException if zip file is malformed or filesystem error.
     public void unzip() throws IOException {
         Path destDir = this.dest.toAbsolutePath().normalize();
         Files.createDirectories(destDir);
+        Path realDestDir = destDir.toRealPath();
 
         CopyOption[] copyOptions = replaceExistentFile
                 ? new CopyOption[]{StandardCopyOption.REPLACE_EXISTING}
@@ -106,6 +125,8 @@ public final class Unzipper {
                 if (!destFile.startsWith(destDir)) {
                     throw new IOException("Zip entry is trying to write outside of the destination directory: " + entry.getName());
                 }
+
+                verifyPathInsideDest(destFile, realDestDir);
 
                 if (filter != null && !filter.accept(entry, destFile, relativePath)) {
                     continue;
@@ -129,7 +150,8 @@ public final class Unzipper {
                             throw new IOException("Zip entry has an invalid symlink target: " + entry.getName(), e);
                         }
 
-                        if (!destFile.getParent().resolve(targetPath).toAbsolutePath().normalize().startsWith(destDir)) {
+                        Path targetResolved = destFile.getParent().resolve(targetPath).toAbsolutePath().normalize();
+                        if (!targetResolved.startsWith(destDir)) {
                             throw new IOException("Zip entry is trying to create a symlink outside of the destination directory: " + entry.getName());
                         }
 
@@ -138,6 +160,9 @@ public final class Unzipper {
                         } catch (FileAlreadyExistsException ignored) {
                         }
                     } else {
+                        if (replaceExistentFile && Files.isSymbolicLink(destFile)) {
+                            Files.deleteIfExists(destFile);
+                        }
                         try (InputStream input = reader.getInputStream(entry)) {
                             Files.copy(input, destFile, copyOptions);
                         } catch (FileAlreadyExistsException e) {

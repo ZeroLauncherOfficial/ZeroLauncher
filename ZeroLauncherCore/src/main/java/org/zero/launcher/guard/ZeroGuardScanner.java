@@ -29,6 +29,7 @@ import org.zero.launcher.game.Version;
 import org.zero.launcher.util.io.CompressingUtils;
 import org.zero.launcher.util.logging.Logger;
 import org.zero.launcher.util.tree.ZipFileTree;
+import org.zero.launcher.util.versioning.VersionNumber;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 import org.tomlj.Toml;
@@ -211,13 +212,17 @@ public final class ZeroGuardScanner {
                 if (allProvidedIds.contains(brk.targetModId)) {
                     ScannedMod conflictMod = installedModMap.get(brk.targetModId);
                     String conflictName = conflictMod != null ? conflictMod.name : brk.targetModId;
-                    issues.add(new DependencyIssue(
-                            DependencyIssue.Level.ERROR,
-                            DependencyIssue.Type.MOD_CONFLICT,
-                            mod.modId, mod.name, mod.version,
-                            brk.targetModId, conflictName, brk.versionRange, conflictMod != null ? conflictMod.version : "",
-                            "與已安裝的模組 " + conflictName + " 存在已知衝突，同時運行將導致遊戲崩潰"
-                    ));
+                    String conflictVersion = conflictMod != null ? conflictMod.version : "";
+
+                    if (isVersionMatch(conflictVersion, brk.versionRange)) {
+                        issues.add(new DependencyIssue(
+                                DependencyIssue.Level.ERROR,
+                                DependencyIssue.Type.MOD_CONFLICT,
+                                mod.modId, mod.name, mod.version,
+                                brk.targetModId, conflictName, brk.versionRange, conflictVersion,
+                                "與已安裝的模組 " + conflictName + (!conflictVersion.isEmpty() ? " (" + conflictVersion + ")" : "") + " 存在已知衝突，同時運行將導致遊戲崩潰"
+                        ));
+                    }
                 }
             }
         }
@@ -226,6 +231,59 @@ public final class ZeroGuardScanner {
         Logger.LOG.info("ZeroGuard: Scanned " + mods.size() + " mods in " + elapsed + "ms. Found " + issues.size() + " issues.");
 
         return new ZeroGuardReport(versionId, gameVersion, loaderType, mods.size(), issues);
+    }
+
+    /// Evaluates whether an installed mod version matches a conflict / dependency version range.
+    public static boolean isVersionMatch(String installedVersion, @Nullable String rangeStr) {
+        if (rangeStr == null || rangeStr.isBlank() || "*".equals(rangeStr.trim())) {
+            return true;
+        }
+        if (installedVersion == null || installedVersion.isBlank()) {
+            return true;
+        }
+
+        String range = rangeStr.trim();
+
+        if ((range.startsWith("[") || range.startsWith("(")) && (range.endsWith("]") || range.endsWith(")"))) {
+            boolean lowerInclusive = range.startsWith("[");
+            boolean upperInclusive = range.endsWith("]");
+            String inner = range.substring(1, range.length() - 1).trim();
+            if (!inner.contains(",")) {
+                return VersionNumber.compare(installedVersion, inner) == 0;
+            }
+            String[] parts = inner.split(",", -1);
+            String min = parts[0].trim();
+            String max = parts.length > 1 ? parts[1].trim() : "";
+
+            boolean matchMin = min.isEmpty() || (lowerInclusive
+                    ? VersionNumber.compare(installedVersion, min) >= 0
+                    : VersionNumber.compare(installedVersion, min) > 0);
+            boolean matchMax = max.isEmpty() || (upperInclusive
+                    ? VersionNumber.compare(installedVersion, max) <= 0
+                    : VersionNumber.compare(installedVersion, max) < 0);
+            return matchMin && matchMax;
+        }
+
+        if (range.startsWith(">=")) {
+            return VersionNumber.compare(installedVersion, range.substring(2).trim()) >= 0;
+        }
+        if (range.startsWith("<=")) {
+            return VersionNumber.compare(installedVersion, range.substring(2).trim()) <= 0;
+        }
+        if (range.startsWith(">")) {
+            return VersionNumber.compare(installedVersion, range.substring(1).trim()) > 0;
+        }
+        if (range.startsWith("<")) {
+            return VersionNumber.compare(installedVersion, range.substring(1).trim()) < 0;
+        }
+        if (range.startsWith("==") || range.startsWith("=")) {
+            return VersionNumber.compare(installedVersion, range.replaceAll("^=+", "").trim()) == 0;
+        }
+        if (range.startsWith("!=")) {
+            return VersionNumber.compare(installedVersion, range.substring(2).trim()) != 0;
+        }
+
+        return VersionNumber.compare(installedVersion, range) == 0;
     }
 
     private static @Nullable ScannedMod parseModFile(Path file) {

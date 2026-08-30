@@ -24,24 +24,13 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
-/**
- * <h1>PclAnimationEngine — PCL2 風格自研物理動畫引擎</h1>
- * <p>
- * 本引擎專為 JavaFX 設計，具備以下核心技術特性：
- * <ul>
- *   <li><b>非線性自研物理緩動 (Cubic Bezier & Overshoot)</b>：模擬空氣阻力與彈簧呼吸手感。</li>
- *   <li><b>動態可中斷狀態機 (Interruptible Animation State Machine)</b>：滑鼠快速劃過中斷時，捕獲當前瞬態值 (Transient Value) 無縫接續反向過渡，徹底告別跳格閃爍。</li>
- *   <li><b>GPU 硬體加速與渲染防掉幀 (Transform-Only & Bitmapped Cache)</b>：僅操作 Translate/Scale/Opacity，嚴禁 Layout Pass，轉場時自動調用 CacheHint.SPEED。</li>
- *   <li><b>零侵入式架構 (Non-intrusive Wrapper)</b>：透過 EventFilter/Handler 掛載，100% 隔離核心業務邏輯。</li>
- * </ul>
- *
- * @author ZeroLauncher & PCL2 Animation Lab
- */
+/// PCL2 風格自研物理動畫引擎
+@NotNullByDefault
 public final class PclAnimationEngine {
 
     private PclAnimationEngine() {
@@ -178,31 +167,29 @@ public final class PclAnimationEngine {
     // 3. 動態可中斷狀態機 (Interruptible Animation State Machine)
     // =========================================================================
 
-    /**
-     * 針對單一節點與特定屬性的動畫狀態控制器
-     */
+    /// 針對單一節點與特定屬性的動畫狀態控制器
     private static class NodeAnimationState {
-        Timeline activeTimeline;
+        final Map<DoubleProperty, Timeline> activeTimelines = new HashMap<>();
         boolean isHovered = false;
         boolean isPressed = false;
     }
 
-    private static final Map<Node, NodeAnimationState> STATE_MAP = new ConcurrentHashMap<>();
+    private static final Map<Node, NodeAnimationState> STATE_MAP = Collections.synchronizedMap(new WeakHashMap<>());
 
     private static NodeAnimationState getState(Node node) {
-        return STATE_MAP.computeIfAbsent(node, k -> new NodeAnimationState());
+        synchronized (STATE_MAP) {
+            return STATE_MAP.computeIfAbsent(node, k -> new NodeAnimationState());
+        }
     }
 
-    /**
-     * 可中斷的平滑屬性過渡核心（自動捕獲瞬態值為起點，動態計算剩餘時長）
-     */
+    /// 可中斷的平滑屬性過渡核心（自動捕獲瞬態值為起點，動態計算剩餘時長）
     public static void animatePropertyInterruptible(
             Node node,
             DoubleProperty property,
             double targetVal,
             Duration defaultDuration,
             Interpolator interpolator,
-            Runnable onFinished
+            @Nullable Runnable onFinished
     ) {
         if (!AnimationUtils.isAnimationEnabled()) {
             property.set(targetVal);
@@ -212,14 +199,18 @@ public final class PclAnimationEngine {
 
         NodeAnimationState state = getState(node);
 
-        // 1. 若當前已有動畫正在播放，立即停止並精確捕獲當前瞬態值
-        if (state.activeTimeline != null) {
-            state.activeTimeline.stop();
+        // 1. 若該屬性當前已有動畫正在播放，立即停止並精確捕獲當前瞬態值
+        Timeline running = state.activeTimelines.remove(property);
+        if (running != null) {
+            running.stop();
         }
 
         double currentVal = property.get();
         if (Math.abs(currentVal - targetVal) < 1e-5) {
             property.set(targetVal);
+            if (state.activeTimelines.isEmpty()) {
+                node.setCache(false);
+            }
             if (onFinished != null) onFinished.run();
             return;
         }
@@ -237,12 +228,14 @@ public final class PclAnimationEngine {
         KeyFrame kf = new KeyFrame(actualDuration, kv);
 
         Timeline timeline = new Timeline(kf);
-        state.activeTimeline = timeline;
+        state.activeTimelines.put(property, timeline);
 
         timeline.setOnFinished(e -> {
-            state.activeTimeline = null;
-            // 動畫結束，還原快取模式以保證最高清晰度
-            node.setCache(false);
+            state.activeTimelines.remove(property);
+            if (state.activeTimelines.isEmpty()) {
+                // 所有動畫結束，還原快取模式以保證最高清晰度
+                node.setCache(false);
+            }
             if (onFinished != null) {
                 onFinished.run();
             }
