@@ -86,45 +86,102 @@
 }
 
 /*******************************************************************************
- * Zero Launcher Light Theme Tokens                                            *
+ * Zero Launcher Light Theme Liquid Glass Tokens                               *
  ******************************************************************************/
+
+.zero-top-nav-bar {
+    -fx-padding: 6px 16px;
+}
+
+.zero-nav-brand-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.65);
+    -fx-background-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 10, 0, 0, 2);
+}
 
 .zero-brand-title {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF !important;
+    -fx-font-weight: 800;
+    -fx-text-fill: #ffffff !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 6, 0, 0, 1);
+}
+
+.zero-nav-tabs-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.60);
+    -fx-background-radius: 22px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 22px;
+    -fx-border-width: 1px;
+    -fx-padding: 2px 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0, 0, 2);
 }
 
 .zero-nav-tab {
-    -fx-text-fill: #FFFFFF !important;
-    -fx-opacity: 0.88;
+    -fx-background-color: transparent;
+    -fx-background-radius: 18px;
+    -fx-padding: 5px 14px;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff !important;
+    -fx-opacity: 0.92;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 4, 0, 0, 1);
 }
 
 .zero-nav-tab .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
 }
 
 .zero-nav-tab:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.22);
-    -fx-text-fill: #FFFFFF !important;
+    -fx-background-color: rgba(255, 255, 255, 0.16);
+    -fx-text-fill: #ffffff !important;
     -fx-opacity: 1.0;
 }
 
 .zero-nav-tab:hover .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
 }
 
 .zero-nav-tab.active {
-    -fx-background-color: rgba(255, 255, 255, 0.30);
-    -fx-text-fill: #FFFFFF !important;
-    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(to bottom, rgba(56, 189, 248, 0.35), rgba(14, 165, 233, 0.20));
+    -fx-background-radius: 18px;
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.40), rgba(56, 189, 248, 0.30));
+    -fx-border-radius: 18px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #ffffff !important;
+    -fx-font-weight: 800;
     -fx-opacity: 1.0;
-    -fx-border-color: #FFFFFF;
-    -fx-border-width: 0 0 3px 0;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.45), 8, 0, 0, 1);
 }
 
 .zero-nav-tab.active .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
+}
+
+.zero-nav-bgm-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.65);
+    -fx-background-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.45), rgba(255, 255, 255, 0.08));
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 10, 0, 0, 2);
+}
+
+.zero-nav-bgm-capsule:hover {
+    -fx-background-color: rgba(22, 33, 58, 0.85);
+    -fx-border-color: rgba(56, 189, 248, 0.70);
+}
+
+.zero-nav-bgm-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #f1f5f9;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.60), 4, 0, 0, 1);
 }
 
 .zero-greeting-prefix, .zero-greeting-big-title {
@@ -167,125 +224,141 @@
 }
 
 .zero-player-card {
-    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
-    -fx-border-radius: 10px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62)) !important;
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04)) !important;
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-padding: 8px 14px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0, 0, 2);
+    -fx-padding: 10px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.38), 20, 0, 0, 4);
     -fx-cursor: hand;
 }
 
 .zero-player-card:hover {
-    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
-    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+    -fx-background-color: linear-gradient(to bottom right, rgba(22, 33, 58, 0.92), rgba(18, 28, 48, 0.75)) !important;
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20)) !important;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.25), 24, 0, 0, 4);
 }
 
 .zero-player-name {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF !important;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff !important;
 }
 
 .zero-player-type {
-    -fx-font-size: 10.5px;
-    -fx-text-fill: #94A3B8 !important;
+    -fx-font-size: 11px;
+    -fx-text-fill: #94a3b8 !important;
 }
 
 .zero-player-card .svg {
-    -fx-fill: #38BDF8 !important;
+    -fx-fill: #38bdf8 !important;
 }
 
 .zero-recent-play-card {
-    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
-    -fx-background-radius: 12px;
-    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
-    -fx-border-radius: 12px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62)) !important;
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04)) !important;
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-padding: 14px 18px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 14, 0, 0, 3);
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.38), 20, 0, 0, 4);
     -fx-cursor: hand;
 }
 
 .zero-recent-play-card:hover {
-    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
-    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+    -fx-background-color: linear-gradient(to bottom right, rgba(22, 33, 58, 0.92), rgba(18, 28, 48, 0.75)) !important;
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20)) !important;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.25), 24, 0, 0, 4);
 }
 
 .zero-recent-instance-name {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF !important;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff !important;
 }
 
 .zero-recent-play-card .svg {
-    -fx-fill: #38BDF8 !important;
+    -fx-fill: #38bdf8 !important;
 }
 
 .zero-instance-selector-bar {
-    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
-    -fx-border-radius: 10px;
+    -fx-background-color: linear-gradient(to right, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.68)) !important;
+    -fx-background-radius: 14px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05)) !important;
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
     -fx-padding: 8px 16px;
     -fx-min-width: 370px;
     -fx-max-width: 370px;
     -fx-pref-height: 44px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 10, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0, 0, 3);
     -fx-cursor: hand;
 }
 
 .zero-instance-selector-bar:hover {
-    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
-    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
+    -fx-background-color: linear-gradient(to right, rgba(22, 33, 58, 0.95), rgba(18, 28, 50, 0.80)) !important;
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20)) !important;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.30), 20, 0, 0, 4);
 }
 
 .zero-instance-name {
     -fx-font-size: 13.5px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF !important;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff !important;
 }
 
 .zero-instance-selector-bar .svg {
-    -fx-fill: #38BDF8 !important;
+    -fx-fill: #38bdf8 !important;
 }
 
 .zero-sub-hint {
     -fx-font-size: 11px;
-    -fx-text-fill: #94A3B8 !important;
+    -fx-text-fill: #94a3b8 !important;
+}
+
+.zero-quick-action-bar {
+    -fx-padding: 4px 0;
 }
 
 .zero-quick-btn {
-    -fx-background-color: rgba(18, 24, 34, 0.82) !important;
-    -fx-background-radius: 8px;
-    -fx-border-color: rgba(255, 255, 255, 0.12) !important;
-    -fx-border-radius: 8px;
+    -fx-background-color: rgba(15, 23, 42, 0.72) !important;
+    -fx-background-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04)) !important;
+    -fx-border-radius: 20px;
     -fx-border-width: 1px;
-    -fx-text-fill: #E2E8F0 !important;
+    -fx-padding: 6px 14px;
+    -fx-text-fill: #e2e8f0 !important;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 600;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2);
 }
 
 .zero-quick-btn:hover {
-    -fx-background-color: rgba(26, 34, 48, 0.92) !important;
-    -fx-border-color: rgba(56, 189, 248, 0.45) !important;
-    -fx-text-fill: #38BDF8 !important;
+    -fx-background-color: rgba(24, 35, 62, 0.90) !important;
+    -fx-border-color: rgba(56, 189, 248, 0.50) !important;
+    -fx-text-fill: #ffffff !important;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.30), 12, 0, 0, 2);
 }
 
 .zero-quick-btn .svg {
-    -fx-fill: #38BDF8 !important;
+    -fx-fill: #38bdf8 !important;
+}
+
+.zero-quick-btn:hover .svg {
+    -fx-fill: #7dd3fc !important;
 }
 
 /* Light Theme Popup Menus */
 .popup-menu-content {
     -fx-background-color: rgba(255, 255, 255, 0.96);
-    -fx-background-radius: 12px;
+    -fx-background-radius: 14px;
     -fx-border-color: rgba(0, 0, 0, 0.12);
-    -fx-border-radius: 12px;
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.16), 18, 0, 0, 4);
-    -fx-padding: 4px;
+    -fx-padding: 6px;
 }
 
 .popup-menu-content .menu-container {
@@ -301,18 +374,18 @@
 .popup-menu-content .menu-container Text,
 .popup-menu-content .title,
 .popup-menu-content .header-label {
-    -fx-text-fill: #0F172A !important;
-    -fx-fill: #0F172A !important;
+    -fx-text-fill: #0f172a !important;
+    -fx-fill: #0f172a !important;
 }
 
 .popup-menu-content .subtitle,
 .popup-menu-content .menu-container .subtitle {
-    -fx-text-fill: #64748B !important;
-    -fx-fill: #64748B !important;
+    -fx-text-fill: #64748b !important;
+    -fx-fill: #64748b !important;
 }
 
 .popup-menu-content .svg {
-    -fx-fill: #0284C7 !important;
+    -fx-fill: #0284c7 !important;
 }
 
 .launch-button-hero {
@@ -320,19 +393,24 @@
     -fx-max-width: 370px;
     -fx-min-height: 52px;
     -fx-max-height: 52px;
-    -fx-background-color: linear-gradient(to bottom right, #0284c7, #0369a1);
-    -fx-background-radius: 12px;
+    -fx-background-color: linear-gradient(to right, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+    -fx-background-radius: 14px;
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.08));
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(2, 132, 199, 0.35), 18, 0.2, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.55), 24, 0.25, 0, 5);
 }
 
 .launch-button-hero:hover {
-    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #0284c7);
+    -fx-background-color: linear-gradient(to right, #0369a1 0%, #0284c7 50%, #0ea5e9 100%);
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.60), rgba(56, 189, 248, 0.40));
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.75), 30, 0.35, 0, 6);
 }
 
 .launch-button-hero:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
 }

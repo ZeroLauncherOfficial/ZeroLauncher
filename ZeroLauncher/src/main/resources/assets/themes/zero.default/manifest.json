@@ -31,5 +31,9 @@
       }
     }
   ],
-  "theme": {}
+  "theme": {
+    "titleBar": {
+      "transparent": true
+    }
+  }
 }

@@ -753,7 +753,7 @@ public final class ThemePackManager {
     private static boolean currentTitleBarTransparent() throws IOException {
         return SettingsManager.settings().getThemeAppearanceOverrides().contains(LauncherSettings.THEME_APPEARANCE_TITLE_BAR_TRANSPARENT)
                 ? settings().titleBarTransparentProperty().get()
-                : Objects.requireNonNullElse(resolveCurrentTitleBarTransparent(currentResolveContext()), false);
+                : Objects.requireNonNullElse(resolveCurrentTitleBarTransparent(currentResolveContext()), true);
     }
 
     /// Returns whether the current launcher window should be transparent.

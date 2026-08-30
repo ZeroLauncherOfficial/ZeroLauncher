@@ -43,26 +43,55 @@
 }
 
 /*******************************************************************************
- * Zero Launcher Fluent 2 Obsidian Acrylic Design Tokens                       *
+ * Zero Launcher Fluent 2 Liquid Glass & Obsidian Acrylic Design Tokens        *
  ******************************************************************************/
 
 .zero-top-nav-bar {
-    -fx-padding: 0 12px;
+    -fx-padding: 6px 16px;
+}
+
+.zero-nav-brand-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.65);
+    -fx-background-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 10, 0, 0, 2);
+}
+
+.zero-nav-brand-capsule:hover {
+    -fx-background-color: rgba(22, 33, 58, 0.85);
+    -fx-border-color: rgba(56, 189, 248, 0.50);
 }
 
 .zero-brand-title {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 800;
     -fx-text-fill: #ffffff !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.75), 6, 0, 0, 1);
+}
+
+.zero-nav-tabs-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.60);
+    -fx-background-radius: 22px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 22px;
+    -fx-border-width: 1px;
+    -fx-padding: 2px 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0, 0, 2);
 }
 
 .zero-nav-tab {
-    -fx-padding: 4px 13px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 18px;
+    -fx-padding: 5px 14px;
     -fx-font-size: 13px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 700;
     -fx-text-fill: #ffffff !important;
-    -fx-opacity: 0.88;
+    -fx-opacity: 0.92;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.65), 4, 0, 0, 1);
 }
 
 .zero-nav-tab .svg {
@@ -70,7 +99,7 @@
 }
 
 .zero-nav-tab:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.22);
+    -fx-background-color: rgba(255, 255, 255, 0.16);
     -fx-text-fill: #ffffff !important;
     -fx-opacity: 1.0;
 }
@@ -80,12 +109,15 @@
 }
 
 .zero-nav-tab.active {
-    -fx-background-color: rgba(255, 255, 255, 0.30);
+    -fx-background-color: linear-gradient(to bottom, rgba(56, 189, 248, 0.35), rgba(14, 165, 233, 0.20));
+    -fx-background-radius: 18px;
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.40), rgba(56, 189, 248, 0.30));
+    -fx-border-radius: 18px;
+    -fx-border-width: 1px;
     -fx-text-fill: #ffffff !important;
-    -fx-font-weight: bold;
+    -fx-font-weight: 800;
     -fx-opacity: 1.0;
-    -fx-border-color: #ffffff;
-    -fx-border-width: 0 0 3px 0;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.45), 8, 0, 0, 1);
 }
 
 .zero-nav-tab.active .svg {
@@ -93,23 +125,25 @@
 }
 
 .zero-nav-bgm-capsule {
-    -fx-background-color: rgba(15, 23, 42, 0.70);
+    -fx-background-color: rgba(15, 23, 42, 0.65);
     -fx-background-radius: 20px;
-    -fx-border-color: rgba(56, 189, 248, 0.35);
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.45), rgba(255, 255, 255, 0.08));
     -fx-border-radius: 20px;
     -fx-border-width: 1px;
     -fx-padding: 4px 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 10, 0, 0, 2);
 }
 
 .zero-nav-bgm-capsule:hover {
-    -fx-background-color: rgba(20, 30, 55, 0.90);
-    -fx-border-color: rgba(56, 189, 248, 0.65);
+    -fx-background-color: rgba(22, 33, 58, 0.85);
+    -fx-border-color: rgba(56, 189, 248, 0.70);
 }
 
 .zero-nav-bgm-label {
     -fx-font-size: 11px;
     -fx-font-weight: 600;
-    -fx-text-fill: #e2e8f0;
+    -fx-text-fill: #f1f5f9;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.60), 4, 0, 0, 1);
 }
 
 .zero-greeting-prefix {
@@ -137,18 +171,19 @@
 }
 
 .zero-recent-play-card {
-    -fx-background-color: rgba(15, 23, 42, 0.75);
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-border-radius: 14px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62));
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
     -fx-padding: 12px 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.38), 20, 0, 0, 4);
 }
 
 .zero-recent-play-card:hover {
-    -fx-background-color: rgba(22, 33, 58, 0.85);
-    -fx-border-color: rgba(56, 189, 248, 0.40);
+    -fx-background-color: linear-gradient(to bottom right, rgba(22, 33, 58, 0.92), rgba(18, 28, 48, 0.75));
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20));
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.25), 24, 0, 0, 4);
 }
 
 .zero-recent-instance-name {
@@ -163,18 +198,19 @@
 }
 
 .zero-player-card {
-    -fx-background-color: rgba(15, 23, 42, 0.75);
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-border-radius: 14px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62));
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
     -fx-padding: 10px 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.38), 20, 0, 0, 4);
 }
 
 .zero-player-card:hover {
-    -fx-background-color: rgba(22, 33, 58, 0.85);
-    -fx-border-color: rgba(56, 189, 248, 0.40);
+    -fx-background-color: linear-gradient(to bottom right, rgba(22, 33, 58, 0.92), rgba(18, 28, 48, 0.75));
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20));
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.25), 24, 0, 0, 4);
 }
 
 .zero-player-name {
@@ -206,11 +242,11 @@
 }
 
 .zero-badge-green {
-    -fx-background-color: rgba(16, 185, 129, 0.18);
-    -fx-border-color: rgba(52, 211, 153, 0.4);
-    -fx-border-radius: 6px;
+    -fx-background-color: rgba(16, 185, 129, 0.20);
+    -fx-border-color: rgba(52, 211, 153, 0.45);
+    -fx-border-radius: 8px;
     -fx-border-width: 1px;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
     -fx-padding: 2px 8px;
     -fx-font-size: 11px;
     -fx-font-weight: 600;
@@ -218,11 +254,11 @@
 }
 
 .zero-badge-purple {
-    -fx-background-color: rgba(168, 85, 247, 0.18);
-    -fx-border-color: rgba(192, 132, 252, 0.4);
-    -fx-border-radius: 6px;
+    -fx-background-color: rgba(168, 85, 247, 0.20);
+    -fx-border-color: rgba(192, 132, 252, 0.45);
+    -fx-border-radius: 8px;
     -fx-border-width: 1px;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
     -fx-padding: 2px 8px;
     -fx-font-size: 11px;
     -fx-font-weight: 600;
@@ -230,11 +266,11 @@
 }
 
 .zero-badge-cyan {
-    -fx-background-color: rgba(14, 165, 233, 0.18);
-    -fx-border-color: rgba(56, 189, 248, 0.4);
-    -fx-border-radius: 6px;
+    -fx-background-color: rgba(14, 165, 233, 0.20);
+    -fx-border-color: rgba(56, 189, 248, 0.45);
+    -fx-border-radius: 8px;
     -fx-border-width: 1px;
-    -fx-background-radius: 6px;
+    -fx-background-radius: 8px;
     -fx-padding: 2px 8px;
     -fx-font-size: 11px;
     -fx-font-weight: 600;
@@ -242,21 +278,22 @@
 }
 
 .zero-instance-selector-bar {
-    -fx-background-color: rgba(15, 23, 42, 0.78);
-    -fx-background-radius: 12px;
-    -fx-border-color: rgba(255, 255, 255, 0.10);
-    -fx-border-radius: 12px;
+    -fx-background-color: linear-gradient(to right, rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.68));
+    -fx-background-radius: 14px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.05));
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
     -fx-padding: 8px 16px;
     -fx-min-width: 370px;
     -fx-max-width: 370px;
     -fx-pref-height: 44px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 12, 0, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 16, 0, 0, 3);
 }
 
 .zero-instance-selector-bar:hover {
-    -fx-background-color: rgba(22, 33, 58, 0.90);
-    -fx-border-color: rgba(56, 189, 248, 0.50);
+    -fx-background-color: linear-gradient(to right, rgba(22, 33, 58, 0.95), rgba(18, 28, 50, 0.80));
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.60), rgba(14, 165, 233, 0.20));
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.30), 20, 0, 0, 4);
 }
 
 .zero-instance-name {
@@ -272,7 +309,7 @@
 .popup-menu-content {
     -fx-background-color: rgba(15, 23, 42, 0.95);
     -fx-background-radius: 14px;
-    -fx-border-color: rgba(56, 189, 248, 0.35);
+    -fx-border-color: linear-gradient(to bottom right, rgba(56, 189, 248, 0.45), rgba(255, 255, 255, 0.08));
     -fx-border-radius: 14px;
     -fx-border-width: 1px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 24, 0, 0, 6);
@@ -311,22 +348,26 @@
     -fx-max-width: 370px;
     -fx-min-height: 52px;
     -fx-max-height: 52px;
-    -fx-background-color: linear-gradient(to right, #0284c7, #0ea5e9, #38bdf8);
-    -fx-background-radius: 12px;
+    -fx-background-color: linear-gradient(to right, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+    -fx-background-radius: 14px;
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.08));
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.50), 20, 0.20, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.55), 24, 0.25, 0, 5);
 }
 
 .launch-button-hero:hover {
-    -fx-background-color: linear-gradient(to right, #0369a1, #0284c7, #0ea5e9);
+    -fx-background-color: linear-gradient(to right, #0369a1 0%, #0284c7 50%, #0ea5e9 100%);
+    -fx-border-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.60), rgba(56, 189, 248, 0.40));
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
-    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.65), 24, 0.30, 0, 5);
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.75), 30, 0.35, 0, 6);
 }
 
 .launch-button-hero:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
 }
 
 .zero-quick-action-bar {
@@ -335,15 +376,16 @@
 
 .zero-quick-btn {
     -fx-background-color: rgba(15, 23, 42, 0.72);
-    -fx-background-radius: 18px;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-border-radius: 18px;
+    -fx-background-radius: 20px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 20px;
     -fx-border-width: 1px;
-    -fx-padding: 6px 12px;
+    -fx-padding: 6px 14px;
     -fx-text-fill: #e2e8f0;
     -fx-font-size: 11.5px;
     -fx-font-weight: 600;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 8, 0, 0, 2);
 }
 
 .zero-quick-btn .svg {
@@ -351,9 +393,10 @@
 }
 
 .zero-quick-btn:hover {
-    -fx-background-color: rgba(24, 35, 62, 0.88);
-    -fx-border-color: rgba(56, 189, 248, 0.45);
+    -fx-background-color: rgba(24, 35, 62, 0.90);
+    -fx-border-color: rgba(56, 189, 248, 0.50);
     -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.30), 12, 0, 0, 2);
 }
 
 .zero-quick-btn:hover .svg {
@@ -375,19 +418,19 @@
 }
 
 .card, .card-no-padding {
-    -fx-background-color: rgba(15, 23, 42, 0.75);
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-border-radius: 14px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.62));
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.36), 18, 0, 0, 4);
 }
 
 .card-non-transparent {
     -fx-background-color: #0f172a;
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.10);
-    -fx-border-radius: 14px;
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
 }
 
@@ -401,12 +444,12 @@
 }
 
 .options-list {
-    -fx-background-color: rgba(15, 23, 42, 0.72);
-    -fx-background-radius: 14px;
-    -fx-border-color: rgba(255, 255, 255, 0.08);
-    -fx-border-radius: 14px;
+    -fx-background-color: linear-gradient(to bottom right, rgba(15, 23, 42, 0.80), rgba(15, 23, 42, 0.60));
+    -fx-background-radius: 16px;
+    -fx-border-color: linear-gradient(to bottom right, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+    -fx-border-radius: 16px;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 16, 0, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.32), 18, 0, 0, 3);
 }
 
 .options-list-item {

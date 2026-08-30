@@ -341,7 +341,7 @@ public final class LauncherSettings extends ObservableSetting implements JsonSch
 
     /// Whether the launcher title bar is transparent.
     @SerializedName("titleBarTransparent")
-    private final BooleanProperty titleBarTransparent = new SimpleBooleanProperty(false);
+    private final BooleanProperty titleBarTransparent = new SimpleBooleanProperty(true);
 
     /// Returns the transparent title-bar property.
     public BooleanProperty titleBarTransparentProperty() {

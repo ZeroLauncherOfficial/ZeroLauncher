@@ -1058,9 +1058,9 @@ public final class Themes {
                 try {
                     return Objects.requireNonNullElse(
                             ThemePackManager.resolveCurrentTitleBarTransparent(ThemePackManager.currentResolveContext()),
-                            false);
+                            true);
                 } catch (IOException | RuntimeException e) {
-                    return false;
+                    return true;
                 }
             },
             settings().titleBarTransparentProperty(),
