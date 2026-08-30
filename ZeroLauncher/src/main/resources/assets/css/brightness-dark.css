@@ -28,8 +28,8 @@
 }
 
 .gray-background {
-    -fx-background-color: rgba(11, 17, 32, 0.92);
-    -fx-border-color: rgba(255, 255, 255, 0.07);
+    -fx-background-color: rgba(15, 23, 42, 0.65);
+    -fx-border-color: rgba(255, 255, 255, 0.08);
     -fx-border-width: 0 1px 0 0;
 }
 
@@ -448,7 +448,47 @@
 }
 
 .options-sublist {
-    -fx-background-color: rgba(11, 17, 32, 0.80);
-    -fx-background-radius: 12px;
+    -fx-background-color: rgba(15, 23, 42, 0.70);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+}
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.jfx-list-view, .list-view {
+    -fx-background-color: transparent;
+}
+
+.navigation-drawer {
+    -fx-background-color: rgba(15, 23, 42, 0.65);
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-width: 0 1px 0 0;
+}
+
+.navigation-drawer-item {
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 14px;
+    -fx-cursor: hand;
+}
+
+.navigation-drawer-item:hover {
+    -fx-background-color: rgba(56, 189, 248, 0.14);
+}
+
+.navigation-drawer-item:selected {
+    -fx-background-color: rgba(56, 189, 248, 0.22);
+    -fx-text-fill: #38bdf8;
+}
+
+.advanced-list-box-content {
+    -fx-background-color: transparent;
+}
+
+.component-list {
+    -fx-background-color: transparent;
 }
 

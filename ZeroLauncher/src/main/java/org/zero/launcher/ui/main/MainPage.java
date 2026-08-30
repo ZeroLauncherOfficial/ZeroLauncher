@@ -440,18 +440,14 @@ public final class MainPage extends StackPane implements DecoratorPage {
 
         rightPane.getChildren().setAll(heroHeader, instanceSelector, launchButton, quickActionBar);
 
-        // ==================== FULL-BLEED BACKGROUND OVERLAY & MAIN SPLIT ====================
-        javafx.scene.layout.Region darkOverlay = new javafx.scene.layout.Region();
-        darkOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.40);");
-        darkOverlay.setMouseTransparent(true);
-
+        // ==================== FULL-BLEED VIBRANT WALLPAPER & MAIN SPLIT ====================
         HBox mainSplit = new HBox(36);
         mainSplit.setAlignment(Pos.CENTER);
         mainSplit.setPadding(new Insets(24, 40, 24, 40));
         mainSplit.getChildren().setAll(leftPane, rightPane);
         StackPane.setAlignment(mainSplit, Pos.CENTER);
 
-        getChildren().addAll(darkOverlay, updatePane, mainSplit);
+        getChildren().addAll(updatePane, mainSplit);
 
     }
 

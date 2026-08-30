@@ -161,7 +161,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
 
         Region backgroundOverlay = new Region();
         backgroundOverlay.setMouseTransparent(true);
-        backgroundOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.14);");
+        backgroundOverlay.setStyle("-fx-background-color: transparent;");
         backgroundOverlay.visibleProperty().bind(backgroundNode.backgroundProperty().isNotNull());
 
         BorderPane frame = new BorderPane();

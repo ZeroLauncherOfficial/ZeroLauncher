@@ -400,3 +400,40 @@
     -fx-scale-x: 0.97;
     -fx-scale-y: 0.97;
 }
+
+.scroll-pane, .scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.jfx-list-view, .list-view {
+    -fx-background-color: transparent;
+}
+
+.navigation-drawer {
+    -fx-background-color: rgba(255, 255, 255, 0.75);
+    -fx-border-color: rgba(0, 0, 0, 0.08);
+    -fx-border-width: 0 1px 0 0;
+}
+
+.navigation-drawer-item {
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 14px;
+    -fx-cursor: hand;
+}
+
+.navigation-drawer-item:hover {
+    -fx-background-color: rgba(2, 132, 199, 0.08);
+}
+
+.navigation-drawer-item:selected {
+    -fx-background-color: rgba(2, 132, 199, 0.16);
+    -fx-text-fill: #0284c7;
+}
+
+.advanced-list-box-content {
+    -fx-background-color: transparent;
+}
+
+.component-list {
+    -fx-background-color: transparent;
+}

@@ -107,11 +107,13 @@ public class RootPage extends StackPane implements DecoratorPage {
         brandBox.getChildren().setAll(logoCloud, logoTitle);
         FXUtils.onClicked(brandBox, () -> selectTab(TabId.HOME));
 
-        // 2. Navigation Tabs (Center)
+        // 2. Center Spacers & Navigation Tabs
+        javafx.scene.layout.Region leftSpacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(leftSpacer, Priority.ALWAYS);
+
         HBox navTabsBox = new HBox(6);
-        navTabsBox.setAlignment(Pos.CENTER_LEFT);
+        navTabsBox.setAlignment(Pos.CENTER);
         navTabsBox.getStyleClass().add("zero-nav-tabs");
-        HBox.setHgrow(navTabsBox, Priority.ALWAYS);
 
         addNavTab(navTabsBox, TabId.HOME, "首頁", SVG.HOME);
         addNavTab(navTabsBox, TabId.GAME, "遊戲", SVG.STADIA_CONTROLLER);
@@ -120,7 +122,8 @@ public class RootPage extends StackPane implements DecoratorPage {
         addNavTab(navTabsBox, TabId.RESOURCES, "資源", SVG.TEXTURE);
         addNavTab(navTabsBox, TabId.SETTINGS, "設定", SVG.SETTINGS);
 
-        topNavBar.getChildren().setAll(brandBox, navTabsBox);
+        javafx.scene.layout.Region rightSpacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(rightSpacer, Priority.ALWAYS);
 
         // 3. Mini BGM Widget (Right of top bar)
         HBox bgmWidget = new HBox(6);
@@ -160,7 +163,8 @@ public class RootPage extends StackPane implements DecoratorPage {
         });
 
         FXUtils.installFastTooltip(bgmWidget, "Minecraft 經典 BGM\n左鍵：播放 / 暫停\n右鍵：切換下一首");
-        topNavBar.getChildren().add(bgmWidget);
+
+        topNavBar.getChildren().setAll(brandBox, leftSpacer, navTabsBox, rightSpacer, bgmWidget);
 
         return topNavBar;
     }
