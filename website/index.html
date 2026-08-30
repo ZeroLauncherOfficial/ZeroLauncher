@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Launcher — 極致絲滑的次世代 Minecraft 啟動器</title>
+    <meta name="description" content="Zero Launcher 是一款專為 Minecraft 玩家打造的現代化開源啟動器，融合 自研靈動物理微動效、全版本 Loader 支援與多線程極速下載。">
+    <meta name="keywords" content="Zero Launcher, Minecraft 啟動器, Minecraft Launcher, 我的世界啟動器">
+    <link rel="icon" href="https://api.iconify.design/solar:gamepad-bold-duotone.svg?color=%2338bdf8" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        zero: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            dark: '#0B0F17',
+                            card: 'rgba(18, 24, 38, 0.75)',
+                            border: 'rgba(255, 255, 255, 0.08)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Microsoft JhengHei UI"', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glow': '0 0 50px -10px rgba(14, 165, 233, 0.35)',
+                        'glow-lg': '0 0 80px -15px rgba(56, 189, 248, 0.45)',
+                        'card': '0 10px 30px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070A10;
+            color: #F1F5F9;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(14, 165, 233, 0.18), transparent 70%),
+                radial-gradient(circle at 10% 40%, rgba(56, 189, 248, 0.06), transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.08), transparent 50%);
+        }
+
+        .glass-panel {
+            background: rgba(16, 22, 34, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(56, 189, 248, 0.35);
+            transform: translateY(-3px);
+            transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .btn-zero {
+            transition: all 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .btn-zero:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
+        }
+        .btn-zero:active {
+            transform: scale(0.96);
+        }
+
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen flex flex-col font-sans selection:bg-zero-500 selection:text-white">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/5 bg-[#070A10]/80">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Brand -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-zero-600 to-zero-400 flex items-center justify-center shadow-glow group-hover:scale-105 transition-transform">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-zero-400">Zero Launcher</span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#features" class="hover:text-zero-400 transition-colors">特色亮點</a>
+                <a href="#download" class="hover:text-zero-400 transition-colors">版本下載</a>
+                <a href="#credits" class="hover:text-zero-400 transition-colors">特別鳴謝</a>
+                <a href="#faq" class="hover:text-zero-400 transition-colors">常見問題</a>
+            </nav>
+
+            <!-- GitHub Star Button -->
+            <div class="flex items-center gap-4">
+                <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher" target="_blank" rel="noopener noreferrer" 
+                   class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-zero-400/40 text-sm font-medium hover:bg-white/10 transition-all">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-grow">
+        <section class="relative pt-20 pb-28 px-6 overflow-hidden">
+            <div class="max-w-5xl mx-auto text-center relative z-10">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zero-500/10 border border-zero-500/30 text-zero-400 text-xs font-semibold uppercase tracking-wider mb-6 animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-zero-400"></span>
+                    Zero Launcher v1.0.0 正式發布
+                </div>
+
+                <!-- Main Title -->
+                <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-tight md:leading-none mb-6">
+                    極致絲滑 · 專為玩家打造的<br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-zero-400 via-sky-300 to-indigo-400">
+                        次世代 Minecraft 啟動器
+                    </span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-slate-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                    配備自研三次貝氏物理微動效，掃除傳統死板手感。具備物理彈簧回彈、多線程極速下載與全版本 Loader 深度整合。
+                </p>
+
+                <!-- Download CTA Group -->
+                <div id="download" class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-12">
+                    <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases/latest" 
+                       class="btn-zero w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-zero-500 to-zero-600 text-white font-bold text-base flex items-center justify-center gap-3 shadow-glow-lg border border-white/20">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>下載 Windows 版 (.exe)</span>
+                    </a>
+
+                    <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases/latest" 
+                       class="btn-zero w-full sm:w-auto px-6 py-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-200 font-semibold text-base flex items-center justify-center gap-2">
+                        <span>通用版 (.jar)</span>
+                    </a>
+                </div>
+
+                <!-- Info tags -->
+                <div class="flex items-center justify-center gap-6 text-xs text-slate-400 font-medium">
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>免安裝隨開即用</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>完全免費且開源 (GPL-3.0)</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>支援 Win 10/11</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Grid Section -->
+        <section id="features" class="py-20 px-6 max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4">
+                    精心雕琢的每一處細節
+                </h2>
+                <p class="text-slate-400 text-base">
+                    不只是一個啟動器，更是你暢遊方塊世界的極速樞紐。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-zero-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">自研靈動物理微動效</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        自研三次貝氏曲線與 BackEase 彈力回彈。告別死板水波紋，滑鼠懸停 1.025x 浮空，按鍵下壓 0.96x 觸感反饋。
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">多線程極速下載鏡像</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        內建官方源、BMCLAPI、MCBBS 自動測速併發下載引擎，遊戲核心、資源與依賴函式庫秒速拉取，不再卡 99%。
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">全版本 Loader 深度支援</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        完美相容 Forge、NeoForge、Fabric、Quilt、Cleanroom、LiteLoader 與 OptiFine，一鍵自動安裝與自動解析衝突。
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">微軟官方認證登入</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        支援 Xbox Live 通用官方認證鏈，安全直連微軟正版伺服器，同時兼備離線模式與自定義外置登入。
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">經典 BGM 點唱機</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        內建 C418 經典原聲音樂膠囊（Sweden、Subwoofer Lullaby 等），點擊即聽，重溫第一次踏入方塊世界的最初感動。
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-panel p-8 rounded-3xl relative overflow-hidden group">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">截圖相簿與存檔時光機</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        在首頁一鍵瀏覽所有精彩遊戲截圖，支援快速複製至剪貼簿貼到 Discord/LINE，世界存檔一鍵自動備份與還原。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Credits & Acknowledgements Section -->
+        <section id="credits" class="py-16 px-6 max-w-5xl mx-auto border-t border-white/5">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">特別鳴謝與開源社群</h2>
+                <p class="text-slate-400 text-sm">站在巨人的肩膀上，感謝所有優秀的開源貢獻者</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <a href="https://github.com/yanggu0413" target="_blank" rel="noopener noreferrer" 
+                   class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-500 flex items-center justify-center font-bold text-white text-lg mb-3">羊</div>
+                    <span class="font-bold text-white group-hover:text-zero-400 transition-colors">羊咕</span>
+                    <span class="text-xs text-slate-400 mt-1">核心架構與社群貢獻</span>
+                </a>
+
+                <a href="https://github.com/cat6666-me" target="_blank" rel="noopener noreferrer" 
+                   class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-pink-400 to-rose-500 flex items-center justify-center font-bold text-white text-lg mb-3">貓</div>
+                    <span class="font-bold text-white group-hover:text-zero-400 transition-colors">貓貓</span>
+                    <span class="text-xs text-slate-400 mt-1">介面美化與微動效設計</span>
+                </a>
+
+                <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher" target="_blank" rel="noopener noreferrer" 
+                   class="glass-panel p-6 rounded-2xl flex flex-col items-center text-center group">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-400 to-orange-500 flex items-center justify-center font-bold text-white text-lg mb-3">H</div>
+                    <span class="font-bold text-white group-hover:text-zero-400 transition-colors">Zero 開發團隊</span>
+                    <span class="text-xs text-slate-400 mt-1">強大穩定的啟動器核心底層</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-20 px-6 max-w-4xl mx-auto border-t border-white/5">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-white mb-3">常見問題</h2>
+                <p class="text-slate-400 text-sm">初次使用 Zero Launcher？這裡有你需要的解答。</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="font-bold text-white mb-2">Q: 執行 Zero Launcher 需要另外安裝 Java 嗎？</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Zero Launcher.exe 會自動智慧搜尋您電腦現有的 Java 環境。若完全未安裝，啟動器會貼心引導您一鍵下載推薦的 Eclipse Adoptium Java 21。
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="font-bold text-white mb-2">Q: 我原本的 Minecraft 存檔與模組會遺失嗎？</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        完全不會。Zero Launcher 具備完善的向下相容遷移機制，會無縫繼承並保護您所有現存的遊戲實例、存檔、模組與設定檔。
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="font-bold text-white mb-2">Q: 為什麼點擊按鈕沒有水波紋了？</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        這是 Zero Launcher 的特色之一！我們全面移除了 Android 手機 App 風格的延遲水波紋，改用桌面端自研的即時物理下壓與彈簧回彈手感，反應更加敏捷！
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-10 px-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 Zero Launcher 開源專案 · 基於 GNU General Public License v3.0 發布</p>
+            <div class="flex items-center gap-6 text-slate-400">
+                <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher" class="hover:text-zero-400 transition-colors">GitHub</a>
+                <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases" class="hover:text-zero-400 transition-colors">發布版本</a>
+                <a href="https://github.com/ZeroLauncherOfficial/ZeroLauncher/issues" class="hover:text-zero-400 transition-colors">問題反饋</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
