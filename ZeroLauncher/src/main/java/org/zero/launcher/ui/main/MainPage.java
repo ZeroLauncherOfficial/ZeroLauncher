@@ -559,42 +559,7 @@ public final class MainPage extends StackPane implements DecoratorPage {
     }
 
     private void launchNoGame() {
-        DownloadProvider downloadProvider = DownloadProviders.getDownloadProvider();
-        VersionList<?> versionList = downloadProvider.getVersionListById("game");
-
-        Holder<String> gameVersionHolder = new Holder<>();
-        Task<?> task = versionList.refreshAsync("")
-                .thenSupplyAsync(() -> versionList.getVersions("").stream()
-                        .filter(it -> it.getVersionType() == RELEASE)
-                        .filter(it -> NativePatcher.checkSupportedStatus(GameVersionNumber.asGameVersion(it.getGameVersion()), Platform.SYSTEM_PLATFORM, OperatingSystem.SYSTEM_VERSION) != NativePatcher.SupportStatus.UNSUPPORTED)
-                        .sorted()
-                        .findFirst()
-                        .orElseThrow(() -> new IOException("No versions found")))
-                .thenComposeAsync(version -> {
-                    ZeroLauncherGameRepository repository = GameDirectoryManager.getSelectedRepository();
-                    DefaultDependencyManager dependency = repository.getDependency();
-                    String gameVersion = gameVersionHolder.value = version.getGameVersion();
-
-                    return dependency.gameBuilder()
-                            .name(gameVersion)
-                            .gameVersion(gameVersion)
-                            .buildAsync();
-                })
-                .whenComplete(any -> GameDirectoryManager.getSelectedRepository().refreshVersions())
-                .whenComplete(Schedulers.javafx(), (result, exception) -> {
-                    if (exception == null) {
-                        GameDirectoryManager.getSelectedRepository().setSelectedInstance(gameVersionHolder.value);
-                        launch();
-                    } else if (exception instanceof CancellationException) {
-                        // User cancelled, silently dismiss
-                    } else {
-                        LOG.warning("Failed to install game", exception);
-                        Controllers.dialog(StringUtils.getStackTrace(exception),
-                                i18n("install.failed"),
-                                MessageDialogPane.MessageType.WARNING);
-                    }
-                });
-        Controllers.taskDialog(task, i18n("version.launch.empty.installing"), TaskCancellationAction.NORMAL);
+        Controllers.navigate(Controllers.getDownloadPage());
     }
 
     private void onUpgrade() {

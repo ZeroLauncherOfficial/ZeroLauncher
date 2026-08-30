@@ -160,8 +160,8 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         StackPane.setAlignment(backgroundNode, Pos.BOTTOM_CENTER);
 
         javafx.scene.effect.ColorAdjust bgDimAdjust = new javafx.scene.effect.ColorAdjust();
-        bgDimAdjust.setBrightness(-0.16);
-        bgDimAdjust.setContrast(0.04);
+        bgDimAdjust.setBrightness(-0.28);
+        bgDimAdjust.setContrast(0.06);
         backgroundNode.setEffect(bgDimAdjust);
 
         Region backgroundOverlay = new Region();
