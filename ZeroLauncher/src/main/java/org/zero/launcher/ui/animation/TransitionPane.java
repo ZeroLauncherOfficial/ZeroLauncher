@@ -25,32 +25,40 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import org.zero.launcher.ui.FXUtils;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
+import org.zero.launcher.ui.FXUtils;
 
+/// Container supporting animated transitions between child content nodes.
+@NotNullByDefault
 public class TransitionPane extends StackPane {
 
-    private Node currentNode;
+    private @Nullable Node currentNode;
 
+    /// Constructs a TransitionPane with overflow hidden.
     public TransitionPane() {
         FXUtils.setOverflowHidden(this);
     }
 
-    public Node getCurrentNode() {
+    /// Returns the currently displayed node.
+    public @Nullable Node getCurrentNode() {
         return currentNode;
     }
 
+    /// Sets new content with default duration.
     public final void setContent(Node newView, AnimationProducer transition) {
         setContent(newView, transition, Duration.millis(220));
     }
 
+    /// Sets new content with default spring interpolator.
     public final void setContent(Node newView, AnimationProducer transition, Duration duration) {
         setContent(newView, transition, duration, Motion.FLUID_SPRING);
     }
 
+    /// Sets new content with custom duration and interpolator.
     public void setContent(Node newView, AnimationProducer transition,
                            Duration duration, Interpolator interpolator) {
-        Node previousNode = currentNode != newView && getWidth() > 0 && getHeight() > 0 ? currentNode : null;
+        @Nullable Node previousNode = currentNode != newView && getWidth() > 0 && getHeight() > 0 ? currentNode : null;
         currentNode = newView;
 
         if (!AnimationUtils.isAnimationEnabled() || previousNode == null || transition == ContainerAnimations.NONE) {

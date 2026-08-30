@@ -43,7 +43,6 @@ import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.ZeroSplashScreen;
 import org.zero.launcher.ui.animation.AnimationUtils;
-import org.zero.launcher.upgrade.UpdateChecker;
 import org.zero.launcher.upgrade.UpdateHandler;
 import org.zero.launcher.util.*;
 import org.zero.launcher.util.io.FileUtils;

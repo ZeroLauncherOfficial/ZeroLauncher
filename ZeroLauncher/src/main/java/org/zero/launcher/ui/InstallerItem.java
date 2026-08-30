@@ -33,11 +33,11 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.SkinBase;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.download.LibraryAnalyzer;
 import org.zero.launcher.setting.VersionIconType;
 import org.zero.launcher.ui.construct.ImageContainer;
 import org.zero.launcher.util.i18n.I18n;
-import org.zero.launcher.util.versioning.GameVersionNumber;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,9 +47,8 @@ import java.util.Set;
 import static org.zero.launcher.download.LibraryAnalyzer.LibraryType.*;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
-/**
- * @author Zero
- */
+/// Control representing an installer/version component item in download or version pages.
+@NotNullByDefault
 public class InstallerItem extends Control {
     private final String id;
     private final VersionIconType iconType;

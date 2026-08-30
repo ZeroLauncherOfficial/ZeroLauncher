@@ -25,12 +25,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.zero.launcher.task.*;
-import org.zero.launcher.ui.Controllers;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+import org.zero.launcher.task.FetchTask;
+import org.zero.launcher.task.TaskExecutor;
+import org.zero.launcher.task.TaskListener;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.util.TaskCancellationAction;
 import org.zero.launcher.util.i18n.I18n;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -38,9 +40,11 @@ import static org.zero.launcher.ui.FXUtils.onEscPressed;
 import static org.zero.launcher.ui.FXUtils.runInFX;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
+/// Dialog pane displaying task execution progress and cancellation control.
+@NotNullByDefault
 public class TaskExecutorDialogPane extends BorderPane {
-    private TaskExecutor executor;
-    private TaskCancellationAction onCancel;
+    private @Nullable TaskExecutor executor;
+    private @Nullable TaskCancellationAction onCancel;
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private final Consumer<FetchTask.SpeedEvent> speedEventHandler;
 
@@ -49,7 +53,8 @@ public class TaskExecutorDialogPane extends BorderPane {
     private final JFXButton btnCancel;
     private final TaskListPane taskListPane;
 
-    public TaskExecutorDialogPane(@NotNull TaskCancellationAction cancel) {
+    /// Constructs a dialog pane with specified cancellation action.
+    public TaskExecutorDialogPane(TaskCancellationAction cancel) {
         this.getStyleClass().add("task-executor-dialog-layout");
 
         FXUtils.setLimitWidth(this, 500);
@@ -131,7 +136,8 @@ public class TaskExecutorDialogPane extends BorderPane {
         lblTitle.setText(currentState);
     }
 
-    public void setCancel(TaskCancellationAction onCancel) {
+    /// Sets the task cancellation action.
+    public void setCancel(@Nullable TaskCancellationAction onCancel) {
         this.onCancel = onCancel;
 
         runInFX(() -> btnCancel.setDisable(onCancel == null));

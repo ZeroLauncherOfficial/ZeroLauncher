@@ -33,13 +33,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.animation.ContainerAnimations;
-import org.zero.launcher.ui.animation.Motion;
 import org.zero.launcher.ui.animation.TransitionPane;
 import org.zero.launcher.util.javafx.MappedObservableList;
-import org.jetbrains.annotations.Nullable;
 
+/// Tab header control managing tabs and content switching.
+@NotNullByDefault
 @SuppressWarnings("deprecation")
 public class TabHeader extends Control implements TabControl, PageAware {
 

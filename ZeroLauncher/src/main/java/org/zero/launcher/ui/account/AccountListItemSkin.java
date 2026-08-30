@@ -31,6 +31,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.auth.Account;
 import org.zero.launcher.auth.authlibinjector.AuthlibInjectorAccount;
 import org.zero.launcher.auth.authlibinjector.AuthlibInjectorServer;
@@ -42,19 +43,24 @@ import org.zero.launcher.task.Task;
 import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
+import org.zero.launcher.ui.animation.PclAnimationEngine;
 import org.zero.launcher.ui.construct.SpinnerPane;
 import org.zero.launcher.util.javafx.BindingMapping;
 
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
+/// Skin implementation for AccountListItem featuring PCL2 card physics.
+@NotNullByDefault
 public final class AccountListItemSkin extends SkinBase<AccountListItem> {
 
+    /// Constructs an AccountListItemSkin for the given AccountListItem.
     public AccountListItemSkin(AccountListItem skinnable) {
         super(skinnable);
 
         BorderPane root = new BorderPane();
         root.setCursor(Cursor.HAND);
         FXUtils.onClicked(root, skinnable::fire);
+        PclAnimationEngine.applyPclCard(root);
 
         JFXRadioButton chkSelected = new JFXRadioButton();
         chkSelected.setMouseTransparent(true);

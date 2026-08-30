@@ -57,6 +57,8 @@ import org.zero.launcher.util.i18n.LocaleUtils;
 import org.zero.launcher.util.io.FileUtils;
 import org.zero.launcher.util.io.Zipper;
 
+import org.jetbrains.annotations.NotNullByDefault;
+
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -66,12 +68,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static org.zero.launcher.setting.SettingsManager.state;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Controller page for Terracotta server/profile configuration and status monitoring.
+@NotNullByDefault
 public class TerracottaControllerPage extends StackPane {
     private static final String FEEDBACK_TIP = "terracotta-feedback";
     private static final ObjectProperty<TerracottaState> UI_STATE = new SimpleObjectProperty<>();

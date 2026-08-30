@@ -35,6 +35,7 @@ import javafx.scene.control.Skin;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.auth.Account;
 import org.zero.launcher.auth.authlibinjector.AuthlibInjectorServer;
 import org.zero.launcher.setting.Accounts;
@@ -46,18 +47,18 @@ import org.zero.launcher.ui.construct.AdvancedListItem;
 import org.zero.launcher.ui.construct.ClassTitle;
 import org.zero.launcher.ui.decorator.DecoratorAnimatedPage;
 import org.zero.launcher.ui.decorator.DecoratorPage;
-import org.zero.launcher.util.i18n.LocaleUtils;
 import org.zero.launcher.util.io.NetworkUtils;
 import org.zero.launcher.util.javafx.BindingMapping;
 import org.zero.launcher.util.javafx.MappedObservableList;
 
 import java.util.Locale;
 
-import static org.zero.launcher.setting.SettingsManager.userSettings;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.javafx.ExtendedProperties.createSelectedItemPropertyFor;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Account list and management page with authentication options and avatar display.
+@NotNullByDefault
 public final class AccountListPage extends DecoratorAnimatedPage implements DecoratorPage {
     static final BooleanProperty RESTRICTED = new SimpleBooleanProperty(false);
 

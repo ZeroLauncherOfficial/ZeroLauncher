@@ -25,6 +25,8 @@ import org.zero.launcher.util.io.FileUtils;
 import org.zero.launcher.util.io.JarUtils;
 import org.zero.launcher.util.platform.OperatingSystem;
 
+import org.jetbrains.annotations.NotNullByDefault;
+
 import javax.swing.JOptionPane;
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
@@ -37,11 +39,14 @@ import java.util.concurrent.CancellationException;
 import static org.zero.launcher.util.logging.Logger.LOG;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
+/// Application entry point configuring environment and launching the application.
+@NotNullByDefault
 public final class EntryPoint {
 
     private EntryPoint() {
     }
 
+    /// Application entry point method.
     public static void main(String[] args) {
         System.getProperties().putIfAbsent("java.net.useSystemProxies", "true");
         System.getProperties().putIfAbsent("javafx.autoproxy.disable", "true");
@@ -68,6 +73,7 @@ public final class EntryPoint {
         Launcher.main(args);
     }
 
+    /// Exits the application and flushes pending logs and saves.
     public static void exit(int exitCode) {
         FileSaver.shutdown();
         LOG.shutdown();
@@ -79,6 +85,13 @@ public final class EntryPoint {
             LOG.info("ZeroLauncher_FORCE_GPU: true");
             System.getProperties().putIfAbsent("prism.forceGPU", "true");
         }
+
+        // Hardware rendering and glyph cache optimization
+        System.getProperties().putIfAbsent("prism.dirtyopts", "true");
+        System.getProperties().putIfAbsent("prism.cacheshapes", "true");
+        System.getProperties().putIfAbsent("prism.glyphCacheWidth", "2048");
+        System.getProperties().putIfAbsent("prism.glyphCacheHeight", "2048");
+        System.getProperties().putIfAbsent("prism.scrollimagewin", "true");
 
         String animationFrameRate = System.getenv("ZeroLauncher_ANIMATION_FRAME_RATE");
         if (animationFrameRate != null) {

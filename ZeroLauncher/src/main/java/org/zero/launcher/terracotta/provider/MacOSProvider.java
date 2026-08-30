@@ -30,7 +30,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import org.jetbrains.annotations.NotNullByDefault;
-import org.jetbrains.annotations.Nullable;
 
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;

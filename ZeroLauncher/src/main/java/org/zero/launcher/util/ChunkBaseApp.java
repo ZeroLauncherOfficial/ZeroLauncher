@@ -17,12 +17,11 @@
  */
 package org.zero.launcher.util;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Unmodifiable;
 import org.zero.launcher.game.World;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.util.versioning.GameVersionNumber;
-import org.jetbrains.annotations.NotNullByDefault;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Objects;
 

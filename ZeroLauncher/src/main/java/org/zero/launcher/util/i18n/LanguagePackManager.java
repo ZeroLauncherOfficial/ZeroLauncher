@@ -18,10 +18,10 @@
 package org.zero.launcher.util.i18n;
 
 import com.google.gson.reflect.TypeToken;
-import org.zero.launcher.Metadata;
-import org.zero.launcher.util.gson.JsonUtils;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
+import org.zero.launcher.Metadata;
+import org.zero.launcher.util.gson.JsonUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
