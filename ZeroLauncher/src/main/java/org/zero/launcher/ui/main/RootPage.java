@@ -1,7 +1,6 @@
 package org.zero.launcher.ui.main;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPopup;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.geometry.Insets;
@@ -10,13 +9,13 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.Metadata;
 import org.zero.launcher.event.EventBus;
 import org.zero.launcher.event.RefreshedVersionsEvent;
 import org.zero.launcher.game.ZeroLauncherGameRepository;
 import org.zero.launcher.game.ModpackHelper;
 import org.zero.launcher.game.Version;
-import org.zero.launcher.setting.Accounts;
 import org.zero.launcher.setting.GameDirectory;
 import org.zero.launcher.setting.GameDirectoryManager;
 import org.zero.launcher.task.Schedulers;
@@ -24,9 +23,7 @@ import org.zero.launcher.task.Task;
 import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
-import org.zero.launcher.ui.account.AccountListPopupMenu;
 import org.zero.launcher.ui.animation.ContainerAnimations;
-import org.zero.launcher.ui.animation.Motion;
 import org.zero.launcher.ui.animation.TransitionPane;
 import org.zero.launcher.ui.construct.MessageDialogPane;
 import org.zero.launcher.ui.decorator.DecoratorPage;
@@ -52,6 +49,8 @@ import static org.zero.launcher.ui.FXUtils.runInFX;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Root layout page containing navigation bar and primary transition container.
+@NotNullByDefault
 public class RootPage extends StackPane implements DecoratorPage {
 
     public enum TabId {

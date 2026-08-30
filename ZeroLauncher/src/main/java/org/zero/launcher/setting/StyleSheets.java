@@ -25,25 +25,23 @@ import javafx.scene.paint.Color;
 import org.glavo.monetfx.Brightness;
 import org.glavo.monetfx.ColorRole;
 import org.glavo.monetfx.ColorScheme;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.theme.ResolvedTheme;
 import org.zero.launcher.theme.ThemeColor;
 import org.zero.launcher.theme.Themes;
-import org.zero.launcher.ui.FXUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Locale;
 
 import static org.zero.launcher.util.logging.Logger.LOG;
 
-/**
- * @author Glavo
- */
+/// Helper utility for managing CSS stylesheets, themes, and dynamic font styling.
+/// @author Glavo
+@NotNullByDefault
 public final class StyleSheets {
     private static final int THEME_STYLE_SHEET_INDEX = 1;
     private static final int BRIGHTNESS_SHEET_INDEX = 2;

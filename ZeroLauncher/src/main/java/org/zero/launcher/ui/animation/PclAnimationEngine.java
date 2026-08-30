@@ -19,7 +19,6 @@ package org.zero.launcher.ui.animation;
 
 import javafx.animation.*;
 import javafx.beans.property.DoubleProperty;
-import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -29,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/// PCL2 風格自研物理動畫引擎
+/// PCL2-style physical animation engine and physics interpolators.
 @NotNullByDefault
 public final class PclAnimationEngine {
 
@@ -40,9 +39,7 @@ public final class PclAnimationEngine {
     // 1. 自研三次貝茲曲線物理插值器 (Custom Cubic Bezier Interpolator)
     // =========================================================================
 
-    /**
-     * 高精度三次貝茲曲線插值器（支援自訂控制點與 Overshoot 彈力回彈）
-     */
+    /// High-precision cubic bezier interpolator supporting overshoot elastic physics.
     public static class PclCubicBezier extends Interpolator {
         private static final double EPSILON = 1e-5;
         private static final int MAX_ITERATIONS = 12;
@@ -52,6 +49,7 @@ public final class PclAnimationEngine {
         private final double x2;
         private final double y2;
 
+        /// Constructs a new cubic bezier interpolator with specified control points.
         public PclCubicBezier(double x1, double y1, double x2, double y2) {
             this.x1 = clamp(x1, 0.0, 1.0);
             this.y1 = y1;
@@ -64,7 +62,6 @@ public final class PclAnimationEngine {
         }
 
         private double sampleCurveX(double t) {
-            // ((1 - 3*x2 + 3*x1)*t + (3*x2 - 6*x1))*t + 3*x1
             return ((1.0 - 3.0 * x2 + 3.0 * x1) * t + (3.0 * x2 - 6.0 * x1)) * t * t + 3.0 * x1 * t;
         }
 
@@ -132,43 +129,30 @@ public final class PclAnimationEngine {
     // 2. PCL2 經典物理預設曲線 (PCL2 Physics Presets)
     // =========================================================================
 
-    /**
-     * <b>【PCL2 規範：超平滑懸停三次貝氏曲線 (0.25, 1.0, 0.5, 1.0)】</b>
-     */
+    /// PCL2 ultra smooth hover cubic bezier curve (0.25, 1.0, 0.5, 1.0).
     public static final Interpolator PCL_HOVER = new PclCubicBezier(0.25, 1.0, 0.5, 1.0);
 
-    /**
-     * <b>【PCL2 規範：物理回彈三次貝氏曲線 (BackEaseOut: 0.175, 0.885, 0.32, 1.275)】</b>
-     */
+    /// PCL2 physical overshoot back-ease spring curve (0.175, 0.885, 0.32, 1.275).
     public static final Interpolator PCL_SPRING = new PclCubicBezier(0.175, 0.885, 0.32, 1.275);
 
-    /**
-     * PCL2 靈動彈簧曲線：初速極快，在接近終點時伴隨空氣阻力般強烈減速 (0.08, 0.85, 0.18, 1.0)
-     */
+    /// PCL2 fluid spring easing curve with rapid onset (0.08, 0.85, 0.18, 1.0).
     public static final Interpolator PCL_FLUID_SPRING = new PclCubicBezier(0.08, 0.85, 0.18, 1.0);
 
-    /**
-     * PCL2 呼吸回彈曲線 (Overshoot)：超越目標值 102%~104% 後如同橡皮筋般微幅拉回 (0.18, 1.25, 0.22, 1.0)
-     */
+    /// PCL2 overshoot elastic curve (0.18, 1.25, 0.22, 1.0).
     public static final Interpolator PCL_OVERSHOOT = new PclCubicBezier(0.18, 1.25, 0.22, 1.0);
 
-    /**
-     * PCL2 強力減速曲線：用於視窗或卡片滑出 (0.12, 0.95, 0.22, 1.0)
-     */
+    /// PCL2 deceleration curve for smooth slide out (0.12, 0.95, 0.22, 1.0).
     public static final Interpolator PCL_DECELERATE = new PclCubicBezier(0.12, 0.95, 0.22, 1.0);
 
-    /**
-     * PCL2 乾脆按下反饋曲線 (0.25, 0.1, 0.25, 1.0)
-     */
+    /// PCL2 snap-back curve for crisp pressing feedback (0.25, 0.1, 0.25, 1.0).
     public static final Interpolator PCL_SNAP_BACK = new PclCubicBezier(0.25, 0.1, 0.25, 1.0);
-
 
     // =========================================================================
     // 3. 動態可中斷狀態機 (Interruptible Animation State Machine)
     // =========================================================================
 
     /// 針對單一節點與特定屬性的動畫狀態控制器
-    private static class NodeAnimationState {
+    private static final class NodeAnimationState {
         final Map<DoubleProperty, Timeline> activeTimelines = new HashMap<>();
         boolean isHovered = false;
         boolean isPressed = false;
@@ -248,16 +232,11 @@ public final class PclAnimationEngine {
         timeline.play();
     }
 
-
     // =========================================================================
     // 4. 核心非侵入式裝飾方法 (Non-Intrusive Wrappers)
     // =========================================================================
 
-    /**
-     * <b>【PCL2 桌面端專用按鈕手感】</b>
-     * <p>
-     * 懸停 1.025x 浮空 + 點擊 0.96x 物理下壓與 BackEase 回彈
-     */
+    /// Applies PCL2 physical button hover and click animation.
     public static void applyPclButton(Node button) {
         if (button == null) return;
 
@@ -295,11 +274,7 @@ public final class PclAnimationEngine {
         });
     }
 
-    /**
-     * <b>【PCL2 桌面端專用卡片手感 (Cards & Panes)】</b>
-     * <p>
-     * 懸停 1.018x 微懸浮 + 點擊 0.975x 下壓
-     */
+    /// Applies PCL2 physical card and pane hover/click animation.
     public static void applyPclCard(Node card) {
         if (card == null) return;
 
@@ -337,9 +312,50 @@ public final class PclAnimationEngine {
         });
     }
 
-    /**
-     * <b>【PCL2 頂部導航 Tab 專用手感】</b>
-     */
+    /// Applies PCL2 physical list item hover and press animation with subtle horizontal glide.
+    public static void applyPclListItem(Node item) {
+        if (item == null) return;
+
+        Duration hoverDuration = Duration.millis(180);
+        Duration pressDuration = Duration.millis(110);
+        Duration releaseDuration = Duration.millis(230);
+
+        item.addEventFilter(MouseEvent.MOUSE_ENTERED, e -> {
+            NodeAnimationState state = getState(item);
+            state.isHovered = true;
+            if (!state.isPressed) {
+                animateScale(item, 1.012, hoverDuration, PCL_HOVER);
+                animateTranslateX(item, 3.0, hoverDuration, PCL_HOVER);
+            }
+        });
+
+        item.addEventFilter(MouseEvent.MOUSE_EXITED, e -> {
+            NodeAnimationState state = getState(item);
+            state.isHovered = false;
+            if (!state.isPressed) {
+                animateScale(item, 1.0, hoverDuration, PCL_DECELERATE);
+                animateTranslateX(item, 0.0, hoverDuration, PCL_DECELERATE);
+            }
+        });
+
+        item.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+            NodeAnimationState state = getState(item);
+            state.isPressed = true;
+            animateScale(item, 0.985, pressDuration, PCL_SNAP_BACK);
+            animateTranslateX(item, 1.5, pressDuration, PCL_SNAP_BACK);
+        });
+
+        item.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> {
+            NodeAnimationState state = getState(item);
+            state.isPressed = false;
+            double targetScale = state.isHovered ? 1.012 : 1.0;
+            double targetTranslate = state.isHovered ? 3.0 : 0.0;
+            animateScale(item, targetScale, releaseDuration, PCL_SPRING);
+            animateTranslateX(item, targetTranslate, releaseDuration, PCL_SPRING);
+        });
+    }
+
+    /// Applies PCL2 navigation tab bar animation.
     public static void applyPclTab(Node tab) {
         if (tab == null) return;
 
@@ -377,16 +393,12 @@ public final class PclAnimationEngine {
         });
     }
 
-    /**
-     * <b>【PCL2 級別通用全功能互動一鍵封裝】</b>
-     */
+    /// Applies general PCL2 interactive physics to the target node.
     public static void applyPclInteractive(Node target) {
         applyPclButton(target);
     }
 
-    /**
-     * <b>【PCL2 數值/進度平滑滑動 (Smooth Number Glide)】</b>
-     */
+    /// Smoothly glides a double property to target value with PCL physics.
     public static void smoothNumber(DoubleProperty property, double targetVal, Duration duration) {
         if (property == null) return;
         if (!AnimationUtils.isAnimationEnabled()) {
@@ -407,5 +419,9 @@ public final class PclAnimationEngine {
     private static void animateScale(Node node, double targetScale, Duration duration, Interpolator interpolator) {
         animatePropertyInterruptible(node, node.scaleXProperty(), targetScale, duration, interpolator, null);
         animatePropertyInterruptible(node, node.scaleYProperty(), targetScale, duration, interpolator, null);
+    }
+
+    private static void animateTranslateX(Node node, double targetX, Duration duration, Interpolator interpolator) {
+        animatePropertyInterruptible(node, node.translateXProperty(), targetX, duration, interpolator, null);
     }
 }

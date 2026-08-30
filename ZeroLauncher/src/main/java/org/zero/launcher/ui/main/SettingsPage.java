@@ -19,10 +19,6 @@ package org.zero.launcher.ui.main;
 
 import com.jfoenix.controls.JFXButton;
 import javafx.beans.InvalidationListener;
-import javafx.beans.WeakInvalidationListener;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
-import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -30,15 +26,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.Metadata;
 import org.zero.launcher.task.Schedulers;
 import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
-import org.zero.launcher.ui.SVG;
 import org.zero.launcher.ui.construct.*;
 import org.zero.launcher.ui.construct.MessageDialogPane.MessageType;
 import org.zero.launcher.upgrade.RemoteVersion;
-import org.zero.launcher.upgrade.UpdateChannel;
 import org.zero.launcher.upgrade.UpdateChecker;
 import org.zero.launcher.upgrade.UpdateHandler;
 import org.zero.launcher.util.Lang;
@@ -72,6 +67,8 @@ import static org.zero.launcher.setting.SettingsManager.settings;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Global launcher settings page with smooth scrolling, theme controls, and language preferences.
+@NotNullByDefault
 public final class SettingsPage extends ScrollPane {
     @SuppressWarnings("FieldCanBeLocal")
     private final InvalidationListener updateListener;

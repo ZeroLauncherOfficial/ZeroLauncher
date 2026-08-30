@@ -20,11 +20,16 @@ package org.zero.launcher.ui.construct;
 import javafx.css.PseudoClass;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.BorderPane;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.ui.FXUtils;
+import org.zero.launcher.ui.animation.PclAnimationEngine;
 
+/// Skin implementation for AdvancedListItem with PCL2 physical hover and glide dynamics.
+@NotNullByDefault
 public class AdvancedListItemSkin extends SkinBase<AdvancedListItem> {
     private static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
+    /// Constructs a new skin for the specified AdvancedListItem.
     public AdvancedListItemSkin(AdvancedListItem skinnable) {
         super(skinnable);
 
@@ -37,6 +42,7 @@ public class AdvancedListItemSkin extends SkinBase<AdvancedListItem> {
         root.setPickOnBounds(false);
 
         RipplerContainer container = new RipplerContainer(root);
+        PclAnimationEngine.applyPclListItem(container);
 
         TwoLineListItem item = new TwoLineListItem();
         root.setCenter(item);

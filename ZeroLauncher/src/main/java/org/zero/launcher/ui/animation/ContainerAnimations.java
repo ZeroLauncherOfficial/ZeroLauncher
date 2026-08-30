@@ -17,12 +17,19 @@
  */
 package org.zero.launcher.ui.animation;
 
-import javafx.animation.*;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.ui.decorator.DecoratorAnimatedPage;
 
+/// Built-in container transition animation producers for TransitionPane.
+@NotNullByDefault
 public enum ContainerAnimations implements TransitionPane.AnimationProducer {
     NONE {
         @Override

@@ -45,7 +45,7 @@ import javafx.stage.Stage;
 
 import javafx.util.Duration;
 import org.glavo.monetfx.ColorRole;
-import org.zero.launcher.Metadata;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.theme.Themes;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
@@ -55,6 +55,8 @@ import org.zero.launcher.ui.animation.TransitionPane;
 import org.zero.launcher.ui.wizard.Navigation;
 import org.zero.launcher.util.platform.OperatingSystem;
 
+/// Skin implementation for Decorator managing title bar, borders, dragging, and resizing.
+@NotNullByDefault
 public class DecoratorSkin extends SkinBase<Decorator> {
     private final StackPane root, parent;
     private final StackPane titleContainer;

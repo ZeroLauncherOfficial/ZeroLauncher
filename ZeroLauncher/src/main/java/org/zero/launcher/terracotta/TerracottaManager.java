@@ -60,6 +60,8 @@ import static org.zero.launcher.util.Pair.pair;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Core manager for Terracotta game accelerator, connectivity, and tunnel proxy lifecycle.
+@NotNullByDefault
 public final class TerracottaManager {
     private TerracottaManager() {
     }

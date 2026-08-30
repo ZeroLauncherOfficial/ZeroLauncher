@@ -30,16 +30,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.auth.Account;
 import org.zero.launcher.auth.AuthInfo;
 import org.zero.launcher.auth.AuthenticationException;
 import org.zero.launcher.auth.OAuth;
 import org.zero.launcher.auth.microsoft.MicrosoftAccount;
-import org.zero.launcher.auth.yggdrasil.YggdrasilService;
 import org.zero.launcher.setting.Accounts;
 import org.zero.launcher.task.Schedulers;
 import org.zero.launcher.task.Task;
@@ -61,6 +60,8 @@ import static org.zero.launcher.setting.SettingsManager.settings;
 import static org.zero.launcher.ui.FXUtils.onEscPressed;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
+/// Dialog layout for Microsoft account OAuth authentication and QR code login.
+@NotNullByDefault
 public class MicrosoftAccountLoginPane extends JFXDialogLayout implements DialogAware {
     private final Account accountToRelogin;
     private final Consumer<AuthInfo> loginCallback;

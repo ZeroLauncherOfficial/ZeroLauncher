@@ -32,6 +32,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.theme.Themes;
 import org.zero.launcher.ui.animation.AnimationUtils;
 import org.zero.launcher.ui.animation.Motion;
@@ -39,6 +40,8 @@ import org.zero.launcher.ui.animation.Motion;
 import java.util.ArrayList;
 import java.util.List;
 
+/// Container wrapping nodes with a custom JFXRippler and hover background transitions.
+@NotNullByDefault
 public class RipplerContainer extends StackPane {
     private static final String DEFAULT_STYLE_CLASS = "rippler-container";
     private static final CornerRadii DEFAULT_RADII = new CornerRadii(3);

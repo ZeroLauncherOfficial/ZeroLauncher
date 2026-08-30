@@ -17,7 +17,6 @@ import org.zero.launcher.util.platform.OperatingSystem;
 import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.RandomAccessFile;
 import java.net.StandardProtocolFamily;
 import java.net.UnixDomainSocketAddress;
@@ -30,6 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -146,10 +146,10 @@ public final class DiscordRPCManager {
         String ver = (mcVersion != null) ? mcVersion : "";
         String loader = (loaderName != null) ? loaderName : "";
         String state = (!ver.isBlank()) ? "Minecraft " + ver + (!loader.isBlank() ? " (" + loader + ")" : "") : "Minecraft";
-        String smallKey = loader.toLowerCase().contains("fabric") ? "fabric"
-                : loader.toLowerCase().contains("forge") ? "forge"
-                : loader.toLowerCase().contains("neoforge") ? "neoforge"
-                : loader.toLowerCase().contains("quilt") ? "quilt"
+        String smallKey = loader.toLowerCase(Locale.ROOT).contains("fabric") ? "fabric"
+                : loader.toLowerCase(Locale.ROOT).contains("forge") ? "forge"
+                : loader.toLowerCase(Locale.ROOT).contains("neoforge") ? "neoforge"
+                : loader.toLowerCase(Locale.ROOT).contains("quilt") ? "quilt"
                 : "vanilla";
 
         Activity act = new Activity(

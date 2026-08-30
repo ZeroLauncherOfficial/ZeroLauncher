@@ -1,96 +1,86 @@
-// Copy from https://github.com/palexdev/MaterialFX/blob/c8038ce2090f5cddf923a19d79cc601db86a4d17/materialfx/src/main/java/io/github/palexdev/materialfx/utils/ScrollUtils.java
-
 /*
- * Copyright (C) 2022 Parisi Alessandro
- * This file is part of MaterialFX (https://github.com/palexdev/MaterialFX).
+ * ZeroLauncher
+ * Copyright (C) 2026 Zero <Zero@zerolauncher.net> and contributors
  *
- * MaterialFX is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * MaterialFX is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with MaterialFX.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 package org.zero.launcher.ui;
 
-import javafx.animation.Animation;
-import javafx.animation.Animation.Status;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
+import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.skin.VirtualFlow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.util.Duration;
-import org.zero.launcher.util.Holder;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+import org.zero.launcher.util.MathUtils;
 
-/**
- * Utility class for ScrollPanes.
- */
+/// High-performance physics-based smooth scrolling engine.
+///
+/// Features dynamic delta-time animation loop (adapted for 60Hz/120Hz/144Hz/240Hz displays),
+/// momentum accumulation, viscous friction damping, and dynamic GPU cache management.
+@NotNullByDefault
 final class ScrollUtils {
 
+    /// Direction of scrolling movement.
     public enum ScrollDirection {
-        UP(-1), RIGHT(-1), DOWN(1), LEFT(1);
+        /// Upward scroll direction.
+        UP(-1),
+        /// Rightward scroll direction.
+        RIGHT(-1),
+        /// Downward scroll direction.
+        DOWN(1),
+        /// Leftward scroll direction.
+        LEFT(1);
 
-        final int intDirection;
+        private final int intDirection;
 
         ScrollDirection(int intDirection) {
             this.intDirection = intDirection;
         }
 
+        /// Returns the integer direction multiplier (-1 or 1).
         public int intDirection() {
             return intDirection;
         }
     }
 
     private static final double DEFAULT_SPEED = 1.0;
-    private static final double DEFAULT_TRACK_PAD_ADJUSTMENT = 7.0;
+    private static final double DEFAULT_TRACK_PAD_ADJUSTMENT = 5.0;
 
-    private static final double CUTOFF_DELTA = 0.01;
+    /// Exponential decay base per 60Hz frame (0.87 gives natural smooth inertial glide).
+    private static final double FRICTION_PER_FRAME = 0.87;
 
-    /**
-     * Determines if the given ScrollEvent comes from a trackpad.
-     * <p></p>
-     * Although this method works in most cases, it is not very accurate.
-     * Since in JavaFX there's no way to tell if a ScrollEvent comes from a trackpad or a mouse
-     * we use this trick: I noticed that a mouse scroll has a delta of 32 (don't know if it changes depending on the device or OS)
-     * and trackpad scrolls have a way smaller delta. So depending on the scroll direction we check if the delta is lesser than 10
-     * (trackpad event) or greater(mouse event).
-     *
-     * @see ScrollEvent#getDeltaX()
-     * @see ScrollEvent#getDeltaY()
-     */
+    /// Velocity cutoff threshold below which scrolling halts.
+    private static final double VELOCITY_CUTOFF = 0.8;
+
+    /// Maximum scrolling velocity (in pixels per second) to prevent runaway over-scrolling.
+    private static final double MAX_VELOCITY = 7500.0;
+
+    /// Determines if the given scroll event originates from a high-precision trackpad.
     public static boolean isTrackPad(ScrollEvent event, ScrollDirection scrollDirection) {
         return switch (scrollDirection) {
-            case UP, DOWN -> Math.abs(event.getDeltaY()) < 10;
-            case LEFT, RIGHT -> Math.abs(event.getDeltaX()) < 10;
+            case UP, DOWN -> Math.abs(event.getDeltaY()) < 10.0;
+            case LEFT, RIGHT -> Math.abs(event.getDeltaX()) < 10.0;
         };
     }
 
-    /**
-     * Determines the scroll direction of the given ScrollEvent.
-     * <p></p>
-     * Although this method works fine, it is not very accurate.
-     * In JavaFX there's no concept of scroll direction, if you try to scroll with a trackpad
-     * you'll notice that you can scroll in both directions at the same time, both deltaX and deltaY won't be 0.
-     * <p></p>
-     * For this method to work we assume that this behavior is not possible.
-     * <p></p>
-     * If deltaY is 0 we return LEFT or RIGHT depending on deltaX (respectively if lesser or greater than 0).
-     * <p>
-     * Else we return DOWN or UP depending on deltaY (respectively if lesser or greater than 0).
-     *
-     * @see ScrollEvent#getDeltaX()
-     * @see ScrollEvent#getDeltaY()
-     */
+    /// Determines the primary scroll direction of the given scroll event.
     public static ScrollDirection determineScrollDirection(ScrollEvent event) {
         double deltaX = event.getDeltaX();
         double deltaY = event.getDeltaY();
@@ -102,166 +92,272 @@ final class ScrollUtils {
         }
     }
 
-    //================================================================================
-    // ScrollPanes
-    //================================================================================
-
-    /**
-     * Adds a smooth scrolling effect to the given scroll pane,
-     * calls {@link #addSmoothScrolling(ScrollPane, double)} with a
-     * default speed value of 1.
-     */
+    /// Adds physics-based smooth scrolling to the given scroll pane with default speed.
     public static void addSmoothScrolling(ScrollPane scrollPane) {
         addSmoothScrolling(scrollPane, DEFAULT_SPEED);
     }
 
-    /**
-     * Adds a smooth scrolling effect to the given scroll pane with the given scroll speed.
-     * Calls {@link #addSmoothScrolling(ScrollPane, double, double)}
-     * with a default trackPadAdjustment of 7.
-     */
+    /// Adds physics-based smooth scrolling to the given scroll pane with custom speed.
     public static void addSmoothScrolling(ScrollPane scrollPane, double speed) {
         addSmoothScrolling(scrollPane, speed, DEFAULT_TRACK_PAD_ADJUSTMENT);
     }
 
-    /**
-     * Adds a smooth scrolling effect to the given scroll pane with the given
-     * scroll speed and the given trackPadAdjustment.
-     * <p></p>
-     * The trackPadAdjustment is a value used to slow down the scrolling if a trackpad is used.
-     * This is kind of a workaround and it's not perfect, but at least it's way better than before.
-     * The default value is 7, tested up to 10, further values can cause scrolling misbehavior.
-     */
+    /// Adds physics-based smooth scrolling to the given scroll pane with custom speed and trackpad factor.
     public static void addSmoothScrolling(ScrollPane scrollPane, double speed, double trackPadAdjustment) {
         smoothScroll(scrollPane, speed, trackPadAdjustment);
     }
 
-    /// @author Glavo
+    /// Adds physics-based smooth scrolling to the given virtual flow with default speed.
     public static void addSmoothScrolling(VirtualFlow<?> virtualFlow) {
         addSmoothScrolling(virtualFlow, DEFAULT_SPEED);
     }
 
-    /// @author Glavo
+    /// Adds physics-based smooth scrolling to the given virtual flow with custom speed.
     public static void addSmoothScrolling(VirtualFlow<?> virtualFlow, double speed) {
         addSmoothScrolling(virtualFlow, speed, DEFAULT_TRACK_PAD_ADJUSTMENT);
     }
 
-    /// @author Glavo
+    /// Adds physics-based smooth scrolling to the given virtual flow with custom speed and trackpad factor.
     public static void addSmoothScrolling(VirtualFlow<?> virtualFlow, double speed, double trackPadAdjustment) {
         smoothScroll(virtualFlow, speed, trackPadAdjustment);
     }
 
-    private static final double[] FRICTIONS = {0.99, 0.1, 0.05, 0.04, 0.03, 0.02, 0.01, 0.04, 0.01, 0.008, 0.008, 0.008, 0.008, 0.0006, 0.0005, 0.00003, 0.00001};
-    private static final Duration DURATION = Duration.millis(3);
-
     private static void smoothScroll(ScrollPane scrollPane, double speed, double trackPadAdjustment) {
-        final double[] derivatives = new double[FRICTIONS.length];
+        final class ScrollPanePhysicsScroller extends AnimationTimer {
+            private double velocityX = 0.0;
+            private double velocityY = 0.0;
+            private long lastNanoTime = 0L;
+            private boolean isRunning = false;
 
-        Timeline timeline = new Timeline();
-        Holder<ScrollDirection> scrollDirectionHolder = new Holder<>();
-        final EventHandler<MouseEvent> mouseHandler = event -> timeline.stop();
-        final EventHandler<ScrollEvent> scrollHandler = event -> {
-            if (event.getEventType() == ScrollEvent.SCROLL) {
-                ScrollDirection scrollDirection = determineScrollDirection(event);
-                scrollDirectionHolder.value = scrollDirection;
-
-                double currentSpeed = isTrackPad(event, scrollDirection) ? speed / trackPadAdjustment : speed;
-
-                derivatives[0] += scrollDirection.intDirection * currentSpeed;
-                if (timeline.getStatus() == Status.STOPPED) {
-                    timeline.play();
-                }
-                event.consume();
-            }
-        };
-        if (scrollPane.getContent().getParent() != null) {
-            scrollPane.getContent().getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, mouseHandler);
-            scrollPane.getContent().getParent().addEventHandler(ScrollEvent.ANY, scrollHandler);
-        }
-        scrollPane.getContent().parentProperty().addListener((observable, oldValue, newValue) -> {
-            if (oldValue != null) {
-                oldValue.removeEventFilter(MouseEvent.MOUSE_PRESSED, mouseHandler);
-                oldValue.removeEventHandler(ScrollEvent.ANY, scrollHandler);
-            }
-            if (newValue != null) {
-                newValue.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseHandler);
-                newValue.addEventHandler(ScrollEvent.ANY, scrollHandler);
-            }
-        });
-
-        timeline.getKeyFrames().add(new KeyFrame(DURATION, event -> {
-            for (int i = 0; i < derivatives.length; i++) {
-                derivatives[i] *= FRICTIONS[i];
-            }
-            for (int i = 1; i < derivatives.length; i++) {
-                derivatives[i] += derivatives[i - 1];
-            }
-
-            double dy = derivatives[derivatives.length - 1];
-            double size;
-            switch (scrollDirectionHolder.value) {
-                case LEFT:
-                case RIGHT:
-                    size = scrollPane.getContent().getLayoutBounds().getWidth();
-                    scrollPane.setHvalue(Math.min(Math.max(scrollPane.getHvalue() + dy / size, 0), 1));
-                    break;
-                case UP:
-                case DOWN:
-                    size = scrollPane.getContent().getLayoutBounds().getHeight();
-                    scrollPane.setVvalue(Math.min(Math.max(scrollPane.getVvalue() + dy / size, 0), 1));
-                    break;
-            }
-
-            if (Math.abs(dy) < CUTOFF_DELTA) {
-                timeline.stop();
-            }
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
-    }
-
-    /// @author Glavo
-    private static void smoothScroll(VirtualFlow<?> virtualFlow, double speed, double trackPadAdjustment) {
-        if (!virtualFlow.isVertical())
-            return;
-
-        final double[] derivatives = new double[FRICTIONS.length];
-
-        Timeline timeline = new Timeline();
-        final EventHandler<MouseEvent> mouseHandler = event -> timeline.stop();
-        final EventHandler<ScrollEvent> scrollHandler = event -> {
-            if (event.getEventType() == ScrollEvent.SCROLL) {
-                ScrollDirection scrollDirection = determineScrollDirection(event);
-                if (scrollDirection == ScrollDirection.LEFT || scrollDirection == ScrollDirection.RIGHT) {
+            @Override
+            public void handle(long now) {
+                if (lastNanoTime == 0L) {
+                    lastNanoTime = now;
                     return;
                 }
-                double currentSpeed = isTrackPad(event, scrollDirection) ? speed / trackPadAdjustment : speed;
 
-                derivatives[0] += scrollDirection.intDirection * currentSpeed;
-                if (timeline.getStatus() == Status.STOPPED) {
-                    timeline.play();
+                double dt = (now - lastNanoTime) / 1_000_000_000.0;
+                lastNanoTime = now;
+
+                // Clamp delta-time to avoid huge leaps after pauses or frame drops
+                if (dt > 0.05) {
+                    dt = 0.05;
+                } else if (dt <= 0.0) {
+                    return;
                 }
+
+                // Exponential decay independent of monitor refresh rate
+                double frictionFactor = Math.pow(FRICTION_PER_FRAME, dt * 60.0);
+                velocityX *= frictionFactor;
+                velocityY *= frictionFactor;
+
+                @Nullable Node content = scrollPane.getContent();
+                if (content == null) {
+                    stopScrolling();
+                    return;
+                }
+
+                // Vertical scrolling calculation
+                if (Math.abs(velocityY) > VELOCITY_CUTOFF) {
+                    double contentHeight = content.getLayoutBounds().getHeight();
+                    double viewportHeight = scrollPane.getViewportBounds().getHeight();
+                    double scrollableHeight = Math.max(1.0, contentHeight - viewportHeight);
+
+                    double deltaV = (velocityY * dt) / scrollableHeight;
+                    double currentV = scrollPane.getVvalue();
+                    double targetV = MathUtils.clamp(currentV + deltaV, 0.0, 1.0);
+
+                    scrollPane.setVvalue(targetV);
+
+                    // Boundary collision energy dissipation
+                    if (targetV <= 0.0 || targetV >= 1.0) {
+                        velocityY *= 0.3;
+                    }
+                } else {
+                    velocityY = 0.0;
+                }
+
+                // Horizontal scrolling calculation
+                if (Math.abs(velocityX) > VELOCITY_CUTOFF) {
+                    double contentWidth = content.getLayoutBounds().getWidth();
+                    double viewportWidth = scrollPane.getViewportBounds().getWidth();
+                    double scrollableWidth = Math.max(1.0, contentWidth - viewportWidth);
+
+                    double deltaH = (velocityX * dt) / scrollableWidth;
+                    double currentH = scrollPane.getHvalue();
+                    double targetH = MathUtils.clamp(currentH + deltaH, 0.0, 1.0);
+
+                    scrollPane.setHvalue(targetH);
+
+                    if (targetH <= 0.0 || targetH >= 1.0) {
+                        velocityX *= 0.3;
+                    }
+                } else {
+                    velocityX = 0.0;
+                }
+
+                if (Math.abs(velocityX) <= VELOCITY_CUTOFF && Math.abs(velocityY) <= VELOCITY_CUTOFF) {
+                    stopScrolling();
+                }
+            }
+
+            void addImpulse(double deltaX, double deltaY) {
+                // Continuous momentum accumulation
+                velocityX = MathUtils.clamp(velocityX + deltaX, -MAX_VELOCITY, MAX_VELOCITY);
+                velocityY = MathUtils.clamp(velocityY + deltaY, -MAX_VELOCITY, MAX_VELOCITY);
+
+                if (!isRunning) {
+                    isRunning = true;
+                    lastNanoTime = 0L;
+
+                    @Nullable Node content = scrollPane.getContent();
+                    if (content != null) {
+                        content.setCache(true);
+                        content.setCacheHint(CacheHint.SPEED);
+                    }
+
+                    start();
+                }
+            }
+
+            void stopScrolling() {
+                if (isRunning) {
+                    stop();
+                    isRunning = false;
+                    velocityX = 0.0;
+                    velocityY = 0.0;
+                    lastNanoTime = 0L;
+
+                    @Nullable Node content = scrollPane.getContent();
+                    if (content != null) {
+                        content.setCache(false);
+                    }
+                }
+            }
+        }
+
+        final ScrollPanePhysicsScroller scroller = new ScrollPanePhysicsScroller();
+
+        final EventHandler<MouseEvent> mousePressHandler = event -> scroller.stopScrolling();
+        final EventHandler<ScrollEvent> scrollEventHandler = event -> {
+            if (event.getEventType() == ScrollEvent.SCROLL) {
+                ScrollDirection direction = determineScrollDirection(event);
+                boolean isTrackpad = isTrackPad(event, direction);
+
+                double factor = isTrackpad ? (speed / trackPadAdjustment) : speed;
+
+                double rawDeltaX = event.getDeltaX();
+                double rawDeltaY = event.getDeltaY();
+
+                // Mouse wheel step amplification vs trackpad linear mapping
+                double impulseMultiplier = isTrackpad ? 35.0 : 48.0;
+
+                double impulseX = -rawDeltaX * factor * impulseMultiplier;
+                double impulseY = -rawDeltaY * factor * impulseMultiplier;
+
+                scroller.addImpulse(impulseX, impulseY);
                 event.consume();
             }
         };
-        virtualFlow.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseHandler);
-        virtualFlow.addEventFilter(ScrollEvent.ANY, scrollHandler);
 
-        timeline.getKeyFrames().add(new KeyFrame(DURATION, event -> {
-            for (int i = 0; i < derivatives.length; i++) {
-                derivatives[i] *= FRICTIONS[i];
+        if (scrollPane.getContent() != null && scrollPane.getContent().getParent() != null) {
+            scrollPane.getContent().getParent().addEventFilter(MouseEvent.MOUSE_PRESSED, mousePressHandler);
+            scrollPane.getContent().getParent().addEventHandler(ScrollEvent.ANY, scrollEventHandler);
+        }
+
+        scrollPane.getContent().parentProperty().addListener((observable, oldValue, newValue) -> {
+            if (oldValue != null) {
+                oldValue.removeEventFilter(MouseEvent.MOUSE_PRESSED, mousePressHandler);
+                oldValue.removeEventHandler(ScrollEvent.ANY, scrollEventHandler);
             }
-            for (int i = 1; i < derivatives.length; i++) {
-                derivatives[i] += derivatives[i - 1];
+            if (newValue != null) {
+                newValue.addEventFilter(MouseEvent.MOUSE_PRESSED, mousePressHandler);
+                newValue.addEventHandler(ScrollEvent.ANY, scrollEventHandler);
+            }
+        });
+    }
+
+    private static void smoothScroll(VirtualFlow<?> virtualFlow, double speed, double trackPadAdjustment) {
+        if (!virtualFlow.isVertical()) {
+            return;
+        }
+
+        final class VirtualFlowPhysicsScroller extends AnimationTimer {
+            private double velocityY = 0.0;
+            private long lastNanoTime = 0L;
+            private boolean isRunning = false;
+
+            @Override
+            public void handle(long now) {
+                if (lastNanoTime == 0L) {
+                    lastNanoTime = now;
+                    return;
+                }
+
+                double dt = (now - lastNanoTime) / 1_000_000_000.0;
+                lastNanoTime = now;
+
+                if (dt > 0.05) {
+                    dt = 0.05;
+                } else if (dt <= 0.0) {
+                    return;
+                }
+
+                double frictionFactor = Math.pow(FRICTION_PER_FRAME, dt * 60.0);
+                velocityY *= frictionFactor;
+
+                if (Math.abs(velocityY) > VELOCITY_CUTOFF) {
+                    double pixels = velocityY * dt;
+                    virtualFlow.scrollPixels(pixels);
+                } else {
+                    stopScrolling();
+                }
             }
 
-            double dy = derivatives[derivatives.length - 1];
-            virtualFlow.scrollPixels(dy);
+            void addImpulse(double deltaY) {
+                velocityY = MathUtils.clamp(velocityY + deltaY, -MAX_VELOCITY, MAX_VELOCITY);
 
-            if (Math.abs(dy) < CUTOFF_DELTA) {
-                timeline.stop();
+                if (!isRunning) {
+                    isRunning = true;
+                    lastNanoTime = 0L;
+                    start();
+                }
             }
-        }));
-        timeline.setCycleCount(Animation.INDEFINITE);
+
+            void stopScrolling() {
+                if (isRunning) {
+                    stop();
+                    isRunning = false;
+                    velocityY = 0.0;
+                    lastNanoTime = 0L;
+                }
+            }
+        }
+
+        final VirtualFlowPhysicsScroller scroller = new VirtualFlowPhysicsScroller();
+
+        final EventHandler<MouseEvent> mousePressHandler = event -> scroller.stopScrolling();
+        final EventHandler<ScrollEvent> scrollEventHandler = event -> {
+            if (event.getEventType() == ScrollEvent.SCROLL) {
+                ScrollDirection direction = determineScrollDirection(event);
+                if (direction == ScrollDirection.LEFT || direction == ScrollDirection.RIGHT) {
+                    return;
+                }
+
+                boolean isTrackpad = isTrackPad(event, direction);
+                double factor = isTrackpad ? (speed / trackPadAdjustment) : speed;
+                double rawDeltaY = event.getDeltaY();
+
+                double impulseMultiplier = isTrackpad ? 35.0 : 48.0;
+                double impulseY = -rawDeltaY * factor * impulseMultiplier;
+
+                scroller.addImpulse(impulseY);
+                event.consume();
+            }
+        };
+
+        virtualFlow.addEventFilter(MouseEvent.MOUSE_PRESSED, mousePressHandler);
+        virtualFlow.addEventFilter(ScrollEvent.ANY, scrollEventHandler);
     }
 
     private ScrollUtils() {

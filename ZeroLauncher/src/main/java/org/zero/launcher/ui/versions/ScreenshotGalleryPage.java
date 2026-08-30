@@ -27,6 +27,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.zero.launcher.game.ZeroLauncherGameRepository;
 import org.zero.launcher.task.Task;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.ui.Controllers;
 import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
@@ -42,11 +43,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.zero.launcher.ui.ToolbarListPageSkin.createToolbarButton2;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 
+/// Screenshot gallery page for browsing and managing in-game screenshots.
+@NotNullByDefault
 public final class ScreenshotGalleryPage extends StackPane implements VersionPage.GameInstanceLoadable, PageAware {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

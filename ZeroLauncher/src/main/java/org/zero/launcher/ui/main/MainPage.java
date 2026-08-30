@@ -26,33 +26,27 @@ import javafx.animation.Timeline;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.Metadata;
+import org.zero.launcher.auth.Account;
 import org.zero.launcher.download.DefaultDependencyManager;
 import org.zero.launcher.download.DownloadProvider;
 import org.zero.launcher.download.LibraryAnalyzer;
 import org.zero.launcher.download.VersionList;
 import org.zero.launcher.game.ZeroLauncherGameRepository;
 import org.zero.launcher.game.Version;
-import java.util.concurrent.CompletableFuture;
-import static org.zero.launcher.download.LibraryAnalyzer.LibraryType.MINECRAFT;
-import org.zero.launcher.auth.Account;
 import org.zero.launcher.setting.Accounts;
 import org.zero.launcher.setting.DownloadProviders;
 import org.zero.launcher.setting.GameDirectory;
@@ -65,10 +59,8 @@ import org.zero.launcher.ui.FXUtils;
 import org.zero.launcher.ui.SVG;
 import org.zero.launcher.ui.account.AccountListPopupMenu;
 import org.zero.launcher.ui.animation.AnimationUtils;
-import org.zero.launcher.ui.animation.ContainerAnimations;
 import org.zero.launcher.ui.animation.TransitionPane;
 import org.zero.launcher.ui.construct.MessageDialogPane;
-import org.zero.launcher.ui.versions.GameListPopupMenu;
 import org.zero.launcher.ui.construct.TwoLineListItem;
 import org.zero.launcher.ui.decorator.DecoratorPage;
 import org.zero.launcher.ui.versions.GameListPopupMenu;
@@ -87,14 +79,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CancellationException;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
+import static org.zero.launcher.download.LibraryAnalyzer.LibraryType.MINECRAFT;
 import static org.zero.launcher.download.RemoteVersion.Type.RELEASE;
 import static org.zero.launcher.setting.SettingsManager.state;
 import static org.zero.launcher.ui.FXUtils.SINE;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Main home page displaying recent games, accounts, launch button, and quick actions.
+@NotNullByDefault
 public final class MainPage extends StackPane implements DecoratorPage {
     private static final String ANNOUNCEMENT = "announcement";
 

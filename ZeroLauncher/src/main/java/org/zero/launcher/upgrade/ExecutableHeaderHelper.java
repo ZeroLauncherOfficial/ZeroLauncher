@@ -17,6 +17,9 @@
  */
 package org.zero.launcher.upgrade;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.zero.launcher.util.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.Buffer;
@@ -29,14 +32,9 @@ import java.util.Optional;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.zero.launcher.util.io.IOUtils;
-
 import static java.nio.file.StandardOpenOption.*;
 import static org.zero.launcher.util.Lang.mapOf;
 import static org.zero.launcher.util.Pair.pair;
-
-import org.jetbrains.annotations.NotNullByDefault;
-import org.jetbrains.annotations.Nullable;
 
 /// Helper class for adding/removing executable header from ZeroLauncher file.
 /// @author yushijinhun

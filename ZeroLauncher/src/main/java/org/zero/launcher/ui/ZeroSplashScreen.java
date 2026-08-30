@@ -36,11 +36,14 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.auth.Account;
 import org.zero.launcher.setting.Accounts;
 
 import java.time.LocalTime;
 
+/// Modern splash screen displayed during ZeroLauncher initialization.
+@NotNullByDefault
 public final class ZeroSplashScreen {
 
     private final Stage stage;

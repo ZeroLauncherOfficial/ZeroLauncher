@@ -18,9 +18,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.zero.launcher.setting.GameDirectoryManager;
 
+import org.jetbrains.annotations.NotNullByDefault;
+
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Files;
@@ -31,6 +32,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/// Background music manager supporting audio playback, volume fade, and track cycling.
+@NotNullByDefault
 public final class BGMManager {
 
     public record AudioTrack(String name, String author, String hash, Path localPath) {
