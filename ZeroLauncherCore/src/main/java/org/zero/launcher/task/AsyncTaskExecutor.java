@@ -75,6 +75,34 @@ public final class AsyncTaskExecutor extends TaskExecutor {
     public boolean test() {
         start();
         try {
+            if (ForkJoinTask.inForkJoinPool()) {
+                class FutureBlocker implements ForkJoinPool.ManagedBlocker {
+                    private boolean done = false;
+                    private boolean result = false;
+
+                    @Override
+                    public boolean block() throws InterruptedException {
+                        try {
+                            result = future.get();
+                        } catch (ExecutionException ignore) {
+                        } catch (CancellationException e) {
+                            LOG.info("Task " + firstTask + " has been cancelled.", e);
+                        }
+                        done = true;
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isReleasable() {
+                        return done || future.isDone();
+                    }
+                }
+
+                FutureBlocker blocker = new FutureBlocker();
+                ForkJoinPool.managedBlock(blocker);
+                return blocker.result;
+            }
+
             return future.get();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

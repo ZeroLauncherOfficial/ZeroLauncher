@@ -168,8 +168,12 @@ public class MicrosoftService {
                 .retry(5)
                 .accept("application/json").createConnection();
 
-        if (request.getResponseCode() != 200) {
-            throw new ResponseCodeException("https://api.minecraftservices.com/entitlements/mcstore", request.getResponseCode());
+        try {
+            if (request.getResponseCode() != 200) {
+                throw new ResponseCodeException("https://api.minecraftservices.com/entitlements/mcstore", request.getResponseCode());
+            }
+        } finally {
+            request.disconnect();
         }
 
         // Get Minecraft Account UUID
@@ -248,24 +252,28 @@ public class MicrosoftService {
         HttpURLConnection conn = HttpRequest.GET("https://api.minecraftservices.com/minecraft/profile")
                 .authorization(tokenType, accessToken)
                 .createConnection();
-        int responseCode = conn.getResponseCode();
-        if (responseCode == HTTP_NOT_FOUND) {
-            MinecraftLicense license = HttpRequest.GET("https://api.minecraftservices.com/entitlements/license")
-                    .authorization(tokenType, accessToken)
-                    .getJson(MinecraftLicense.class);
-            boolean hasMinecraftLicense = license != null && license.items() != null && license.items().stream()
-                    .anyMatch(item -> "game_minecraft".equals(item.name()));
-            if (!hasMinecraftLicense) {
-                throw new MinecraftJavaEditionLicenseNotFoundException();
-            } else {
-                throw new MinecraftJavaEditionProfileNotFoundException();
+        try {
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HTTP_NOT_FOUND) {
+                MinecraftLicense license = HttpRequest.GET("https://api.minecraftservices.com/entitlements/license")
+                        .authorization(tokenType, accessToken)
+                        .getJson(MinecraftLicense.class);
+                boolean hasMinecraftLicense = license != null && license.items() != null && license.items().stream()
+                        .anyMatch(item -> "game_minecraft".equals(item.name()));
+                if (!hasMinecraftLicense) {
+                    throw new MinecraftJavaEditionLicenseNotFoundException();
+                } else {
+                    throw new MinecraftJavaEditionProfileNotFoundException();
+                }
+            } else if (responseCode != 200) {
+                throw new ResponseCodeException("https://api.minecraftservices.com/minecraft/profile", responseCode);
             }
-        } else if (responseCode != 200) {
-            throw new ResponseCodeException("https://api.minecraftservices.com/minecraft/profile", responseCode);
-        }
 
-        String result = NetworkUtils.readFullyAsString(conn);
-        return JsonUtils.fromNonNullJson(result, MinecraftProfileResponse.class);
+            String result = NetworkUtils.readFullyAsString(conn);
+            return JsonUtils.fromNonNullJson(result, MinecraftProfileResponse.class);
+        } finally {
+            conn.disconnect();
+        }
     }
 
     public Optional<CompleteGameProfile> getCompleteGameProfile(UUID uuid) throws AuthenticationException {

@@ -18,6 +18,7 @@
 package org.zero.launcher.game;
 
 import org.intellij.lang.annotations.Language;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -28,6 +29,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/// Analyzes Minecraft crash logs and crash reports to determine root causes.
+@NotNullByDefault
 public final class CrashReportAnalyzer {
 
     private CrashReportAnalyzer() {
@@ -179,13 +182,13 @@ public final class CrashReportAnalyzer {
         return results;
     }
 
-    private static final Pattern CRASH_REPORT_LOCATION_PATTERN = Pattern.compile("#@!@# Game crashed! Crash report saved to: #@!@# (?<location>.*)");
+    private static final Pattern CRASH_REPORT_LOCATION_PATTERN = Pattern.compile("#@!@# Game crashed! Crash report saved to: #@!@# (?<location>[^\\r\\n]+)");
 
     @Nullable
     public static String findCrashReport(String log) throws IOException, InvalidPathException {
         Matcher matcher = CRASH_REPORT_LOCATION_PATTERN.matcher(log);
         if (matcher.find()) {
-            return Files.readString(Paths.get(matcher.group("location")));
+            return Files.readString(Paths.get(matcher.group("location").trim()));
         } else {
             return null;
         }

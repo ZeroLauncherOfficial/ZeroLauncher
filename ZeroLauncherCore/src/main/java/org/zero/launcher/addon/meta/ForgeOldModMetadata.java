@@ -151,9 +151,9 @@ public final class ForgeOldModMetadata {
             throw new IOException("Mod " + modFile + " `mcmod.info` is malformed");
         ForgeOldModMetadata metadata = modList.get(0);
         String authors = metadata.getAuthor();
-        if (StringUtils.isBlank(authors) && metadata.getAuthors().length > 0)
+        if (StringUtils.isBlank(authors) && metadata.getAuthors() != null && metadata.getAuthors().length > 0)
             authors = String.join(", ", metadata.getAuthors());
-        if (StringUtils.isBlank(authors) && metadata.getAuthorList().length > 0)
+        if (StringUtils.isBlank(authors) && metadata.getAuthorList() != null && metadata.getAuthorList().length > 0)
             authors = String.join(", ", metadata.getAuthorList());
         if (StringUtils.isBlank(authors))
             authors = metadata.getCredits();

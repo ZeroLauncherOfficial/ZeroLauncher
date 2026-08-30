@@ -18,6 +18,7 @@
 package org.zero.launcher.setting;
 
 import com.google.gson.JsonObject;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
@@ -187,12 +188,22 @@ public final class Accounts {
         // otherwise it might cause data loss
         if (!initialized)
             return;
+
+        List<Account> accountSnapshot;
+        if (Platform.isFxApplicationThread()) {
+            accountSnapshot = new ArrayList<>(accounts);
+        } else {
+            synchronized (accounts) {
+                accountSnapshot = new ArrayList<>(accounts);
+            }
+        }
+
         ArrayList<JsonObject> globalMetadata = new ArrayList<>();
         LinkedHashMap<AccountID, JsonObject> globalPrivateData = new LinkedHashMap<>();
         ArrayList<JsonObject> portableMetadata = new ArrayList<>();
         LinkedHashMap<AccountID, JsonObject> portablePrivateData = new LinkedHashMap<>();
 
-        for (Account account : accounts) {
+        for (Account account : accountSnapshot) {
             SerializedAccount serialized = serializeAccount(account);
             if (account.isPortable()) {
                 portableMetadata.add(serialized.metadata());

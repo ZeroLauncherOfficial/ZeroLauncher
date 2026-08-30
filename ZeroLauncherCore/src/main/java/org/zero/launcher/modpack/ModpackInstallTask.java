@@ -17,6 +17,8 @@
  */
 package org.zero.launcher.modpack;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.zero.launcher.task.Task;
 import org.zero.launcher.util.DigestUtils;
 import org.zero.launcher.util.io.Unzipper;
@@ -27,6 +29,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 
+/// Task for unpacking and installing modpack files and managing override updates.
+@NotNullByDefault
 public class ModpackInstallTask<T> extends Task<Void> {
 
     private final Path modpackFile;
@@ -44,7 +48,7 @@ public class ModpackInstallTask<T> extends Task<Void> {
     /// @param subDirectories   the subdirectory of zip file to unpack
     /// @param callback         test whether the file (given full path) in zip file should be unpacked or not
     /// @param oldConfiguration old modpack information if upgrade
-    public ModpackInstallTask(Path modpackFile, Path dest, Charset charset, List<String> subDirectories, Predicate<String> callback, ModpackConfiguration<T> oldConfiguration) {
+    public ModpackInstallTask(Path modpackFile, Path dest, Charset charset, List<String> subDirectories, Predicate<String> callback, @Nullable ModpackConfiguration<T> oldConfiguration) {
         this.modpackFile = modpackFile;
         this.dest = dest;
         this.charset = charset;
@@ -94,11 +98,20 @@ public class ModpackInstallTask<T> extends Task<Void> {
                     }).unzip();
         }
 
-        // If old modpack have this entry, and new modpack deleted it. Delete this file.
+        // If old modpack have this entry, and new modpack deleted it. Delete this file safely.
+        Path normalizedDest = dest.toAbsolutePath().normalize();
         for (ModpackConfiguration.FileInformation file : overrides) {
-            Path original = dest.resolve(file.getPath());
-            if (Files.exists(original) && !entries.contains(file.getPath()))
+            if (file.getPath() == null || file.getPath().isBlank()) {
+                continue;
+            }
+            Path original = normalizedDest.resolve(file.getPath()).normalize();
+            if (!original.startsWith(normalizedDest)) {
+                // Prevent path traversal outside destination directory
+                continue;
+            }
+            if (Files.exists(original) && !entries.contains(file.getPath())) {
                 Files.deleteIfExists(original);
+            }
         }
     }
 }

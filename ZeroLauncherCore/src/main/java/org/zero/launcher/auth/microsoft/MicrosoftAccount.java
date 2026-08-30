@@ -19,6 +19,7 @@ package org.zero.launcher.auth.microsoft;
 
 import com.google.gson.JsonObject;
 import javafx.beans.binding.ObjectBinding;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.auth.*;
 import org.zero.launcher.auth.yggdrasil.Texture;
 import org.zero.launcher.auth.yggdrasil.TextureType;
@@ -34,6 +35,8 @@ import java.util.UUID;
 import static java.util.Objects.requireNonNull;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Microsoft OAuth account.
+@NotNullByDefault
 public final class MicrosoftAccount extends OAuthAccount {
 
     protected final MicrosoftService service;
@@ -75,7 +78,7 @@ public final class MicrosoftAccount extends OAuthAccount {
     }
 
     @Override
-    public AuthInfo logIn() throws AuthenticationException {
+    public synchronized AuthInfo logIn() throws AuthenticationException {
         if (!authenticated || !session.hasProfileName() || System.currentTimeMillis() > session.notAfter()) {
             if (session.hasProfileName()
                     && service.validate(session.notAfter(), session.tokenType(), session.accessToken())) {
@@ -100,7 +103,7 @@ public final class MicrosoftAccount extends OAuthAccount {
     }
 
     @Override
-    public AuthInfo logInWhenCredentialsExpired() throws AuthenticationException {
+    public synchronized AuthInfo logInWhenCredentialsExpired() throws AuthenticationException {
         MicrosoftSession acquiredSession = service.authenticate(OAuth.GrantFlow.DEVICE);
         if (!Objects.equals(profileID, acquiredSession.profile().id())) {
             throw new WrongAccountException(profileID, acquiredSession.profile().id());

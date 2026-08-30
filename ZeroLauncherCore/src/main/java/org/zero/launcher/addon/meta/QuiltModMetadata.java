@@ -20,6 +20,8 @@ package org.zero.launcher.addon.meta;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import kala.compress.archivers.zip.ZipArchiveEntry;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.zero.launcher.addon.LocalAddonFile;
 import org.zero.launcher.addon.mod.LocalModFile;
 import org.zero.launcher.addon.mod.ModLoaderType;
@@ -33,7 +35,9 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/// Metadata model for Quilt mods parsed from quilt.mod.json.
 @Immutable
+@NotNullByDefault
 public final class QuiltModMetadata {
     private static final class QuiltLoader {
         private static final class Metadata {
@@ -82,17 +86,43 @@ public final class QuiltModMetadata {
             throw new IOException("File " + modFile + " is not a supported Quilt mod.");
         }
 
+        String id = root.quilt_loader != null && root.quilt_loader.id != null ? root.quilt_loader.id : "";
+        String version = root.quilt_loader != null && root.quilt_loader.version != null ? root.quilt_loader.version : "";
+        QuiltLoader.@Nullable Metadata meta = root.quilt_loader != null ? root.quilt_loader.metadata : null;
+        String name = meta != null && meta.name != null ? meta.name : id;
+        String description = meta != null && meta.description != null ? meta.description : "";
+        @Nullable String icon = meta != null ? meta.icon : null;
+
+        String authors = "";
+        if (meta != null && meta.contributors != null) {
+            authors = meta.contributors.entrySet().stream()
+                    .map(entry -> {
+                        String role = entry.getValue() != null && entry.getValue().isJsonPrimitive()
+                                ? entry.getValue().getAsString() : "";
+                        return role.isEmpty() ? entry.getKey() : String.format("%s (%s)", entry.getKey(), role);
+                    })
+                    .collect(Collectors.joining(", "));
+        }
+
+        String homepage = "";
+        if (meta != null && meta.contact != null && meta.contact.has("homepage")) {
+            var el = meta.contact.get("homepage");
+            if (el != null && el.isJsonPrimitive()) {
+                homepage = el.getAsString();
+            }
+        }
+
         return new LocalModFile(
                 modManager,
-                modManager.getLocalMod(root.quilt_loader.id, ModLoaderType.QUILT),
+                modManager.getLocalMod(id, ModLoaderType.QUILT),
                 modFile,
-                root.quilt_loader.metadata.name,
-                new LocalAddonFile.Description(root.quilt_loader.metadata.description),
-                root.quilt_loader.metadata.contributors.entrySet().stream().map(entry -> String.format("%s (%s)", entry.getKey(), entry.getValue().getAsJsonPrimitive().getAsString())).collect(Collectors.joining(", ")),
-                root.quilt_loader.version,
+                name,
+                new LocalAddonFile.Description(description),
+                authors,
+                version,
                 "",
-                Optional.ofNullable(root.quilt_loader.metadata.contact.get("homepage")).map(jsonElement -> jsonElement.getAsJsonPrimitive().getAsString()).orElse(""),
-                root.quilt_loader.metadata.icon
+                homepage,
+                icon
         );
     }
 }

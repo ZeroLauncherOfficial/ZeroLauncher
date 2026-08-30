@@ -912,18 +912,16 @@ public final class LauncherHelper {
                 logBuffer = new LinkedBlockingQueue<>();
                 submitLogThread = Lang.thread(new Runnable() {
                     private final ArrayList<Log> currentLogs = new ArrayList<>();
-                    private final Semaphore semaphore = new Semaphore(0);
 
                     private void submitLogs() {
+                        if (currentLogs.isEmpty())
+                            return;
                         if (currentLogs.size() == 1) {
                             Log log = currentLogs.get(0);
                             runLater(() -> logWindow.logLine(log));
                         } else {
-                            runLater(() -> {
-                                logWindow.logLines(currentLogs);
-                                semaphore.release();
-                            });
-                            semaphore.acquireUninterruptibly();
+                            List<Log> logsSnapshot = new ArrayList<>(currentLogs);
+                            runLater(() -> logWindow.logLines(logsSnapshot));
                         }
                         currentLogs.clear();
                     }

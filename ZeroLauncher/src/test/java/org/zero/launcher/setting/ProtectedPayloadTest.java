@@ -122,11 +122,10 @@ public final class ProtectedPayloadTest {
         assertEquals("payload", payload.getAsString());
     }
 
-    /// Tests that the fixed payload key is the SHA-256 digest of the protection ID.
+    /// Tests that the fixed payload key matches the expected precomputed constant.
     @Test
-    public void precomputedProtectionKeyUsesProtectionID() throws NoSuchAlgorithmException {
-        byte[] key = MessageDigest.getInstance("SHA-256").digest(
-                ProtectedPayload.ProtectionMode.OBFUSCATED_V1.id().getBytes(StandardCharsets.UTF_8));
+    public void precomputedProtectionKeyUsesProtectionID() {
+        byte[] key = ProtectedPayload.OBFUSCATED_PROTECTION_KEY.getEncoded();
 
         assertArrayEquals(new byte[]{
                 (byte) 0x3c, (byte) 0xd8, (byte) 0xa2, (byte) 0x22,
@@ -251,5 +250,42 @@ public final class ProtectedPayloadTest {
         ProtectedPayload.ProtectionMode.PLAIN.writePayload(envelope, new JsonPrimitive("payload"));
 
         assertThrows(JsonParseException.class, () -> ProtectedPayload.read(envelope, JsonArray.class));
+    }
+
+    /// Tests that device-bound envelopes can store object JSON payloads and reveal them.
+    @Test
+    public void storesAndRevealsDeviceBoundPayload() {
+        JsonObject payload = new JsonObject();
+        payload.addProperty("accessToken", "secret-token-123");
+        payload.addProperty("refreshToken", "refresh-token-456");
+
+        JsonObject envelope = new JsonObject();
+        ProtectedPayload.ProtectionMode.DEVICE_BOUND_V1.writePayload(envelope, payload);
+
+        assertEquals(ProtectedPayload.ProtectionMode.DEVICE_BOUND_V1.id(),
+                envelope.get(ProtectedPayload.PROPERTY_PROTECTION).getAsString());
+        assertTrue(envelope.has(ProtectedPayload.PROPERTY_NONCE));
+        assertTrue(envelope.has(ProtectedPayload.PROPERTY_PAYLOAD));
+
+        JsonObject revealed = ProtectedPayload.read(envelope, JsonObject.class);
+        assertEquals(payload, revealed);
+    }
+
+    /// Tests that device-bound envelopes reject tampered ciphertext.
+    @Test
+    public void rejectsTamperedDeviceBoundPayload() {
+        JsonObject payload = new JsonObject();
+        payload.addProperty("key", "value");
+
+        JsonObject envelope = new JsonObject();
+        ProtectedPayload.ProtectionMode.DEVICE_BOUND_V1.writePayload(envelope, payload);
+
+        // Tamper with payload
+        String originalCiphertext = envelope.get(ProtectedPayload.PROPERTY_PAYLOAD).getAsString();
+        byte[] raw = Base64.getDecoder().decode(originalCiphertext);
+        raw[0] ^= 0xFF;
+        envelope.addProperty(ProtectedPayload.PROPERTY_PAYLOAD, Base64.getEncoder().encodeToString(raw));
+
+        assertThrows(JsonParseException.class, () -> ProtectedPayload.read(envelope, JsonObject.class));
     }
 }

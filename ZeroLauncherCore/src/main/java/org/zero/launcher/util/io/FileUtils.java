@@ -502,10 +502,25 @@ public final class FileUtils {
         }
     }
 
+    /// Creates a unique temporary file in the same directory as the target file.
     public static Path tmpSaveFile(Path file) {
-        return file.toAbsolutePath().resolveSibling("." + file.getFileName().toString() + ".tmp");
+        Path abs = file.toAbsolutePath();
+        Path parent = abs.getParent();
+        String fileName = abs.getFileName().toString();
+        try {
+            if (parent != null) {
+                Files.createDirectories(parent);
+                return Files.createTempFile(parent, "." + fileName + "-", ".tmp");
+            } else {
+                return Files.createTempFile("." + fileName + "-", ".tmp");
+            }
+        } catch (IOException e) {
+            String suffix = "." + System.nanoTime() + ".tmp";
+            return abs.resolveSibling("." + fileName + suffix);
+        }
     }
 
+    /// Safely writes content to a file using an atomic temporary file replacement.
     public static void saveSafely(Path file, String content) throws IOException {
         Path parent = file.toAbsolutePath().getParent();
         if (parent != null) {
@@ -513,20 +528,32 @@ public final class FileUtils {
         }
 
         Path tmpFile = tmpSaveFile(file);
-        try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
-            writer.write(content);
-        }
-
         try {
-            if (Files.exists(file) && Files.getAttribute(file, "dos:hidden") == Boolean.TRUE) {
-                Files.setAttribute(tmpFile, "dos:hidden", true);
+            try (BufferedWriter writer = Files.newBufferedWriter(tmpFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
+                writer.write(content);
             }
-        } catch (Throwable ignored) {
-        }
 
-        Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING);
+            try {
+                if (Files.exists(file) && Files.getAttribute(file, "dos:hidden") == Boolean.TRUE) {
+                    Files.setAttribute(tmpFile, "dos:hidden", true);
+                }
+            } catch (Throwable ignored) {
+            }
+
+            try {
+                Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (AtomicMoveNotSupportedException e) {
+                Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } finally {
+            try {
+                Files.deleteIfExists(tmpFile);
+            } catch (Throwable ignored) {
+            }
+        }
     }
 
+    /// Safely writes content to a file using an atomic temporary file replacement and custom consumer.
     public static void saveSafely(Path file, ExceptionalConsumer<? super OutputStream, IOException> action) throws IOException {
         Path parent = file.toAbsolutePath().getParent();
         if (parent != null) {
@@ -534,19 +561,29 @@ public final class FileUtils {
         }
 
         Path tmpFile = tmpSaveFile(file);
-
-        try (OutputStream os = Files.newOutputStream(tmpFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
-            action.accept(os);
-        }
-
         try {
-            if (Files.exists(file) && Files.getAttribute(file, "dos:hidden") == Boolean.TRUE) {
-                Files.setAttribute(tmpFile, "dos:hidden", true);
+            try (OutputStream os = Files.newOutputStream(tmpFile, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)) {
+                action.accept(os);
             }
-        } catch (Throwable ignored) {
-        }
 
-        Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING);
+            try {
+                if (Files.exists(file) && Files.getAttribute(file, "dos:hidden") == Boolean.TRUE) {
+                    Files.setAttribute(tmpFile, "dos:hidden", true);
+                }
+            } catch (Throwable ignored) {
+            }
+
+            try {
+                Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (AtomicMoveNotSupportedException e) {
+                Files.move(tmpFile, file, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } finally {
+            try {
+                Files.deleteIfExists(tmpFile);
+            } catch (Throwable ignored) {
+            }
+        }
     }
 
     public static String printFileStructure(Path path, int maxDepth) throws IOException {

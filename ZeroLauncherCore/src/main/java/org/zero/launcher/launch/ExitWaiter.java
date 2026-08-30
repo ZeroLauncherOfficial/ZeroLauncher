@@ -17,6 +17,7 @@
  */
 package org.zero.launcher.launch;
 
+import org.jetbrains.annotations.NotNullByDefault;
 import org.zero.launcher.event.EventBus;
 import org.zero.launcher.event.JVMLaunchFailedEvent;
 import org.zero.launcher.event.ProcessExitedAbnormallyEvent;
@@ -30,21 +31,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-/**
- * @author Zero
- */
+/// Monitors a running Minecraft process until exit, detecting exit type and failure events.
+@NotNullByDefault
 final class ExitWaiter implements Runnable {
 
     private final ManagedProcess process;
     private final Collection<Thread> joins;
     private final BiConsumer<Integer, ProcessListener.ExitType> watcher;
 
-    /**
-     * Constructor.
-     *
-     * @param process the process to wait for
-     * @param watcher the callback that will be called after process stops.
-     */
+    /// Constructor.
+    ///
+    /// @param process the process to wait for
+    /// @param joins threads to join before exit inspection
+    /// @param watcher the callback that will be called after process stops.
     public ExitWaiter(ManagedProcess process, Collection<Thread> joins, BiConsumer<Integer, ProcessListener.ExitType> watcher) {
         this.process = process;
         this.joins = joins;
@@ -59,19 +58,26 @@ final class ExitWaiter implements Runnable {
             for (Thread thread : joins)
                 thread.join();
 
+            List<String> allLines = process.getLines(null);
             List<String> errorLines = process.getLines(Log4jLevel::guessLogLineError);
             ProcessListener.ExitType exitType;
 
-            // LaunchWrapper will catch the exception logged and will exit normally.
-            if (exitCode != 0 && StringUtils.containsOne(errorLines,
+            // JVM startup failures (e.g. invalid memory configuration) are emitted to raw stderr without Log4j formatting.
+            if (exitCode != 0 && (StringUtils.containsOne(allLines,
                     "Could not create the Java Virtual Machine.",
                     "Error occurred during initialization of VM",
-                    "A fatal exception has occurred. Program will exit.")) {
+                    "A fatal exception has occurred. Program will exit.",
+                    "Unrecognized option:",
+                    "Invalid maximum heap size") || StringUtils.containsOne(errorLines,
+                    "Could not create the Java Virtual Machine.",
+                    "Error occurred during initialization of VM",
+                    "A fatal exception has occurred. Program will exit."))) {
                 EventBus.EVENT_BUS.fireEvent(new JVMLaunchFailedEvent(this, process));
                 exitType = ProcessListener.ExitType.JVM_ERROR;
             } else if (exitCode != 0 || StringUtils.containsOne(errorLines,
                     "Crash report saved to", "Could not save crash report to", "This crash report has been saved to:",
-                    "Unable to launch", "An exception was thrown, the game will display an error screen and halt.")) {
+                    "Unable to launch", "An exception was thrown, the game will display an error screen and halt.")
+                    || StringUtils.containsOne(allLines, "Crash report saved to", "Could not save crash report to", "This crash report has been saved to:")) {
                 EventBus.EVENT_BUS.fireEvent(new ProcessExitedAbnormallyEvent(this, process));
 
                 if (exitCode == 137 && OperatingSystem.CURRENT_OS.isLinuxOrBSD()) {

@@ -32,6 +32,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Objects;
@@ -55,6 +57,18 @@ final class ProtectedPayload {
     /// Prevents instantiation.
     private ProtectedPayload() {
     }
+
+    /// The built-in application key used by the legacy weak obfuscated protection mode.
+    static final SecretKeySpec OBFUSCATED_PROTECTION_KEY = new SecretKeySpec(new byte[]{
+            (byte) 0x3c, (byte) 0xd8, (byte) 0xa2, (byte) 0x22,
+            (byte) 0x11, (byte) 0xd2, (byte) 0x8d, (byte) 0x89,
+            (byte) 0xb4, (byte) 0xf7, (byte) 0xd9, (byte) 0xb0,
+            (byte) 0x65, (byte) 0xbc, (byte) 0x14, (byte) 0x8a,
+            (byte) 0x6e, (byte) 0xb0, (byte) 0xa9, (byte) 0x4d,
+            (byte) 0xeb, (byte) 0x93, (byte) 0x99, (byte) 0x6f,
+            (byte) 0x84, (byte) 0x07, (byte) 0x5a, (byte) 0x9e,
+            (byte) 0xbd, (byte) 0xc8, (byte) 0xd1, (byte) 0xeb
+    }, "ChaCha20");
 
     /// Selects how a protected payload is stored in its JSON envelope.
     @NotNullByDefault
@@ -103,18 +117,6 @@ final class ProtectedPayload {
             /// The random source used to create payload nonces.
             private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-            /// The built-in application key used by this weak portable protection mode.
-            static final SecretKeySpec PROTECTION_KEY = new SecretKeySpec(new byte[]{
-                    (byte) 0x3c, (byte) 0xd8, (byte) 0xa2, (byte) 0x22,
-                    (byte) 0x11, (byte) 0xd2, (byte) 0x8d, (byte) 0x89,
-                    (byte) 0xb4, (byte) 0xf7, (byte) 0xd9, (byte) 0xb0,
-                    (byte) 0x65, (byte) 0xbc, (byte) 0x14, (byte) 0x8a,
-                    (byte) 0x6e, (byte) 0xb0, (byte) 0xa9, (byte) 0x4d,
-                    (byte) 0xeb, (byte) 0x93, (byte) 0x99, (byte) 0x6f,
-                    (byte) 0x84, (byte) 0x07, (byte) 0x5a, (byte) 0x9e,
-                    (byte) 0xbd, (byte) 0xc8, (byte) 0xd1, (byte) 0xeb
-            }, "ChaCha20");
-
             /// Encrypts the plain payload bytes.
             ///
             /// @param payload the plain payload bytes
@@ -124,7 +126,7 @@ final class ProtectedPayload {
             private byte[] encryptPayload(byte[] payload, byte[] nonce) {
                 try {
                     Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
-                    cipher.init(Cipher.ENCRYPT_MODE, PROTECTION_KEY, new IvParameterSpec(nonce));
+                    cipher.init(Cipher.ENCRYPT_MODE, OBFUSCATED_PROTECTION_KEY, new IvParameterSpec(nonce));
                     return cipher.doFinal(payload);
                 } catch (GeneralSecurityException e) {
                     throw new JsonParseException("Failed to protect JSON payload", e);
@@ -140,7 +142,7 @@ final class ProtectedPayload {
             private byte[] decryptPayload(byte[] payload, byte[] nonce) {
                 try {
                     Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
-                    cipher.init(Cipher.DECRYPT_MODE, PROTECTION_KEY, new IvParameterSpec(nonce));
+                    cipher.init(Cipher.DECRYPT_MODE, OBFUSCATED_PROTECTION_KEY, new IvParameterSpec(nonce));
                     return cipher.doFinal(payload);
                 } catch (GeneralSecurityException e) {
                     throw new JsonParseException("Failed to reveal protected JSON payload", e);
@@ -254,6 +256,123 @@ final class ProtectedPayload {
                     throw new JsonParseException("Failed to reveal protected JSON payload", e);
                 }
             }
+        },
+
+        /// Stores the payload as a device-bound encrypted envelope.
+        ///
+        /// The payload is encrypted with a key derived from local user and machine properties using ChaCha20-Poly1305.
+        /// The nonce is stored separately in the envelope.
+        DEVICE_BOUND_V1("zero-device-v1") {
+            /// The JCA transformation used for payload encryption.
+            private static final String CIPHER_TRANSFORMATION = "ChaCha20-Poly1305";
+
+            /// The ChaCha20-Poly1305 nonce size in bytes.
+            private static final int NONCE_SIZE = 12;
+
+            /// The random source used to create payload nonces.
+            private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+            /// Derives the device-bound encryption key.
+            private static SecretKeySpec deriveDeviceKey() {
+                try {
+                    MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                    String entropy = String.join("|",
+                            System.getProperty("user.name", "unknown"),
+                            System.getProperty("user.home", "unknown"),
+                            System.getProperty("os.name", "unknown"),
+                            System.getProperty("os.arch", "unknown"),
+                            "ZeroLauncherDeviceSecretSalt"
+                    );
+                    byte[] keyBytes = digest.digest(entropy.getBytes(StandardCharsets.UTF_8));
+                    return new SecretKeySpec(keyBytes, "ChaCha20");
+                } catch (NoSuchAlgorithmException e) {
+                    throw new JsonParseException("Failed to derive device encryption key", e);
+                }
+            }
+
+            /// Encrypts the plain payload bytes.
+            ///
+            /// @param payload the plain payload bytes
+            /// @param nonce the encryption nonce
+            /// @return the encrypted payload bytes with the authentication tag appended
+            /// @throws JsonParseException if encryption fails
+            private byte[] encryptPayload(byte[] payload, byte[] nonce) {
+                try {
+                    Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+                    cipher.init(Cipher.ENCRYPT_MODE, deriveDeviceKey(), new IvParameterSpec(nonce));
+                    return cipher.doFinal(payload);
+                } catch (GeneralSecurityException e) {
+                    throw new JsonParseException("Failed to protect JSON payload", e);
+                }
+            }
+
+            /// Decrypts the protected payload bytes.
+            ///
+            /// @param payload the encrypted payload bytes with the authentication tag appended
+            /// @param nonce the encryption nonce
+            /// @return the plain payload bytes
+            /// @throws JsonParseException if decryption fails
+            private byte[] decryptPayload(byte[] payload, byte[] nonce) {
+                try {
+                    Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+                    cipher.init(Cipher.DECRYPT_MODE, deriveDeviceKey(), new IvParameterSpec(nonce));
+                    return cipher.doFinal(payload);
+                } catch (GeneralSecurityException e) {
+                    throw new JsonParseException("Failed to reveal protected JSON payload", e);
+                }
+            }
+
+            /// Writes the payload into the given envelope.
+            @Override
+            protected void writePayload(JsonObject envelope, JsonElement payload) {
+                byte[] nonce = new byte[NONCE_SIZE];
+                SECURE_RANDOM.nextBytes(nonce);
+                writePayload(envelope, payload, nonce);
+            }
+
+            /// Writes the payload into the given envelope with a caller-provided nonce.
+            @Override
+            protected void writePayload(JsonObject envelope, JsonElement payload, byte[] nonce) {
+                if (nonce.length != NONCE_SIZE) {
+                    throw new JsonParseException("Protected payload nonce has invalid length");
+                }
+
+                String payloadText = JsonUtils.UGLY_GSON.toJson(payload);
+                byte[] payloadBytes = payloadText.getBytes(StandardCharsets.UTF_8);
+                byte[] encryptedPayload = encryptPayload(payloadBytes, nonce);
+                String actualPayload = Base64.getEncoder().encodeToString(encryptedPayload);
+
+                envelope.addProperty(PROPERTY_PROTECTION, id());
+                envelope.addProperty(PROPERTY_PAYLOAD, actualPayload);
+                envelope.addProperty(PROPERTY_NONCE, Base64.getEncoder().encodeToString(nonce));
+            }
+
+            /// Reads the payload from the given envelope.
+            @Override
+            protected JsonElement readPayload(JsonObject envelope) {
+                try {
+                    String encodedNonce = JsonUtils.getString(envelope, PROPERTY_NONCE);
+                    if (encodedNonce == null) {
+                        throw new JsonParseException("Missing protected payload member: nonce");
+                    }
+
+                    byte[] nonce = Base64.getDecoder().decode(encodedNonce);
+                    if (nonce.length != NONCE_SIZE) {
+                        throw new JsonParseException("Protected payload nonce has invalid length");
+                    }
+
+                    String encodedPayload = JsonUtils.getString(envelope, PROPERTY_PAYLOAD);
+                    if (encodedPayload == null) {
+                        throw new JsonParseException("Missing protected payload member: payload");
+                    }
+
+                    byte[] encryptedPayload = Base64.getDecoder().decode(encodedPayload);
+                    byte[] payloadBytes = decryptPayload(encryptedPayload, nonce);
+                    return JsonParser.parseString(new String(payloadBytes, StandardCharsets.UTF_8));
+                } catch (IllegalArgumentException e) {
+                    throw new JsonParseException("Failed to reveal protected JSON payload", e);
+                }
+            }
         };
 
         /// The serialized protection marker.
@@ -315,7 +434,7 @@ final class ProtectedPayload {
 
         /// Returns the write mode selected by a configuration value.
         ///
-        /// Unknown values intentionally fall back to obfuscation so opt-in plain storage cannot be enabled by typos.
+        /// Unknown values fall back to device-bound protection.
         ///
         /// @param id the configured protection marker
         /// @return the selected write mode
@@ -325,7 +444,7 @@ final class ProtectedPayload {
                     return mode;
                 }
             }
-            return OBFUSCATED_V1;
+            return DEVICE_BOUND_V1;
         }
 
         /// Reads the protection mode from an envelope.

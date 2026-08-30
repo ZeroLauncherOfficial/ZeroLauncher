@@ -18,6 +18,8 @@
 package org.zero.launcher.game;
 
 import fi.iki.elonen.NanoHTTPD;
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
 import org.zero.launcher.auth.AuthenticationException;
 import org.zero.launcher.auth.OAuth;
 import org.zero.launcher.event.Event;
@@ -42,18 +44,20 @@ import static org.zero.launcher.util.Lang.thread;
 import static org.zero.launcher.util.i18n.I18n.i18n;
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Local OAuth server that receives authentication redirects from Microsoft OAuth flow.
+@NotNullByDefault
 public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
     private final int port;
     private final CompletableFuture<String> future = new CompletableFuture<>();
     private final String codeVerifier;
     private final String state;
 
-    public static String lastlyOpenedURL;
+    public static @Nullable String lastlyOpenedURL;
 
-    private String idToken;
+    private @Nullable String idToken;
 
     private OAuthServer(int port) {
-        super(port);
+        super("127.0.0.1", port);
 
         this.port = port;
 
@@ -97,14 +101,18 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
     }
 
     @Override
-    public String getIdToken() {
+    public @Nullable String getIdToken() {
         return idToken;
     }
 
     @Override
     public Response serve(IHTTPSession session) {
         if (!"/auth-response".equals(session.getUri())) {
-            return newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_HTML, "");
+            return newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_PLAINTEXT, "Not Found");
+        }
+
+        if (session.getMethod() != Method.GET && session.getMethod() != Method.POST) {
+            return newFixedLengthResponse(Response.Status.METHOD_NOT_ALLOWED, MIME_PLAINTEXT, "Method Not Allowed");
         }
 
         if (session.getMethod() == Method.POST) {
@@ -113,35 +121,46 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
                 session.parseBody(files);
             } catch (IOException e) {
                 LOG.warning("Failed to read post data", e);
-                return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_HTML, "");
+                return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, "Internal Server Error");
             } catch (ResponseException re) {
                 return newFixedLengthResponse(re.getStatus(), MIME_PLAINTEXT, re.getMessage());
             }
-        } else if (session.getMethod() == Method.GET) {
-            // do nothing
-        } else {
-            return newFixedLengthResponse(Response.Status.NOT_FOUND, MIME_HTML, "");
         }
-        String parameters = session.getQueryParameterString();
 
+        String parameters = session.getQueryParameterString();
         Map<String, String> query = mapOf(NetworkUtils.parseQuery(parameters));
 
+        String stateParam = query.get("state");
         String code = query.get("code");
-        if (code != null) {
-            if (this.state.equals(query.get("state"))) {
-                idToken = query.get("id_token");
-                future.complete(code);
-            } else if (query.containsKey("state")) {
-                LOG.warning("Failed to authenticate: invalid state in parameters");
-                future.completeExceptionally(new AuthenticationException("Failed to authenticate: invalid state"));
-            } else {
-                LOG.warning("Failed to authenticate: missing state in parameters");
-                future.completeExceptionally(new AuthenticationException("Failed to authenticate: missing state"));
-            }
-        } else {
-            LOG.warning("Failed to authenticate: missing authorization code in parameters");
-            future.completeExceptionally(new AuthenticationException("Failed to authenticate: missing authorization code"));
+        String error = query.get("error");
+
+        // Verify that this request is actually the callback from Microsoft matching our state
+        if (stateParam == null || !this.state.equals(stateParam)) {
+            // Unauthorized or invalid probe request. Do NOT complete future exceptionally and do NOT stop the server.
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, MIME_PLAINTEXT, "Invalid or missing state parameter");
         }
+
+        if (error != null) {
+            String errorDesc = query.getOrDefault("error_description", error);
+            LOG.warning("OAuth authentication error: " + errorDesc);
+            future.completeExceptionally(new AuthenticationException("OAuth authentication failed: " + errorDesc));
+            thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                    stop();
+                } catch (InterruptedException ignored) {
+                }
+            });
+            return newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, "Authentication failed: " + errorDesc);
+        }
+
+        if (code == null || code.isBlank()) {
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, MIME_PLAINTEXT, "Missing authorization code");
+        }
+
+        // Successfully received code with matching state
+        idToken = query.get("id_token");
+        future.complete(code);
 
         String html;
         try {
@@ -153,14 +172,13 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
                     .replace("%close_page%", i18n("account.methods.microsoft.close_page"));
         } catch (IOException e) {
             LOG.error("Failed to load html", e);
-            return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_HTML, "");
+            html = "<html><body><h1>Authentication Successful</h1><p>You can close this window now.</p></body></html>";
         }
         thread(() -> {
             try {
                 Thread.sleep(1000);
                 stop();
-            } catch (InterruptedException e) {
-                LOG.error("Failed to sleep for 1 second");
+            } catch (InterruptedException ignored) {
             }
         });
         return newFixedLengthResponse(Response.Status.OK, "text/html; charset=UTF-8", html);
@@ -173,10 +191,16 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
         stop();
     }
 
+    /// Factory for creating and managing OAuth session callbacks.
+    @NotNullByDefault
     public static class Factory implements OAuth.Callback {
+        /// Event fired when a device code is granted.
         public final EventManager<GrantDeviceCodeEvent> onGrantDeviceCode = new EventManager<>();
+        /// Event fired when login is completed via device code.
         public final EventManager<LoginCompletedDeviceCodeEvent> onLoginCompletedDeviceCode = new EventManager<>();
+        /// Event fired to open browser for authorization code grant.
         public final EventManager<OpenBrowserEvent> onOpenBrowserAuthorizationCode = new EventManager<>();
+        /// Event fired to open browser for device code grant.
         public final EventManager<OpenBrowserEvent> onOpenBrowserDevice = new EventManager<>();
 
         @Override
@@ -185,7 +209,7 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
                 throw new MicrosoftAuthenticationNotSupportedException();
             }
 
-            IOException exception = null;
+            @Nullable IOException exception = null;
             for (int port : new int[]{29111, 29112, 29113, 29114, 29115}) {
                 try {
                     OAuthServer server = new OAuthServer(port);
@@ -195,7 +219,10 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
                     exception = e;
                 }
             }
-            throw exception;
+            if (exception != null) {
+                throw exception;
+            }
+            throw new IOException("Failed to bind OAuth server to any port");
         }
 
         @Override
@@ -229,44 +256,58 @@ public final class OAuthServer extends NanoHTTPD implements OAuth.Session {
         }
     }
 
+    /// Event representing device code grant.
+    @NotNullByDefault
     public static class GrantDeviceCodeEvent extends Event {
         private final String userCode;
         private final String verificationUri;
 
+        /// Creates a new GrantDeviceCodeEvent.
         public GrantDeviceCodeEvent(Object source, String userCode, String verificationUri) {
             super(source);
             this.userCode = userCode;
             this.verificationUri = verificationUri;
         }
 
+        /// Returns the user code.
         public String getUserCode() {
             return userCode;
         }
 
+        /// Returns the verification URI.
         public String getVerificationUri() {
             return verificationUri;
         }
     }
 
+    /// Event representing completion of device code login.
+    @NotNullByDefault
     public static class LoginCompletedDeviceCodeEvent extends Event {
+        /// Creates a new LoginCompletedDeviceCodeEvent.
         public LoginCompletedDeviceCodeEvent(Object source) {
             super(source);
         }
     }
 
+    /// Event representing browser opening request.
+    @NotNullByDefault
     public static class OpenBrowserEvent extends Event {
         private final String url;
 
+        /// Creates a new OpenBrowserEvent.
         public OpenBrowserEvent(Object source, String url) {
             super(source);
             this.url = url;
         }
 
+        /// Returns the URL to open.
         public String getUrl() {
             return url;
         }
     }
 
+    /// Exception thrown when Microsoft authentication is not supported.
+    @NotNullByDefault
     public static class MicrosoftAuthenticationNotSupportedException extends AuthenticationException {
     }
 }

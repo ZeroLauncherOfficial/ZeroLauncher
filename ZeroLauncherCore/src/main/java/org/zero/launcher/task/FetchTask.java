@@ -114,19 +114,24 @@ public abstract class FetchTask<T> extends Task<T> {
                     exceptions.add(e);
                 }
             }
-        } catch (InterruptedException ignored) {
-            // Cancelled
+        } catch (InterruptedException e) {
+            // Task was interrupted or cancelled
+            throw e;
         } finally {
             if (SEMAPHORE != null)
                 SEMAPHORE.release();
         }
 
-        if (exceptions != null) {
+        if (exceptions != null && !exceptions.isEmpty()) {
             DownloadException last = exceptions.remove(exceptions.size() - 1);
             for (DownloadException exception : exceptions) {
                 last.addSuppressed(exception);
             }
             throw last;
+        } else if (!uris.isEmpty()) {
+            throw new DownloadException(uris.get(0), new IOException("All download attempts failed"));
+        } else {
+            throw new IOException("No download URIs provided for fetch task");
         }
     }
 
