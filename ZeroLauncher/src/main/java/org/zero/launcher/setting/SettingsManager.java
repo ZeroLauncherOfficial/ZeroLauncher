@@ -30,6 +30,7 @@ import org.zero.launcher.util.FileSaver;
 import org.zero.launcher.util.gson.JsonSchema;
 import org.zero.launcher.util.gson.JsonUtils;
 import org.zero.launcher.util.i18n.I18n;
+import org.zero.launcher.util.i18n.LanguagePackManager;
 import org.zero.launcher.util.io.FileUtils;
 import org.zero.launcher.util.platform.OperatingSystem;
 import org.jetbrains.annotations.NotNullByDefault;
@@ -1098,6 +1099,10 @@ public final class SettingsManager {
 
         Locale.setDefault(settings().languageProperty().get().getLocale());
         I18n.setLocale(launcherSettings.languageProperty().get());
+        LanguagePackManager.applyPack(LanguagePackManager.getPackById(launcherSettings.languagePackProperty().get()));
+        launcherSettings.languagePackProperty().addListener((obs, oldVal, newVal) -> {
+            LanguagePackManager.applyPack(LanguagePackManager.getPackById(newVal));
+        });
         LOG.setLogRetention(userSettings().logRetentionProperty().get());
         loadGameDirectories(migratedDetachedSettings.gameDirectories());
         gameSettingsAccess = loadGameSettingsPresets(migratedDetachedSettings.gameSettingsPresets());

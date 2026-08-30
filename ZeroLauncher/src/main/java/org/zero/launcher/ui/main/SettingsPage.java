@@ -44,10 +44,14 @@ import org.zero.launcher.upgrade.UpdateHandler;
 import org.zero.launcher.util.Lang;
 import org.zero.launcher.util.StringUtils;
 import org.zero.launcher.util.i18n.I18n;
+import org.zero.launcher.util.i18n.LanguagePack;
+import org.zero.launcher.util.i18n.LanguagePackManager;
 import org.zero.launcher.util.i18n.SupportedLocale;
 import org.zero.launcher.util.io.FileUtils;
 import org.zero.launcher.util.io.IOUtils;
 import org.tukaani.xz.XZInputStream;
+import javafx.stage.FileChooser;
+import java.io.File;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,6 +107,65 @@ public final class SettingsPage extends ScrollPane {
                 chooseLanguagePane.valueProperty().bindBidirectional(settings().languageProperty());
 
                 languagePaneList.getContent().add(chooseLanguagePane);
+            }
+
+            {
+                var choosePackPane = new LineSelectButton<LanguagePack>();
+                choosePackPane.setTitle(i18n("settings.launcher.language_pack"));
+                choosePackPane.setSubtitle(i18n("settings.launcher.language_pack.hint"));
+                choosePackPane.setNullSafeConverter(LanguagePack::displayName);
+
+                var packs = LanguagePackManager.getAvailablePacks();
+                choosePackPane.setItems(packs);
+                choosePackPane.setValue(LanguagePackManager.getPackById(settings().languagePackProperty().get()));
+
+                choosePackPane.valueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal != null) {
+                        settings().languagePackProperty().set(newVal.id());
+                        LanguagePackManager.applyPack(newVal);
+                        Controllers.showToast(i18n("message.success"));
+                    }
+                });
+
+                languagePaneList.getContent().add(choosePackPane);
+            }
+
+            {
+                BorderPane packActionsPane = new BorderPane();
+
+                Label leftLabel = new Label(i18n("settings.launcher.language_pack"));
+                BorderPane.setAlignment(leftLabel, Pos.CENTER_LEFT);
+                packActionsPane.setLeft(leftLabel);
+
+                JFXButton importButton = FXUtils.newBorderButton(i18n("settings.launcher.language_pack.import"));
+                importButton.setOnAction(e -> {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle(i18n("settings.launcher.language_pack.import"));
+                    fileChooser.getExtensionFilters().add(
+                            new FileChooser.ExtensionFilter("Language Pack (*.properties, *.lang, *.json)", "*.properties", "*.lang", "*.json")
+                    );
+                    File file = fileChooser.showOpenDialog(Controllers.getStage());
+                    if (file != null) {
+                        try {
+                            LanguagePack imported = LanguagePackManager.importCustomPack(file.toPath());
+                            settings().languagePackProperty().set(imported.id());
+                            Controllers.showToast(i18n("settings.launcher.language_pack.import.success", file.getName()));
+                        } catch (Exception ex) {
+                            LOG.warning("Failed to import language pack", ex);
+                            Controllers.dialog(i18n("settings.launcher.language_pack.import.failed", ex.getMessage()), null, MessageType.ERROR);
+                        }
+                    }
+                });
+
+                JFXButton openFolderButton = FXUtils.newBorderButton(i18n("settings.launcher.language_pack.open_folder"));
+                openFolderButton.setOnAction(e -> FXUtils.openFolder(LanguagePackManager.getLangPacksDirectory()));
+
+                HBox buttons = new HBox(10);
+                buttons.setAlignment(Pos.CENTER_RIGHT);
+                buttons.getChildren().addAll(importButton, openFolderButton);
+                packActionsPane.setRight(buttons);
+
+                languagePaneList.getContent().add(packActionsPane);
             }
 
             rootPane.getChildren().addAll(ComponentList.createComponentListTitle(i18n("settings.launcher.language")), languagePaneList);

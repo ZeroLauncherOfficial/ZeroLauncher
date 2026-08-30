@@ -62,10 +62,22 @@ public final class I18n {
     }
 
     public static String i18n(@PropertyKey(resourceBundle = "assets.lang.I18N") String key, Object... formatArgs) {
+        String override = LanguagePackManager.getOverride(key);
+        if (override != null) {
+            try {
+                return String.format(override, formatArgs);
+            } catch (Exception e) {
+                return override;
+            }
+        }
         return locale.i18n(key, formatArgs);
     }
 
     public static String i18n(@PropertyKey(resourceBundle = "assets.lang.I18N") String key) {
+        String override = LanguagePackManager.getOverride(key);
+        if (override != null) {
+            return override;
+        }
         return locale.i18n(key);
     }
 

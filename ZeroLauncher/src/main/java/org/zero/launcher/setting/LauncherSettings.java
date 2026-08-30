@@ -191,6 +191,15 @@ public final class LauncherSettings extends ObservableSetting implements JsonSch
         return language;
     }
 
+    /// The launcher language pack / overlay ID.
+    @SerializedName("languagePack")
+    private final StringProperty languagePack = new SimpleStringProperty("default");
+
+    /// Returns the language pack property.
+    public StringProperty languagePackProperty() {
+        return languagePack;
+    }
+
     /// Whether preview builds are accepted by update checks.
     @SerializedName("acceptPreviewUpdate")
     private final BooleanProperty acceptPreviewUpdate = new SimpleBooleanProperty(false);
