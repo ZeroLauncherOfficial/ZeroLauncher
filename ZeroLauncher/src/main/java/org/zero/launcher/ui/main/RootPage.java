@@ -95,11 +95,11 @@ public class RootPage extends StackPane implements DecoratorPage {
         // 1. Brand / Logo (Left)
         HBox brandBox = new HBox(8);
         brandBox.setAlignment(Pos.CENTER_LEFT);
-        brandBox.getStyleClass().addAll("zero-nav-brand", "zero-nav-brand-capsule");
+        brandBox.getStyleClass().add("zero-nav-brand");
         brandBox.setCursor(Cursor.HAND);
 
         Label logoCloud = new Label("\u2601");
-        logoCloud.setStyle("-fx-font-size: 16px; -fx-text-fill: #38BDF8;");
+        logoCloud.setStyle("-fx-font-size: 17px; -fx-text-fill: #38BDF8;");
 
         Label logoTitle = new Label("Zero Launcher");
         logoTitle.getStyleClass().add("zero-brand-title");
@@ -108,9 +108,9 @@ public class RootPage extends StackPane implements DecoratorPage {
         FXUtils.onClicked(brandBox, () -> selectTab(TabId.HOME));
 
         // 2. Navigation Tabs (Center)
-        HBox navTabsBox = new HBox(4);
-        navTabsBox.setAlignment(Pos.CENTER);
-        navTabsBox.getStyleClass().addAll("zero-nav-tabs", "zero-nav-tabs-capsule");
+        HBox navTabsBox = new HBox(6);
+        navTabsBox.setAlignment(Pos.CENTER_LEFT);
+        navTabsBox.getStyleClass().add("zero-nav-tabs");
         HBox.setHgrow(navTabsBox, Priority.ALWAYS);
 
         addNavTab(navTabsBox, TabId.HOME, "首頁", SVG.HOME);
@@ -125,7 +125,7 @@ public class RootPage extends StackPane implements DecoratorPage {
         // 3. Mini BGM Widget (Right of top bar)
         HBox bgmWidget = new HBox(6);
         bgmWidget.setAlignment(Pos.CENTER_RIGHT);
-        bgmWidget.getStyleClass().add("zero-nav-bgm-capsule");
+        bgmWidget.getStyleClass().add("zero-nav-bgm-widget");
         bgmWidget.setCursor(Cursor.HAND);
 
         Label lblBgmIcon = new Label("🎵");

@@ -220,9 +220,11 @@ public class DecoratorSkin extends SkinBase<Decorator> {
         FXUtils.onChangeAndOperate(skinnable.titleTransparentProperty(), titleTransparent -> {
             if (titleTransparent) {
                 titleContainer.getStyleClass().remove("background");
-                titleContainer.getStyleClass().add("gray-background");
+                titleContainer.getStyleClass().remove("gray-background");
+                titleContainer.getStyleClass().add("title-transparent");
             } else {
                 titleContainer.getStyleClass().add("background");
+                titleContainer.getStyleClass().remove("title-transparent");
                 titleContainer.getStyleClass().remove("gray-background");
             }
         });

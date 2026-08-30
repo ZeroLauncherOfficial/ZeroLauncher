@@ -470,18 +470,25 @@
 }
 
 /*******************************************************************************
- * Zero Launcher Top Horizontal Navigation Bar                                 *
+ * Zero Launcher Top Horizontal Navigation Bar (Borderless & Translucent)      *
  ******************************************************************************/
+
+.title-transparent {
+    -fx-background-color: transparent !important;
+    -fx-border-width: 0 !important;
+}
 
 .zero-top-nav-bar {
     -fx-alignment: center-left;
     -fx-min-height: 40px;
     -fx-pref-height: 40px;
     -fx-max-height: 40px;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
 }
 
 .zero-nav-brand {
-    -fx-padding: 0 12 0 0;
+    -fx-padding: 0 12px 0 0;
     -fx-cursor: hand;
 }
 
@@ -490,19 +497,23 @@
 }
 
 .zero-nav-tabs {
-    -fx-alignment: center;
+    -fx-alignment: center-left;
     -fx-spacing: 4px;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
 }
 
 .zero-nav-tab {
     -fx-background-color: transparent;
-    -fx-background-radius: 6px;
-    -fx-padding: 4px 13px;
+    -fx-background-radius: 18px;
+    -fx-border-width: 0;
+    -fx-padding: 5px 14px;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-text-fill: #FFFFFF !important;
     -fx-opacity: 0.88;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.60), 4, 0, 0, 1);
 }
 
 .zero-nav-tab .svg {
@@ -510,11 +521,10 @@
 }
 
 .zero-nav-tab:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.22);
+    -fx-background-color: rgba(255, 255, 255, 0.12);
     -fx-text-fill: #FFFFFF !important;
     -fx-opacity: 1.0;
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
+    -fx-border-width: 0;
 }
 
 .zero-nav-tab:hover .svg {
@@ -522,13 +532,13 @@
 }
 
 .zero-nav-tab.active {
-    -fx-background-color: rgba(255, 255, 255, 0.30);
+    -fx-background-color: linear-gradient(to right, #0284c7, #0ea5e9);
+    -fx-background-radius: 18px;
+    -fx-border-width: 0;
     -fx-text-fill: #FFFFFF !important;
     -fx-font-weight: bold;
     -fx-opacity: 1.0;
-    -fx-border-color: #FFFFFF;
-    -fx-border-width: 0 0 3px 0;
-    -fx-border-radius: 0;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.60), 12, 0.20, 0, 2);
 }
 
 .zero-nav-tab.active .svg {
@@ -540,6 +550,7 @@
     -fx-background-radius: 16px;
     -fx-padding: 3px 10px;
     -fx-cursor: hand;
+    -fx-border-width: 0;
 }
 
 .zero-nav-user-badge:hover {
@@ -552,27 +563,23 @@
     -fx-text-fill: -monet-on-surface;
 }
 
-.zero-nav-bgm-capsule {
-    -fx-background-color: rgba(0, 0, 0, 0.22);
-    -fx-background-radius: 16px;
-    -fx-padding: 3px 10px;
-    -fx-border-color: rgba(255, 255, 255, 0.22);
-    -fx-border-radius: 16px;
-    -fx-border-width: 1px;
+.zero-nav-bgm-widget {
+    -fx-background-color: transparent;
+    -fx-background-radius: 18px;
+    -fx-padding: 4px 10px;
+    -fx-border-width: 0;
     -fx-cursor: hand;
 }
 
-.zero-nav-bgm-capsule:hover {
-    -fx-background-color: rgba(56, 189, 248, 0.25);
-    -fx-border-color: rgba(56, 189, 248, 0.65);
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
+.zero-nav-bgm-widget:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
 }
 
 .zero-nav-bgm-label {
     -fx-font-size: 11.5px;
     -fx-font-weight: bold;
     -fx-text-fill: #FFFFFF !important;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.60), 4, 0, 0, 1);
 }
 
 .zero-screenshot-card {
