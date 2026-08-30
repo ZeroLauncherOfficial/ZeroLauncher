@@ -557,6 +557,24 @@ public final class GameSettingsPage<S extends GameSettings> extends StackPane
             quickSublist.setHasSubtitle(true);
 
             var rendererSublist = new ComponentSublist(() -> {
+                var gpuPreferencePane = createInheritableButton(
+                        GameSettings::gpuPreferenceProperty,
+                        pref -> switch (pref) {
+                            case AUTO -> i18n("settings.advanced.gpu_preference.auto");
+                            case DISCRETE -> i18n("settings.advanced.gpu_preference.discrete");
+                            case INTEGRATED -> i18n("settings.advanced.gpu_preference.integrated");
+                        },
+                        pref -> switch (pref) {
+                            case AUTO -> GpuDetector.hasDiscreteGpu()
+                                    ? i18n("settings.advanced.gpu_preference.auto.discrete_detected")
+                                    : i18n("settings.advanced.gpu_preference.auto.integrated_detected");
+                            case DISCRETE -> i18n("settings.advanced.gpu_preference.discrete.desc");
+                            case INTEGRATED -> i18n("settings.advanced.gpu_preference.integrated.desc");
+                        },
+                        GpuPreference.values());
+                gpuPreferencePane.setTitle(i18n("settings.advanced.gpu_preference"));
+                gpuPreferencePane.setSubtitle(GpuDetector.getGpuSummary());
+
                 var graphicsBackendPane = createInheritableButton(
                         GameSettings::graphicsBackendProperty,
                         backend -> i18n("settings.advanced.graphics_backend." + backend.name().toLowerCase(Locale.ROOT)),
@@ -588,7 +606,7 @@ public final class GameSettingsPage<S extends GameSettings> extends StackPane
                         Renderer.getSupported(GraphicsAPI.VULKAN).toArray(Renderer[]::new));
                 vulkanRendererPane.setTitle(i18n("settings.advanced.renderer.vulkan"));
 
-                return List.of(graphicsBackendPane, openGLRendererPane, vulkanRendererPane);
+                return List.of(gpuPreferencePane, graphicsBackendPane, openGLRendererPane, vulkanRendererPane);
             });
             rendererSublist.setTitle(i18n("settings.advanced.graphics"));
             rendererSublist.setSubtitle(i18n("settings.advanced.graphics_backend.desc"));
@@ -765,6 +783,25 @@ public final class GameSettingsPage<S extends GameSettings> extends StackPane
                 graphicsSettings
         );
         {
+            var gpuPreferencePane = createInheritableButton(
+                    GameSettings::gpuPreferenceProperty,
+                    pref -> switch (pref) {
+                        case AUTO -> i18n("settings.advanced.gpu_preference.auto");
+                        case DISCRETE -> i18n("settings.advanced.gpu_preference.discrete");
+                        case INTEGRATED -> i18n("settings.advanced.gpu_preference.integrated");
+                    },
+                    pref -> switch (pref) {
+                        case AUTO -> GpuDetector.hasDiscreteGpu()
+                                ? i18n("settings.advanced.gpu_preference.auto.discrete_detected")
+                                : i18n("settings.advanced.gpu_preference.auto.integrated_detected");
+                        case DISCRETE -> i18n("settings.advanced.gpu_preference.discrete.desc");
+                        case INTEGRATED -> i18n("settings.advanced.gpu_preference.integrated.desc");
+                    },
+                    GpuPreference.values());
+            graphicsSettings.getContent().add(gpuPreferencePane);
+            gpuPreferencePane.setTitle(i18n("settings.advanced.gpu_preference"));
+            gpuPreferencePane.setSubtitle(GpuDetector.getGpuSummary());
+
             var graphicsBackendPane = createInheritableButton(
                     GameSettings::graphicsBackendProperty,
                     backend -> i18n("settings.advanced.graphics_backend." + backend.name().toLowerCase(Locale.ROOT)),

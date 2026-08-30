@@ -643,6 +643,19 @@ public sealed abstract class GameSettings extends ObservableSetting {
         return vulkanRenderer;
     }
 
+    /// Property name for GPU selection preference.
+    public static final String PROPERTY_GPU_PREFERENCE = "gpuPreference";
+
+    /// GPU selection preference (Auto, Discrete, Integrated).
+    @SerializedName(PROPERTY_GPU_PREFERENCE)
+    private final InheritableProperty<GpuPreference> gpuPreference =
+            newInheritableProperty(PROPERTY_GPU_PREFERENCE, GpuPreference.AUTO);
+
+    /// Returns the GPU preference property.
+    public InheritableProperty<GpuPreference> gpuPreferenceProperty() {
+        return gpuPreference;
+    }
+
     /// Property name for customized environment variables.
     public static final String PROPERTY_ENVIRONMENT_VARIABLES = "environmentVariables";
 

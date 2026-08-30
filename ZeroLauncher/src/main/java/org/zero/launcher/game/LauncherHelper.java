@@ -236,6 +236,11 @@ public final class LauncherHelper {
                         launchOptionsBuilder.setQuickPlayOption(quickPlayOption);
                     }
                     injectRendererEnvironmentVariables(launchOptionsBuilder, setting.getRenderer(GameVersionNumber.asGameVersion(gameVersion)));
+                    GpuDetector.applyGpuPreference(
+                            setting.getInheritable(GameSettings::gpuPreferenceProperty),
+                            javaVersionRef.get().getBinary() != null ? javaVersionRef.get().getBinary().toString() : null,
+                            launchOptionsBuilder.getEnvironmentVariables()
+                    );
 
                     LaunchOptions launchOptions = launchOptionsBuilder.create();
 
