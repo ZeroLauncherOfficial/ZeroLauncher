@@ -17,32 +17,70 @@
  */
 package org.zero.launcher.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.NotNullByDefault;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 
 import static org.zero.launcher.util.logging.Logger.LOG;
 
-/// @author Zero
+/// Central event bus for publishing and subscribing to typed events with polymorphic hierarchy dispatch.
+@NotNullByDefault
 public final class EventBus extends ClassValue<EventManager<?>> {
 
+    /// Global singleton instance of the event bus.
     public static final EventBus EVENT_BUS = new EventBus();
 
     private EventBus() {
     }
 
     @Override
-    protected EventManager<?> computeValue(@NotNull Class<?> type) {
+    protected EventManager<?> computeValue(Class<?> type) {
         return new EventManager<>();
     }
 
+    /// Returns the event manager channel associated with the given event class.
     @SuppressWarnings("unchecked")
     public <T extends Event> EventManager<T> channel(Class<T> clazz) {
         return (EventManager<T>) get(clazz);
     }
 
+    /// Fires an event across the event bus, dispatching to listeners registered for the event's class,
+    /// superclasses, and interfaces.
     @SuppressWarnings("unchecked")
     public Event.Result fireEvent(Event obj) {
         LOG.info(obj + " gets fired");
 
-        return ((EventManager<Event>) get(obj.getClass())).fireEvent(obj);
+        Event.Result finalResult = Event.Result.DEFAULT;
+        Set<Class<?>> visited = new HashSet<>();
+        Queue<Class<?>> queue = new ArrayDeque<>();
+        queue.add(obj.getClass());
+
+        while (!queue.isEmpty()) {
+            Class<?> current = queue.poll();
+            if (current == null || !visited.add(current) || !Event.class.isAssignableFrom(current)) {
+                continue;
+            }
+
+            EventManager<Event> manager = (EventManager<Event>) get(current);
+            Event.Result res = manager.fireEvent(obj);
+            if (res != Event.Result.DEFAULT) {
+                finalResult = res;
+            }
+
+            Class<?> superClass = current.getSuperclass();
+            if (superClass != null && Event.class.isAssignableFrom(superClass)) {
+                queue.add(superClass);
+            }
+            for (Class<?> intf : current.getInterfaces()) {
+                if (Event.class.isAssignableFrom(intf)) {
+                    queue.add(intf);
+                }
+            }
+        }
+
+        return finalResult;
     }
 }

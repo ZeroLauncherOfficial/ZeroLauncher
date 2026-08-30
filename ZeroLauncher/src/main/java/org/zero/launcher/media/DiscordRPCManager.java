@@ -14,6 +14,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.zero.launcher.util.platform.OperatingSystem;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.net.StandardProtocolFamily;
@@ -37,6 +40,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.zero.launcher.util.logging.Logger.LOG;
 
+/// Manages Discord Rich Presence (RPC) IPC integration.
+@NotNullByDefault
 public final class DiscordRPCManager {
 
     private static final String DEFAULT_CLIENT_ID = "1345112233445566778"; // Zero Launcher Discord App ID
@@ -60,21 +65,21 @@ public final class DiscordRPCManager {
     private final AtomicBoolean connected = new AtomicBoolean(false);
     private final AtomicLong launcherStartTime = new AtomicLong(System.currentTimeMillis() / 1000L);
 
-    private ByteChannel ipcChannel = null;
-    private RandomAccessFile winPipeFile = null;
+    private @Nullable ByteChannel ipcChannel = null;
+    private @Nullable RandomAccessFile winPipeFile = null;
 
     private final AtomicReference<Activity> currentActivity = new AtomicReference<>();
 
     public record Activity(
-            String details,
-            String state,
+            @Nullable String details,
+            @Nullable String state,
             long startTimestamp,
-            String largeImageKey,
-            String largeImageText,
-            String smallImageKey,
-            String smallImageText,
-            String button1Label,
-            String button1Url
+            @Nullable String largeImageKey,
+            @Nullable String largeImageText,
+            @Nullable String smallImageKey,
+            @Nullable String smallImageText,
+            @Nullable String button1Label,
+            @Nullable String button1Url
     ) {
     }
 
@@ -136,13 +141,15 @@ public final class DiscordRPCManager {
         }
     }
 
-    public void updatePlayingGame(String instanceName, String mcVersion, String loaderName) {
+    public void updatePlayingGame(@Nullable String instanceName, @Nullable String mcVersion, @Nullable String loaderName) {
         String details = (instanceName != null && !instanceName.isBlank()) ? "正在遊玩 " + instanceName : "正在遊玩 Minecraft";
-        String state = (!mcVersion.isBlank()) ? "Minecraft " + mcVersion + (!loaderName.isBlank() ? " (" + loaderName + ")" : "") : "Minecraft";
-        String smallKey = loaderName.toLowerCase().contains("fabric") ? "fabric"
-                : loaderName.toLowerCase().contains("forge") ? "forge"
-                : loaderName.toLowerCase().contains("neoforge") ? "neoforge"
-                : loaderName.toLowerCase().contains("quilt") ? "quilt"
+        String ver = (mcVersion != null) ? mcVersion : "";
+        String loader = (loaderName != null) ? loaderName : "";
+        String state = (!ver.isBlank()) ? "Minecraft " + ver + (!loader.isBlank() ? " (" + loader + ")" : "") : "Minecraft";
+        String smallKey = loader.toLowerCase().contains("fabric") ? "fabric"
+                : loader.toLowerCase().contains("forge") ? "forge"
+                : loader.toLowerCase().contains("neoforge") ? "neoforge"
+                : loader.toLowerCase().contains("quilt") ? "quilt"
                 : "vanilla";
 
         Activity act = new Activity(
@@ -152,7 +159,7 @@ public final class DiscordRPCManager {
                 "logo",
                 "Zero Launcher v1.0.0",
                 smallKey,
-                loaderName.isBlank() ? "Vanilla" : loaderName,
+                loader.isBlank() ? "Vanilla" : loader,
                 "取得 Zero Launcher",
                 "https://github.com/ZeroLauncherOfficial/ZeroLauncher"
         );
@@ -170,20 +177,21 @@ public final class DiscordRPCManager {
         try {
             if (OperatingSystem.CURRENT_OS == OperatingSystem.WINDOWS) {
                 for (int i = 0; i < 10; i++) {
-                    File pipe = new File("\\\\.\\pipe\\discord-ipc-" + i);
-                    if (pipe.exists()) {
-                        try {
-                            winPipeFile = new RandomAccessFile(pipe, "rw");
-                            FileChannel ch = winPipeFile.getChannel();
-                            if (performHandshake(ch)) {
-                                this.ipcChannel = ch;
-                                this.connected.set(true);
-                                LOG.info("DiscordRPC: Connected to named pipe discord-ipc-" + i);
-                                sendCurrentActivity();
-                                return;
-                            }
-                        } catch (Exception ignored) {
+                    try {
+                        RandomAccessFile raf = new RandomAccessFile("\\\\.\\pipe\\discord-ipc-" + i, "rw");
+                        FileChannel ch = raf.getChannel();
+                        if (performHandshake(ch)) {
+                            this.winPipeFile = raf;
+                            this.ipcChannel = ch;
+                            this.connected.set(true);
+                            startResponseReader(ch);
+                            LOG.info("DiscordRPC: Connected to named pipe discord-ipc-" + i);
+                            sendCurrentActivity();
+                            return;
+                        } else {
+                            raf.close();
                         }
+                    } catch (Exception ignored) {
                     }
                 }
             } else {
@@ -210,6 +218,7 @@ public final class DiscordRPCManager {
                                 if (performHandshake(sc)) {
                                     this.ipcChannel = sc;
                                     this.connected.set(true);
+                                    startResponseReader(sc);
                                     LOG.info("DiscordRPC: Connected to socket " + socketPath);
                                     sendCurrentActivity();
                                     return;
@@ -225,9 +234,42 @@ public final class DiscordRPCManager {
         }
     }
 
-    private String customClientId = null;
+    private void startResponseReader(ByteChannel channel) {
+        Thread readerThread = new Thread(() -> {
+            ByteBuffer header = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN);
+            try {
+                while (connected.get() && channel.isOpen()) {
+                    header.clear();
+                    while (header.hasRemaining()) {
+                        if (channel.read(header) == -1) {
+                            closeConnection();
+                            return;
+                        }
+                    }
+                    header.flip();
+                    int op = header.getInt();
+                    int len = header.getInt();
+                    if (len > 0) {
+                        ByteBuffer body = ByteBuffer.allocate(len);
+                        while (body.hasRemaining()) {
+                            if (channel.read(body) == -1) {
+                                closeConnection();
+                                return;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                closeConnection();
+            }
+        }, "DiscordRPC-Reader");
+        readerThread.setDaemon(true);
+        readerThread.start();
+    }
 
-    public void setCustomClientId(String clientId) {
+    private @Nullable String customClientId = null;
+
+    public void setCustomClientId(@Nullable String clientId) {
         this.customClientId = clientId;
         if (connected.get()) {
             executor.execute(() -> {

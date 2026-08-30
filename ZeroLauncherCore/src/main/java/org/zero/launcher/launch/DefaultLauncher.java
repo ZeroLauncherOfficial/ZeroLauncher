@@ -817,12 +817,12 @@ public class DefaultLauncher extends Launcher {
 
                         Path appdata = options.getGameDir().toAbsolutePath().getParent();
                         if (appdata != null) {
-                            writer.write("set APPDATA=" + appdata);
+                            writer.write("set \"APPDATA=" + appdata + "\"");
                             writer.newLine();
                         }
 
                         for (Map.Entry<String, String> entry : envVars.entrySet()) {
-                            writer.write("set " + entry.getKey() + "=" + CommandBuilder.toBatchStringLiteral(entry.getValue()));
+                            writer.write("set \"" + entry.getKey() + "=" + entry.getValue() + "\"");
                             writer.newLine();
                         }
                         writer.newLine();

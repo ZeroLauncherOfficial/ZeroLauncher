@@ -239,4 +239,13 @@ public final class CommandBuilderTest {
             assertEquals(List.of("helloworld"), parse("hello\"world\""));
         }
     }
+
+    @Test
+    public void testToBatchStringLiteral() {
+        assertEquals("normal", CommandBuilder.toBatchStringLiteral("normal"));
+        assertEquals("\"\"", CommandBuilder.toBatchStringLiteral(""));
+        assertEquals("\"path with space\"", CommandBuilder.toBatchStringLiteral("path with space"));
+        assertEquals("\"has&special^char\"", CommandBuilder.toBatchStringLiteral("has&special^char"));
+        assertEquals("\"quoted\"\"inside\"", CommandBuilder.toBatchStringLiteral("quoted\"inside"));
+    }
 }

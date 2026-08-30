@@ -260,8 +260,8 @@ final class ProtectedPayload {
 
         /// Stores the payload as a device-bound encrypted envelope.
         ///
-        /// The payload is encrypted with a key derived from local user and machine properties using ChaCha20-Poly1305.
-        /// The nonce is stored separately in the envelope.
+        /// On Windows, the payload is protected using Windows DPAPI (CryptProtectData).
+        /// On other operating systems or as fallback, the payload is encrypted using ChaCha20-Poly1305.
         DEVICE_BOUND_V1("zero-device-v1") {
             /// The JCA transformation used for payload encryption.
             private static final String CIPHER_TRANSFORMATION = "ChaCha20-Poly1305";
@@ -281,7 +281,7 @@ final class ProtectedPayload {
                             System.getProperty("user.home", "unknown"),
                             System.getProperty("os.name", "unknown"),
                             System.getProperty("os.arch", "unknown"),
-                            "ZeroLauncherDeviceSecretSalt"
+                            "ZeroLauncherDeviceSecretSalt_v2_9f8e"
                     );
                     byte[] keyBytes = digest.digest(entropy.getBytes(StandardCharsets.UTF_8));
                     return new SecretKeySpec(keyBytes, "ChaCha20");
@@ -294,9 +294,15 @@ final class ProtectedPayload {
             ///
             /// @param payload the plain payload bytes
             /// @param nonce the encryption nonce
-            /// @return the encrypted payload bytes with the authentication tag appended
+            /// @return the encrypted payload bytes
             /// @throws JsonParseException if encryption fails
             private byte[] encryptPayload(byte[] payload, byte[] nonce) {
+                if (com.sun.jna.Platform.isWindows()) {
+                    try {
+                        return com.sun.jna.platform.win32.Crypt32Util.cryptProtectData(payload);
+                    } catch (Throwable ignored) {
+                    }
+                }
                 try {
                     Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
                     cipher.init(Cipher.ENCRYPT_MODE, deriveDeviceKey(), new IvParameterSpec(nonce));
@@ -308,17 +314,38 @@ final class ProtectedPayload {
 
             /// Decrypts the protected payload bytes.
             ///
-            /// @param payload the encrypted payload bytes with the authentication tag appended
+            /// @param payload the encrypted payload bytes
             /// @param nonce the encryption nonce
             /// @return the plain payload bytes
             /// @throws JsonParseException if decryption fails
             private byte[] decryptPayload(byte[] payload, byte[] nonce) {
+                if (com.sun.jna.Platform.isWindows()) {
+                    try {
+                        return com.sun.jna.platform.win32.Crypt32Util.cryptUnprotectData(payload);
+                    } catch (Throwable ignored) {
+                    }
+                }
                 try {
                     Cipher cipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
                     cipher.init(Cipher.DECRYPT_MODE, deriveDeviceKey(), new IvParameterSpec(nonce));
                     return cipher.doFinal(payload);
                 } catch (GeneralSecurityException e) {
-                    throw new JsonParseException("Failed to reveal protected JSON payload", e);
+                    try {
+                        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                        String legacyEntropy = String.join("|",
+                                System.getProperty("user.name", "unknown"),
+                                System.getProperty("user.home", "unknown"),
+                                System.getProperty("os.name", "unknown"),
+                                System.getProperty("os.arch", "unknown"),
+                                "ZeroLauncherDeviceSecretSalt"
+                        );
+                        SecretKeySpec legacyKey = new SecretKeySpec(digest.digest(legacyEntropy.getBytes(StandardCharsets.UTF_8)), "ChaCha20");
+                        Cipher legacyCipher = Cipher.getInstance(CIPHER_TRANSFORMATION);
+                        legacyCipher.init(Cipher.DECRYPT_MODE, legacyKey, new IvParameterSpec(nonce));
+                        return legacyCipher.doFinal(payload);
+                    } catch (GeneralSecurityException ex) {
+                        throw new JsonParseException("Failed to reveal protected JSON payload", e);
+                    }
                 }
             }
 

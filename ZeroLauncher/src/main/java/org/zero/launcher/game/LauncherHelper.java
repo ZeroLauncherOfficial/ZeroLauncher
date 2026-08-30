@@ -953,6 +953,25 @@ public final class LauncherHelper {
                     Thread.currentThread().interrupt();
                 }
             }
+
+            if (detectWindow) {
+                Task.supplyAsync(() -> {
+                    try {
+                        Thread.sleep(8000);
+                        lock.lock();
+                        try {
+                            if (!lwjgl) {
+                                lwjgl = true;
+                                finishLaunch();
+                            }
+                        } finally {
+                            lock.unlock();
+                        }
+                    } catch (InterruptedException ignored) {
+                    }
+                    return null;
+                }).start();
+            }
         }
 
         private void finishLaunch() {
@@ -1043,7 +1062,15 @@ public final class LauncherHelper {
 
             if (!lwjgl) {
                 String lowerCaseLog = log.toLowerCase(Locale.ROOT);
-                if (!detectWindow || lowerCaseLog.contains("lwjgl version") || lowerCaseLog.contains("lwjgl openal")) {
+                if (!detectWindow
+                        || lowerCaseLog.contains("lwjgl version")
+                        || lowerCaseLog.contains("lwjgl openal")
+                        || lowerCaseLog.contains("backend library: lwjgl")
+                        || lowerCaseLog.contains("openal initialized")
+                        || lowerCaseLog.contains("sound engine started")
+                        || lowerCaseLog.contains("setting user: ")
+                        || lowerCaseLog.contains("created: ")
+                        || lowerCaseLog.contains("opengl")) {
                     lock.lock();
                     try {
                         if (!lwjgl) {

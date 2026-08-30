@@ -47,7 +47,7 @@ subprojects {
     }
 
     configure<CheckstyleExtension> {
-        sourceSets = setOf()
+        isIgnoreFailures = true
     }
 
     dependencies {

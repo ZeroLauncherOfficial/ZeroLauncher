@@ -342,8 +342,15 @@ public final class CommandBuilder {
         return str;
     }
 
+    /// Converts a string into a batch string literal suitable for Windows command scripts.
     public static String toBatchStringLiteral(String s) {
-        return containsEscape(s, " \t\"^&<>|") ? '"' + escape(s, '\\', '"') + '"' : s;
+        if (s.isEmpty()) {
+            return "\"\"";
+        }
+        if (containsEscape(s, " \t\"^&<>|()%=!")) {
+            return '"' + s.replace("\"", "\"\"") + '"';
+        }
+        return s;
     }
 
     /// Parses a Java command-line argument file content according to the specification:

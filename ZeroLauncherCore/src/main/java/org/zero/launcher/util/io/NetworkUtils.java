@@ -328,15 +328,36 @@ public final class NetworkUtils {
             int code = conn.getResponseCode();
             if (code >= 300 && code <= 308 && code != 306 && code != 304) {
                 String newURL = conn.getHeaderField("Location");
+                URL originalUrl = conn.getURL();
                 conn.disconnect();
 
                 if (redirect > 20) {
                     throw new IOException("Too much redirects");
                 }
 
-                WebURL redirectedUrl = WebURL.of(conn.getURL()).resolve(newURL);
-                HttpURLConnection redirected = (HttpURLConnection) redirectedUrl.toURL().openConnection();
-                properties.forEach((key, value) -> value.forEach(element -> redirected.addRequestProperty(key, element)));
+                WebURL redirectedUrl = WebURL.of(originalUrl).resolve(newURL);
+                URL targetUrl = redirectedUrl.toURL();
+                HttpURLConnection redirected = (HttpURLConnection) targetUrl.openConnection();
+
+                boolean crossOrigin = !originalUrl.getProtocol().equalsIgnoreCase(targetUrl.getProtocol())
+                        || !originalUrl.getHost().equalsIgnoreCase(targetUrl.getHost())
+                        || (originalUrl.getPort() != targetUrl.getPort() && (originalUrl.getPort() != -1 || originalUrl.getDefaultPort() != targetUrl.getPort()));
+                boolean downgradedToHttp = originalUrl.getProtocol().equalsIgnoreCase("https") && targetUrl.getProtocol().equalsIgnoreCase("http");
+
+                properties.forEach((key, value) -> {
+                    if (key == null) return;
+                    if (crossOrigin || downgradedToHttp) {
+                        String lowerKey = key.toLowerCase(Locale.ROOT);
+                        if (lowerKey.equals("authorization")
+                                || lowerKey.equals("proxy-authorization")
+                                || lowerKey.equals("cookie")
+                                || lowerKey.equals("set-cookie")
+                                || lowerKey.equals("x-api-key")) {
+                            return;
+                        }
+                    }
+                    value.forEach(element -> redirected.addRequestProperty(key, element));
+                });
                 injectApiKey(redirectedUrl, redirected);
                 redirected.setRequestMethod(method);
                 conn = redirected;

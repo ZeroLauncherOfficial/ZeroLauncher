@@ -22,36 +22,36 @@ import org.zero.launcher.util.platform.OperatingSystem;
 import org.zero.launcher.util.platform.hardware.GraphicsCard;
 import org.zero.launcher.util.platform.hardware.HardwareVendor;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
+
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static org.zero.launcher.util.logging.Logger.LOG;
 
-/**
- * <h1>GpuDetector — 智慧顯示卡偵測與強制選卡引擎</h1>
- * <p>
- * 自動偵測本機獨立顯卡 (NVIDIA / AMD / Intel Arc) 與內建顯卡 (Intel UHD / Iris / AMD Radeon Graphics)，
- * 並在啟動遊戲時自動注入驅動級環境變數與 Windows 10/11 DirectX 圖形效能註冊表偏好。
- *
- * @author Zero
- */
+/// # GpuDetector — 智慧顯示卡偵測與強制選卡引擎
+///
+/// 自動偵測本機獨立顯卡 (NVIDIA / AMD / Intel Arc) 與內建顯卡 (Intel UHD / Iris / AMD Radeon Graphics)，
+/// 並在啟動遊戲時自動注入驅動級環境變數與 Windows 10/11 DirectX 圖形效能註冊表偏好。
+@NotNullByDefault
 public final class GpuDetector {
 
-    private static volatile List<GraphicsCard> cachedGpuList = null;
-    private static volatile Boolean cachedHasDiscreteGpu = null;
-    private static volatile String cachedSummary = null;
+    private static volatile @Nullable List<GraphicsCard> cachedGpuList = null;
+    private static volatile @Nullable Boolean cachedHasDiscreteGpu = null;
+    private static volatile @Nullable Boolean cachedHasNvidiaDiscreteGpu = null;
+    private static volatile @Nullable String cachedSummary = null;
 
     private GpuDetector() {
     }
 
-    /**
-     * 獲取本機所有顯卡列表
-     */
-    public static List<GraphicsCard> getGraphicsCards() {
+    /// 獲取本機所有顯卡列表
+    public static @Unmodifiable List<GraphicsCard> getGraphicsCards() {
         if (cachedGpuList == null) {
             try {
                 List<GraphicsCard> cards = org.zero.launcher.util.platform.SystemInfo.getGraphicsCards();
-                cachedGpuList = (cards != null) ? cards : List.of();
+                cachedGpuList = (cards != null) ? List.copyOf(cards) : List.of();
             } catch (Throwable t) {
                 LOG.warning("Failed to detect graphics cards: " + t.getMessage());
                 cachedGpuList = List.of();
@@ -60,10 +60,8 @@ public final class GpuDetector {
         return cachedGpuList;
     }
 
-    /**
-     * 判斷某張顯卡是否為獨立顯卡
-     */
-    public static boolean isDiscreteGpu(GraphicsCard card) {
+    /// 判斷某張顯卡是否為獨立顯卡
+    public static boolean isDiscreteGpu(@Nullable GraphicsCard card) {
         if (card == null) return false;
         if (card.getType() == GraphicsCard.Type.Discrete) {
             return true;
@@ -87,9 +85,7 @@ public final class GpuDetector {
         return vendor == HardwareVendor.NVIDIA;
     }
 
-    /**
-     * 判斷本機是否存在獨立顯卡
-     */
+    /// 判斷本機是否存在獨立顯卡
     public static boolean hasDiscreteGpu() {
         if (cachedHasDiscreteGpu == null) {
             List<GraphicsCard> cards = getGraphicsCards();
@@ -105,9 +101,26 @@ public final class GpuDetector {
         return cachedHasDiscreteGpu;
     }
 
-    /**
-     * 獲取顯示在 UI 上的顯卡偵測摘要資訊
-     */
+    /// 判斷本機是否存在 NVIDIA 獨立顯卡
+    public static boolean hasNvidiaDiscreteGpu() {
+        if (cachedHasNvidiaDiscreteGpu == null) {
+            List<GraphicsCard> cards = getGraphicsCards();
+            boolean hasNvidia = false;
+            for (GraphicsCard card : cards) {
+                if (isDiscreteGpu(card)) {
+                    String name = card.getName().toLowerCase(Locale.ROOT);
+                    if (card.getVendor() == HardwareVendor.NVIDIA || name.contains("nvidia") || name.contains("geforce") || name.contains("rtx") || name.contains("gtx")) {
+                        hasNvidia = true;
+                        break;
+                    }
+                }
+            }
+            cachedHasNvidiaDiscreteGpu = hasNvidia;
+        }
+        return cachedHasNvidiaDiscreteGpu;
+    }
+
+    /// 獲取顯示在 UI 上的顯卡偵測摘要資訊
     public static String getGpuSummary() {
         if (cachedSummary == null) {
             List<GraphicsCard> cards = getGraphicsCards();
@@ -125,14 +138,12 @@ public final class GpuDetector {
         return cachedSummary;
     }
 
-    /**
-     * 應用 GPU 偏好設定：注入環境變數並在 Windows 上配置 DirectX UserGpuPreferences
-     *
-     * @param preference       GPU 偏好設定 (AUTO / DISCRETE / INTEGRATED)
-     * @param javaExecutablePath Java 執行檔路徑 (javaw.exe)
-     * @param env              要注入的環境變數 Map
-     */
-    public static void applyGpuPreference(GpuPreference preference, String javaExecutablePath, Map<String, String> env) {
+    /// 應用 GPU 偏好設定：注入環境變數並在 Windows 上配置 DirectX UserGpuPreferences
+    ///
+    /// @param preference       GPU 偏好設定 (AUTO / DISCRETE / INTEGRATED)
+    /// @param javaExecutablePath Java 執行檔路徑 (javaw.exe)
+    /// @param env              要注入的環境變數 Map
+    public static void applyGpuPreference(@Nullable GpuPreference preference, @Nullable String javaExecutablePath, Map<String, String> env) {
         if (preference == null) {
             preference = GpuPreference.AUTO;
         }
@@ -152,8 +163,10 @@ public final class GpuDetector {
         // 1. 注入跨平台驅動環境變數
         if (useDiscrete) {
             env.put("DRI_PRIME", "1");
-            env.put("__NV_PRIME_RENDER_OFFLOAD", "1");
-            env.put("__GLX_VENDOR_LIBRARY_NAME", "nvidia");
+            if (hasNvidiaDiscreteGpu()) {
+                env.put("__NV_PRIME_RENDER_OFFLOAD", "1");
+                env.put("__GLX_VENDOR_LIBRARY_NAME", "nvidia");
+            }
             env.put("SHIM_MCCOMPAT", "0xD");
             env.put("GPU_FORCE_64BIT_PTR", "1");
             env.put("GPU_MAX_HEAP_SIZE", "100");

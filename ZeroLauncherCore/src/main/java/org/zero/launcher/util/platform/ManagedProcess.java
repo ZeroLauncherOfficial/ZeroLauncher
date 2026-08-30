@@ -17,6 +17,9 @@
  */
 package org.zero.launcher.util.platform;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.zero.launcher.launch.StreamPump;
 import org.zero.launcher.util.Lang;
 
@@ -26,92 +29,78 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-/// The managed process.
-///
-/// @author Zero
-/// <!-- @see org.zero.launcher.launch.ExitWaiter -->
-/// @see org.zero.launcher.launch.StreamPump
+/// Manages an operating system process and tracks output lines and associated monitor threads.
+@NotNullByDefault
 public final class ManagedProcess {
+    /// Maximum number of log lines retained in memory.
+    public static final int MAX_LOG_LINES = 2048;
+
     private final ReentrantLock lock = new ReentrantLock();
     private final Process process;
     private final List<String> commands;
-    private final String classpath;
+    private final @Nullable String classpath;
     private final Map<String, Object> properties = new HashMap<>();
-    private final List<String> lines = new ArrayList<>();
+    private final Deque<String> lines = new ArrayDeque<>(MAX_LOG_LINES);
     private final List<Thread> relatedThreads = new ArrayList<>();
 
     public ManagedProcess(ProcessBuilder processBuilder) throws IOException {
         this.process = processBuilder.start();
-        this.commands = processBuilder.command();
+        this.commands = List.copyOf(processBuilder.command());
         this.classpath = null;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param process  the raw system process that this instance manages.
-     * @param commands the command line of {@code process}.
-     */
+    /// Constructor.
+    ///
+    /// @param process  the raw system process that this instance manages.
+    /// @param commands the command line of `process`.
     public ManagedProcess(Process process, List<String> commands) {
         this.process = process;
         this.commands = List.copyOf(commands);
         this.classpath = null;
     }
 
-    /**
-     * Constructor.
-     *
-     * @param process   the raw system process that this instance manages.
-     * @param commands  the command line of {@code process}.
-     * @param classpath the classpath of java process
-     */
-    public ManagedProcess(Process process, List<String> commands, String classpath) {
+    /// Constructor.
+    ///
+    /// @param process   the raw system process that this instance manages.
+    /// @param commands  the command line of `process`.
+    /// @param classpath the classpath of java process
+    public ManagedProcess(Process process, List<String> commands, @Nullable String classpath) {
         this.process = process;
         this.commands = List.copyOf(commands);
         this.classpath = classpath;
     }
 
-    /**
-     * The raw system process that this instance manages.
-     *
-     * @return process
-     */
+    /// The raw system process that this instance manages.
+    ///
+    /// @return process
     public Process getProcess() {
         return process;
     }
 
-    /**
-     * The command line.
-     *
-     * @return the list of each part of command line separated by spaces.
-     */
-    public List<String> getCommands() {
+    /// The command line.
+    ///
+    /// @return the unmodifiable list of each part of command line separated by spaces.
+    public @Unmodifiable List<String> getCommands() {
         return commands;
     }
 
-    /**
-     * The classpath.
-     *
-     * @return classpath
-     */
-    public String getClasspath() {
+    /// The classpath.
+    ///
+    /// @return classpath
+    public @Nullable String getClasspath() {
         return classpath;
     }
 
-    /**
-     * To save some information you need.
-     */
+    /// Saves arbitrary metadata for this process.
     public Map<String, Object> getProperties() {
         return properties;
     }
 
-    /**
-     * The (unmodifiable) standard output/error lines.
-     * If you want to add lines, use {@link #addLine}
-     *
-     * @see #addLine
-     */
-    public List<String> getLines(Predicate<String> lineFilter) {
+    /// The standard output/error lines matching the given filter.
+    ///
+    /// @param lineFilter predicate to filter lines, or `null` for all lines
+    /// @return unmodifiable list of lines
+    public @Unmodifiable List<String> getLines(@Nullable Predicate<String> lineFilter) {
         lock.lock();
         try {
             if (lineFilter == null)
@@ -128,21 +117,20 @@ public final class ManagedProcess {
         }
     }
 
+    /// Appends a log line to the bounded history buffer.
     public void addLine(String line) {
         lock.lock();
         try {
-            lines.add(line);
+            if (lines.size() >= MAX_LOG_LINES) {
+                lines.removeFirst();
+            }
+            lines.addLast(line);
         } finally {
             lock.unlock();
         }
     }
 
-    /**
-     * Add related thread.
-     * <p>
-     * If a thread is monitoring this raw process,
-     * you are required to add the instance by this method.
-     */
+    /// Adds a monitor thread associated with this process.
     public void addRelatedThread(Thread thread) {
         lock.lock();
         try {
@@ -152,17 +140,17 @@ public final class ManagedProcess {
         }
     }
 
+    /// Starts an input stream pump for stdout.
     public void pumpInputStream(Consumer<String> onLogLine) {
         addRelatedThread(Lang.thread(new StreamPump(process.getInputStream(), onLogLine, OperatingSystem.NATIVE_CHARSET), "ProcessInputStreamPump", true));
     }
 
+    /// Starts an error stream pump for stderr.
     public void pumpErrorStream(Consumer<String> onLogLine) {
         addRelatedThread(Lang.thread(new StreamPump(process.getErrorStream(), onLogLine, OperatingSystem.NATIVE_CHARSET), "ProcessErrorStreamPump", true));
     }
 
-    /**
-     * True if the managed process is running.
-     */
+    /// Returns `true` if the managed process is currently running.
     public boolean isRunning() {
         try {
             process.exitValue();
@@ -172,21 +160,18 @@ public final class ManagedProcess {
         }
     }
 
-    /**
-     * The exit code of raw process.
-     */
+    /// The exit code of raw process.
     public int getExitCode() {
         return process.exitValue();
     }
 
-    /**
-     * Destroys the raw process and other related threads that are monitoring this raw process.
-     */
+    /// Destroys the raw process and other related threads that are monitoring this raw process.
     public void stop() {
         process.destroy();
         destroyRelatedThreads();
     }
 
+    /// Interrupts all monitor threads associated with this process.
     public void destroyRelatedThreads() {
         lock.lock();
         try {
@@ -200,5 +185,4 @@ public final class ManagedProcess {
     public String toString() {
         return "ManagedProcess[commands=" + commands + ", isRunning=" + isRunning() + "]";
     }
-
 }
