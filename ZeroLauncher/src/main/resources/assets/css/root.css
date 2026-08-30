@@ -1153,19 +1153,32 @@
 }
 
 .jfx-decorator-button {
-    -fx-max-width: 40px;
-    -fx-background-radius: 5px;
-    -fx-max-height: 40px;
+    -fx-min-width: 44px;
+    -fx-max-width: 44px;
+    -fx-pref-width: 44px;
+    -fx-min-height: 38px;
+    -fx-max-height: 38px;
+    -fx-pref-height: 38px;
+    -fx-background-radius: 6px;
     -fx-background-color: transparent;
+    -fx-cursor: hand;
 }
 
-.jfx-decorator-button .icon {
-    -fx-fill: rgb(204.0, 204.0, 51.0);
-    -fx-padding: 0.0;
+.jfx-decorator-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+.jfx-decorator-button.close:hover {
+    -fx-background-color: #E81123 !important;
+}
+
+.jfx-decorator-button.close:hover .svg {
+    -fx-fill: #FFFFFF !important;
 }
 
 .jfx-decorator-button .jfx-rippler {
-    -jfx-mask-type: CIRCLE;
+    -jfx-rippler-disabled: true;
+    -jfx-rippler-fill: transparent;
     -fx-padding: 0.0;
 }
 
@@ -1457,7 +1470,7 @@
 }
 
 .jfx-list-view .scroll-bar {
-    -fx-skin: "org.jackhuang.hmcl.ui.construct.FloatScrollBarSkin";
+    -fx-skin: "org.zero.launcher.ui.construct.FloatScrollBarSkin";
 }
 
 .jfx-list-view .scroll-bar .track {
@@ -2169,7 +2182,7 @@
 }
 
 .table-view > .virtual-flow > .scroll-bar {
-    -fx-skin: "org.jackhuang.hmcl.ui.construct.FloatScrollBarSkin";
+    -fx-skin: "org.zero.launcher.ui.construct.FloatScrollBarSkin";
 }
 
 .table-view > .virtual-flow > .scroll-bar .track {

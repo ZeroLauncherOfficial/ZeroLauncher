@@ -279,8 +279,10 @@ val makeExecutables by tasks.registering {
         ZipFile(jarPath).use { zipFile ->
             for (extension in extensions) {
                 val output = artifactFile(extension)
-                val entry = zipFile.getEntry("assets/ZeroLauncherauncher.$extension")
-                    ?: throw GradleException("ZeroLauncherauncher.$extension not found")
+                val entry = zipFile.getEntry("assets/ZeroLauncher.$extension")
+                    ?: zipFile.getEntry("assets/HMCLauncher.$extension")
+                    ?: zipFile.getEntry("assets/HMCLlauncher.$extension")
+                    ?: throw GradleException("Launcher stub for $extension not found")
 
                 output.outputStream().use { outputStream ->
                     zipFile.getInputStream(entry).use { it.copyTo(outputStream) }

@@ -49,52 +49,12 @@ public final class LanguagePackManager {
     public static final LanguagePack PACK_DEFAULT = new LanguagePack(
             "default",
             "預設官方語言 (Default)",
-            "標準繁體/簡體中文官方詞條",
+            "標準官方語言翻譯詞條",
             true,
             null
     );
 
     private static volatile LanguagePack activePack = PACK_DEFAULT;
-
-    public static final LanguagePack PACK_MEOW = new LanguagePack(
-            "builtin:meow",
-            "🐱 喵喵物語語言包 (Nya / Meow)",
-            "全介面傲嬌可愛貓娘口癖，萌化方塊世界喵！",
-            true,
-            null
-    );
-
-    public static final LanguagePack PACK_CHUNIBYO = new LanguagePack(
-            "builtin:chunibyo",
-            "⚔️ 中二勇者物語語言包 (Hero / Anime)",
-            "拔出聖劍，踏碎虛空！全介面熱血冒險勇者風格",
-            true,
-            null
-    );
-
-    public static final LanguagePack PACK_RETRO = new LanguagePack(
-            "builtin:retro",
-            "🕹️ 像素復古懷舊語言包 (Retro 8-Bit)",
-            "回歸 80 年代街機卡帶像素浪漫風格",
-            true,
-            null
-    );
-
-    public static final LanguagePack PACK_CORPORATE = new LanguagePack(
-            "builtin:corporate",
-            "🏢 超級大廠黑話語言包 (Corporate Buzzword)",
-            "深度賦能閉環、抓手底層打法、頂層戰略對齊",
-            true,
-            null
-    );
-
-    public static final LanguagePack PACK_MINIMAL = new LanguagePack(
-            "builtin:minimal",
-            "☕ 極簡特調咖啡語言包 (Minimalist Elegance)",
-            "簡約優雅、去除雜質、專注方塊漫遊時光",
-            true,
-            null
-    );
 
     static {
         ensureExamplePackExists();
@@ -149,27 +109,22 @@ public final class LanguagePackManager {
     }
 
     /**
-     * 獲取所有可用語言包（內建 + 玩家自訂）
+     * 獲取所有可用語言包（預設 + 玩家自訂檔案）
      */
     public static List<LanguagePack> getAvailablePacks() {
         List<LanguagePack> list = new ArrayList<>();
         list.add(PACK_DEFAULT);
-        list.add(PACK_MEOW);
-        list.add(PACK_CHUNIBYO);
-        list.add(PACK_RETRO);
-        list.add(PACK_CORPORATE);
-        list.add(PACK_MINIMAL);
 
         // 掃描 .zero/langpacks/ 下所有 .properties, .lang, .json
         Path dir = getLangPacksDirectory();
         if (Files.exists(dir)) {
             try (var stream = Files.list(dir)) {
-                stream.filter(Files::isRegularFile).forEach(path -> {
+                stream.filter(Files::isRegularFile).sorted(Comparator.comparing(Path::getFileName)).forEach(path -> {
                     String fileName = path.getFileName().toString();
                     if (fileName.endsWith(".properties") || fileName.endsWith(".lang") || fileName.endsWith(".json")) {
                         String id = "custom:" + fileName;
                         String displayName = "📁 " + fileName;
-                        list.add(new LanguagePack(id, displayName, "自訂語言包：" + fileName, false, path));
+                        list.add(new LanguagePack(id, displayName, "自訂語言檔案：" + fileName, false, path));
                     }
                 });
             } catch (Throwable e) {
@@ -184,6 +139,9 @@ public final class LanguagePackManager {
      * 依 ID 尋找語言包
      */
     public static LanguagePack getPackById(String id) {
+        if (id == null || id.isBlank() || "default".equalsIgnoreCase(id)) {
+            return PACK_DEFAULT;
+        }
         for (LanguagePack pack : getAvailablePacks()) {
             if (pack.id().equalsIgnoreCase(id)) {
                 return pack;
@@ -199,44 +157,11 @@ public final class LanguagePackManager {
         activePack = Objects.requireNonNullElse(pack, PACK_DEFAULT);
         activeOverrides.clear();
 
-        if (activePack.isBuiltin()) {
-            String resPath = switch (activePack.id()) {
-                case "builtin:meow" -> "/assets/lang/packs/meow.properties";
-                case "builtin:chunibyo" -> "/assets/lang/packs/chunibyo.properties";
-                case "builtin:retro" -> "/assets/lang/packs/retro.properties";
-                case "builtin:corporate" -> "/assets/lang/packs/corporate.properties";
-                case "builtin:minimal" -> "/assets/lang/packs/minimal.properties";
-                default -> null;
-            };
-            if (resPath != null) {
-                loadBuiltinResource(resPath, activeOverrides);
-            }
-        } else if (activePack.customFile() != null && Files.exists(activePack.customFile())) {
+        if (activePack.customFile() != null && Files.exists(activePack.customFile())) {
             loadCustomFile(activePack.customFile(), activeOverrides);
         }
 
-        LOG.info("Applied Language Pack: " + activePack.displayName() + " (Full Overrides count: " + activeOverrides.size() + ")");
-    }
-
-    /**
-     * 載入內建完整語言包資源檔
-     */
-    private static void loadBuiltinResource(String resourceName, Map<String, String> targetMap) {
-        try (InputStream is = LanguagePackManager.class.getResourceAsStream(resourceName)) {
-            if (is != null) {
-                Properties props = new Properties();
-                try (InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-                    props.load(reader);
-                }
-                for (String key : props.stringPropertyNames()) {
-                    targetMap.put(key, props.getProperty(key));
-                }
-            } else {
-                LOG.warning("Builtin pack resource not found: " + resourceName);
-            }
-        } catch (Throwable t) {
-            LOG.warning("Failed to load builtin pack resource: " + resourceName, t);
-        }
+        LOG.info("Applied Language Pack: " + activePack.displayName() + " (Overrides count: " + activeOverrides.size() + ")");
     }
 
     /**
@@ -276,7 +201,7 @@ public final class LanguagePackManager {
         Files.copy(sourceFile, targetFile, StandardCopyOption.REPLACE_EXISTING);
 
         String id = "custom:" + fileName;
-        LanguagePack pack = new LanguagePack(id, "📁 " + fileName, "自訂語言包：" + fileName, false, targetFile);
+        LanguagePack pack = new LanguagePack(id, "📁 " + fileName, "自訂語言檔案：" + fileName, false, targetFile);
         applyPack(pack);
         return pack;
     }
@@ -286,28 +211,6 @@ public final class LanguagePackManager {
      */
     public static @Nullable String getOverride(String key) {
         return activeOverrides.get(key);
-    }
-
-    /**
-     * 動態備用轉換器（確保任何未在字典的動態文字也能帶有風格）
-     */
-    public static String transformFallback(String key, String defaultText) {
-        if (activePack == null || "default".equalsIgnoreCase(activePack.id()) || defaultText == null || defaultText.isEmpty()) {
-            return defaultText;
-        }
-        if ("builtin:meow".equals(activePack.id())) {
-            if (defaultText.endsWith("喵") || defaultText.endsWith("喵！") || defaultText.endsWith("喵～") || defaultText.endsWith("ฅ'ω'ฅ") || defaultText.endsWith("🐾")) {
-                return defaultText;
-            }
-            if (defaultText.endsWith("。") || defaultText.endsWith("！") || defaultText.endsWith("!")) {
-                return defaultText.substring(0, defaultText.length() - 1) + "喵！";
-            }
-            if (defaultText.endsWith("？") || defaultText.endsWith("?")) {
-                return defaultText.substring(0, defaultText.length() - 1) + "喵？";
-            }
-            return defaultText + " 喵";
-        }
-        return defaultText;
     }
 
     /**

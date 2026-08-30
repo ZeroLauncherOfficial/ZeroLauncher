@@ -92,7 +92,7 @@ public final class SettingsPage extends ScrollPane {
             {
                 var chooseLanguagePane = new LineSelectButton<SupportedLocale>();
                 chooseLanguagePane.setTitle(i18n("settings.launcher.language"));
-                chooseLanguagePane.setSubtitle(i18n("settings.take_effect_after_restart"));
+                chooseLanguagePane.setSubtitle("即時切換啟動器顯示語言");
 
                 SupportedLocale currentLocale = I18n.getLocale();
                 chooseLanguagePane.setNullSafeConverter(locale -> {
@@ -104,7 +104,15 @@ public final class SettingsPage extends ScrollPane {
                         return locale.getDisplayName(currentLocale) + " - " + locale.getDisplayName(locale);
                 });
                 chooseLanguagePane.setItems(SupportedLocale.getSupportedLocales());
-                chooseLanguagePane.valueProperty().bindBidirectional(settings().languageProperty());
+                chooseLanguagePane.setValue(settings().languageProperty().get());
+
+                chooseLanguagePane.valueProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal != null && !newVal.equals(oldVal)) {
+                        settings().languageProperty().set(newVal);
+                        I18n.setLocale(newVal);
+                        Controllers.reloadLanguage();
+                    }
+                });
 
                 languagePaneList.getContent().add(chooseLanguagePane);
             }
@@ -120,10 +128,10 @@ public final class SettingsPage extends ScrollPane {
                 choosePackPane.setValue(LanguagePackManager.getPackById(settings().languagePackProperty().get()));
 
                 choosePackPane.valueProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal != null) {
+                    if (newVal != null && !newVal.equals(oldVal)) {
                         settings().languagePackProperty().set(newVal.id());
                         LanguagePackManager.applyPack(newVal);
-                        Controllers.showToast(i18n("message.success"));
+                        Controllers.reloadLanguage();
                     }
                 });
 

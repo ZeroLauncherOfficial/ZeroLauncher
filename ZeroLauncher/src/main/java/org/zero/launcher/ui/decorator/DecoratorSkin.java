@@ -83,14 +83,14 @@ public class DecoratorSkin extends SkinBase<Decorator> {
 
         StackPane shadowContainer = new StackPane();
         shadowContainer.getStyleClass().add("body");
-        shadowContainer.setEffect(new DropShadow(BlurType.ONE_PASS_BOX, Color.rgb(0, 0, 0, 0.4), 10, 0.3, 0.0, 0.0));
+        shadowContainer.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.rgb(0, 0, 0, 0.35), 20, 0.15, 0.0, 4.0));
 
         parent = new StackPane();
         Rectangle clip = new Rectangle();
         clip.widthProperty().bind(parent.widthProperty());
         clip.heightProperty().bind(parent.heightProperty());
-        clip.setArcWidth(8);
-        clip.setArcHeight(8);
+        clip.setArcWidth(16);
+        clip.setArcHeight(16);
         parent.setClip(clip);
 
         skinnable.getSnackbar().registerSnackbarContainer(parent);
@@ -270,7 +270,7 @@ public class DecoratorSkin extends SkinBase<Decorator> {
                 JFXButton btnClose = new JFXButton();
                 btnClose.setFocusTraversable(false);
                 btnClose.setGraphic(SVG.CLOSE.createIcon(Themes.titleFillProperty()));
-                btnClose.getStyleClass().add("jfx-decorator-button");
+                btnClose.getStyleClass().addAll("jfx-decorator-button", "close");
                 btnClose.setOnAction(e -> skinnable.close());
 
                 buttonsContainer.getChildren().setAll(btnMin, btnClose);

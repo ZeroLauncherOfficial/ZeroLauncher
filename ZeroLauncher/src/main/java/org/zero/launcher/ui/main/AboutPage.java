@@ -61,9 +61,15 @@ public final class AboutPage extends SpinnerPane {
             var author = new LineButton();
             author.setLargeTitle(true);
             author.setTitle(i18n("about.authors"));
-            author.setSubtitle("Zero, huangyuhui, Glavo & Contributors");
+            author.setSubtitle("Zero & Contributors");
 
-            about.getContent().setAll(launcher, author);
+            var hmcl = new LineButton();
+            hmcl.setLargeTitle(true);
+            hmcl.setTitle("基於 HMCL 項目開發 (特別鳴謝)");
+            hmcl.setSubtitle("感謝 HMCL 原始開發者 huangyuhui, Glavo 與所有 HMCL 開源貢獻者");
+            hmcl.setOnAction(e -> FXUtils.openLink("https://github.com/HMCL-dev/HMCL"));
+
+            about.getContent().setAll(launcher, author, hmcl);
         }
 
         ComponentList legal = new ComponentList();

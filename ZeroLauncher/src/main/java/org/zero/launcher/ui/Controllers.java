@@ -214,6 +214,39 @@ public final class Controllers {
         return decorator;
     }
 
+    @FXThread
+    public static void reloadLanguage() {
+        if (stage == null || decorator == null) return;
+
+        // Reset all cached pages
+        versionPage = null;
+        settingsPage = null;
+        downloadPage = null;
+        gameListPage = new Lazy<>(GameListPage::new);
+        rootPage = new Lazy<>(RootPage::new);
+        accountListPage = new Lazy<>(() -> {
+            AccountListPage page = new AccountListPage();
+            page.selectedAccountProperty().bindBidirectional(Accounts.selectedAccountProperty());
+            page.accountsProperty().bindContent(Accounts.getAccounts());
+            page.authServersProperty().bindContentBidirectional(getAuthlibInjectorServers());
+            return page;
+        });
+        terracottaPage = new Lazy<>(TerracottaPage::new);
+
+        // Re-initialize navigator with fresh rootPage
+        decorator.getNavigator().init(getRootPage());
+        getRootPage().getMainPage().showUpdateProperty().bind(UpdateChecker.checkingUpdateProperty().not().and(UpdateChecker.outdatedProperty()));
+        getRootPage().getMainPage().showUpdateDialogProperty().bind(
+                decorator.backableProperty().not()
+                        .and(getRootPage().getMainPage().showUpdateProperty())
+                        .and(settings().disableAutoShowUpdateDialogProperty().not())
+        );
+
+        // Re-open settings tab so user remains comfortably on settings page
+        getRootPage().selectTab(RootPage.TabId.SETTINGS);
+        showToast(i18n("message.success"));
+    }
+
     public static void saveWindowStates() {
         saveWindowBounds();
     }

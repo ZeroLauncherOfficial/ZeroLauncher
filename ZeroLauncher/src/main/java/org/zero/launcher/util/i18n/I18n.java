@@ -70,8 +70,7 @@ public final class I18n {
                 return override;
             }
         }
-        String base = locale.i18n(key, formatArgs);
-        return LanguagePackManager.transformFallback(key, base);
+        return locale.i18n(key, formatArgs);
     }
 
     public static String i18n(@PropertyKey(resourceBundle = "assets.lang.I18N") String key) {
@@ -79,8 +78,7 @@ public final class I18n {
         if (override != null) {
             return override;
         }
-        String base = locale.i18n(key);
-        return LanguagePackManager.transformFallback(key, base);
+        return locale.i18n(key);
     }
 
     public static String formatDateTime(TemporalAccessor time) {

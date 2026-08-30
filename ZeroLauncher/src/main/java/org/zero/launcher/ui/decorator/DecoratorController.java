@@ -243,6 +243,10 @@ public class DecoratorController {
                 ContainerAnimations.FORWARD, Duration.millis(220), Motion.FLUID_SPRING);
     }
 
+    public Navigator getNavigator() {
+        return navigator;
+    }
+
     // ==== Authlib Injector DnD ====
 
     private void setupAuthlibInjectorDnD() {

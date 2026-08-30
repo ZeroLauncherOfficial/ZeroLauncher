@@ -8,161 +8,275 @@
 }
 
 .two-line-list-item {
-    -fixed-warning-tag-background: #2c0b0e;
+    -fixed-warning-tag-background: #451a1a;
 }
 
 .log-window {
-    -fixed-log-background: #282828;
-    -fixed-log-toggle-selected: #DEE2E6;
-    -fixed-log-toggle-unselected: #6C757D;
-    -fixed-log-text-fill: #e3e3e3;
-    -fixed-log-trace-background: #495057;
-    -fixed-log-debug-background: #343A40;
-    -fixed-log-info-background: #212529;
-    -fixed-log-warn-background:  #413c26;
-    -fixed-log-warn-text-fill:  #fdf3aa;
-    -fixed-log-error-background: #4e3534;
-    -fixed-log-error-text-fill: #f9dedc;
-    -fixed-log-fatal-background: #842029;
-    -fixed-log-selected: #3e3e3e;
+    -fixed-log-background: #0d131f;
+    -fixed-log-toggle-selected: #e2e8f0;
+    -fixed-log-toggle-unselected: #64748b;
+    -fixed-log-text-fill: #f1f5f9;
+    -fixed-log-trace-background: #334155;
+    -fixed-log-debug-background: #1e293b;
+    -fixed-log-info-background: #0f172a;
+    -fixed-log-warn-background: #422006;
+    -fixed-log-warn-text-fill: #fef08a;
+    -fixed-log-error-background: #450a0a;
+    -fixed-log-error-text-fill: #fecaca;
+    -fixed-log-fatal-background: #7f1d1d;
+    -fixed-log-selected: #1e293b;
 }
 
 .gray-background {
-    -fx-background-color: rgba(18, 24, 32, 0.88);
-    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-background-color: rgba(11, 17, 32, 0.92);
+    -fx-border-color: rgba(255, 255, 255, 0.07);
     -fx-border-width: 0 1px 0 0;
 }
 
 .gray-background .label, .gray-background Text, .gray-background .svg {
-    -fx-text-fill: #e2e2e6;
-    -fx-fill: #e2e2e6;
+    -fx-text-fill: #e2e8f0;
+    -fx-fill: #e2e8f0;
 }
 
 .gray-background .subtitle-label, .gray-background .toggle-icon-tiny .svg {
-    -fx-fill: #9499a6;
+    -fx-fill: #94a3b8;
 }
 
 /*******************************************************************************
- * Zero Launcher Dark Theme Tokens                                             *
+ * Zero Launcher Fluent 2 Obsidian Acrylic Design Tokens                       *
  ******************************************************************************/
+
+.zero-top-nav-bar {
+    -fx-padding: 0 12px;
+}
 
 .zero-brand-title {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF !important;
+    -fx-text-fill: #ffffff !important;
 }
 
 .zero-nav-tab {
-    -fx-text-fill: #FFFFFF !important;
+    -fx-padding: 4px 13px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff !important;
     -fx-opacity: 0.88;
+    -fx-cursor: hand;
 }
 
 .zero-nav-tab .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
 }
 
 .zero-nav-tab:hover {
     -fx-background-color: rgba(255, 255, 255, 0.22);
-    -fx-text-fill: #FFFFFF !important;
+    -fx-text-fill: #ffffff !important;
     -fx-opacity: 1.0;
 }
 
 .zero-nav-tab:hover .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
 }
 
 .zero-nav-tab.active {
     -fx-background-color: rgba(255, 255, 255, 0.30);
-    -fx-text-fill: #FFFFFF !important;
+    -fx-text-fill: #ffffff !important;
     -fx-font-weight: bold;
     -fx-opacity: 1.0;
-    -fx-border-color: #FFFFFF;
+    -fx-border-color: #ffffff;
     -fx-border-width: 0 0 3px 0;
 }
 
 .zero-nav-tab.active .svg {
-    -fx-fill: #FFFFFF !important;
+    -fx-fill: #ffffff !important;
 }
 
-.zero-greeting-big-title {
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 8, 0, 0, 2);
+.zero-nav-bgm-capsule {
+    -fx-background-color: rgba(15, 23, 42, 0.70);
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(56, 189, 248, 0.35);
+    -fx-border-radius: 20px;
+    -fx-border-width: 1px;
+    -fx-padding: 4px 12px;
 }
 
-.zero-greeting-big-subtitle {
+.zero-nav-bgm-capsule:hover {
+    -fx-background-color: rgba(20, 30, 55, 0.90);
+    -fx-border-color: rgba(56, 189, 248, 0.65);
+}
+
+.zero-nav-bgm-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #e2e8f0;
+}
+
+.zero-greeting-prefix {
     -fx-font-size: 13px;
-    -fx-text-fill: #94A3B8;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 6, 0, 0, 1);
+    -fx-font-weight: 500;
+    -fx-text-fill: #38bdf8;
+}
+
+.zero-greeting-name {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0, 0, 2);
+}
+
+.zero-greeting-sub {
+    -fx-font-size: 12px;
+    -fx-text-fill: #94a3b8;
+}
+
+.zero-section-title {
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #64748b;
+}
+
+.zero-recent-play-card {
+    -fx-background-color: rgba(15, 23, 42, 0.75);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
+}
+
+.zero-recent-play-card:hover {
+    -fx-background-color: rgba(22, 33, 58, 0.85);
+    -fx-border-color: rgba(56, 189, 248, 0.40);
+}
+
+.zero-recent-instance-name {
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #f8fafc;
+}
+
+.zero-sub-hint {
+    -fx-font-size: 11px;
+    -fx-text-fill: #94a3b8;
 }
 
 .zero-player-card {
-    -fx-background-color: rgba(18, 24, 34, 0.82);
-    -fx-background-radius: 12px;
-    -fx-border-color: rgba(255, 255, 255, 0.12);
-    -fx-border-radius: 12px;
+    -fx-background-color: rgba(15, 23, 42, 0.75);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
-    -fx-padding: 8px 14px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 14, 0, 0, 3);
+    -fx-padding: 10px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
 }
 
 .zero-player-card:hover {
-    -fx-background-color: rgba(24, 32, 46, 0.92);
-    -fx-border-color: rgba(56, 189, 248, 0.45);
+    -fx-background-color: rgba(22, 33, 58, 0.85);
+    -fx-border-color: rgba(56, 189, 248, 0.40);
 }
 
 .zero-player-name {
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff;
 }
 
 .zero-player-type {
-    -fx-font-size: 10.5px;
-    -fx-text-fill: #94A3B8;
+    -fx-font-size: 11px;
+    -fx-text-fill: #94a3b8;
 }
 
 .zero-player-card .svg {
-    -fx-fill: #38BDF8;
+    -fx-fill: #38bdf8;
 }
 
-.zero-instance-selector {
-    -fx-background-color: rgba(20, 28, 40, 0.85);
-    -fx-background-radius: 10px;
-    -fx-border-color: rgba(255, 255, 255, 0.14);
-    -fx-border-radius: 10px;
+.zero-game-brand-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #38bdf8;
+}
+
+.zero-game-hero-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0, 0, 2);
+}
+
+.zero-badge-green {
+    -fx-background-color: rgba(16, 185, 129, 0.18);
+    -fx-border-color: rgba(52, 211, 153, 0.4);
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-padding: 2px 8px;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #34d399;
+}
+
+.zero-badge-purple {
+    -fx-background-color: rgba(168, 85, 247, 0.18);
+    -fx-border-color: rgba(192, 132, 252, 0.4);
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-padding: 2px 8px;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #c084fc;
+}
+
+.zero-badge-cyan {
+    -fx-background-color: rgba(14, 165, 233, 0.18);
+    -fx-border-color: rgba(56, 189, 248, 0.4);
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-padding: 2px 8px;
+    -fx-font-size: 11px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #38bdf8;
+}
+
+.zero-instance-selector-bar {
+    -fx-background-color: rgba(15, 23, 42, 0.78);
+    -fx-background-radius: 12px;
+    -fx-border-color: rgba(255, 255, 255, 0.10);
+    -fx-border-radius: 12px;
     -fx-border-width: 1px;
     -fx-padding: 8px 16px;
-    -fx-min-width: 340px;
-    -fx-max-width: 340px;
-    -fx-pref-height: 42px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+    -fx-min-width: 370px;
+    -fx-max-width: 370px;
+    -fx-pref-height: 44px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 12, 0, 0, 2);
 }
 
-.zero-instance-selector:hover {
-    -fx-background-color: rgba(28, 38, 54, 0.95);
-    -fx-border-color: rgba(56, 189, 248, 0.6);
+.zero-instance-selector-bar:hover {
+    -fx-background-color: rgba(22, 33, 58, 0.90);
+    -fx-border-color: rgba(56, 189, 248, 0.50);
 }
 
 .zero-instance-name {
     -fx-font-size: 13.5px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: 700;
+    -fx-text-fill: #ffffff;
 }
 
-.zero-instance-selector .svg {
-    -fx-fill: #38BDF8;
+.zero-instance-selector-bar .svg {
+    -fx-fill: #38bdf8;
 }
 
 .popup-menu-content {
-    -fx-background-color: rgba(18, 24, 34, 0.96);
-    -fx-background-radius: 12px;
-    -fx-border-color: rgba(56, 189, 248, 0.40);
-    -fx-border-radius: 12px;
+    -fx-background-color: rgba(15, 23, 42, 0.95);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(56, 189, 248, 0.35);
+    -fx-border-radius: 14px;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 20, 0, 0, 4);
-    -fx-padding: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 24, 0, 0, 6);
+    -fx-padding: 6px;
 }
 
 .popup-menu-content .menu-container {
@@ -171,25 +285,25 @@
 }
 
 .popup-menu-content .menu-container:hover {
-    -fx-background-color: rgba(56, 189, 248, 0.15);
+    -fx-background-color: rgba(56, 189, 248, 0.16);
 }
 
 .popup-menu-content .menu-container .label,
 .popup-menu-content .menu-container Text,
 .popup-menu-content .title,
 .popup-menu-content .header-label {
-    -fx-text-fill: #F1F5F9 !important;
-    -fx-fill: #F1F5F9 !important;
+    -fx-text-fill: #f1f5f9 !important;
+    -fx-fill: #f1f5f9 !important;
 }
 
 .popup-menu-content .subtitle,
 .popup-menu-content .menu-container .subtitle {
-    -fx-text-fill: #94A3B8 !important;
-    -fx-fill: #94A3B8 !important;
+    -fx-text-fill: #94a3b8 !important;
+    -fx-fill: #94a3b8 !important;
 }
 
 .popup-menu-content .svg {
-    -fx-fill: #38BDF8 !important;
+    -fx-fill: #38bdf8 !important;
 }
 
 .launch-button-hero {
@@ -197,16 +311,17 @@
     -fx-max-width: 370px;
     -fx-min-height: 52px;
     -fx-max-height: 52px;
-    -fx-background-color: linear-gradient(to bottom right, #0ea5e9, #0284c7);
+    -fx-background-color: linear-gradient(to right, #0284c7, #0ea5e9, #38bdf8);
     -fx-background-radius: 12px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.45), 20, 0.25, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.50), 20, 0.20, 0, 4);
 }
 
 .launch-button-hero:hover {
-    -fx-background-color: linear-gradient(to bottom right, #38bdf8, #0ea5e9);
+    -fx-background-color: linear-gradient(to right, #0369a1, #0284c7, #0ea5e9);
     -fx-scale-x: 1.02;
     -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.65), 24, 0.30, 0, 5);
 }
 
 .launch-button-hero:pressed {
@@ -214,9 +329,40 @@
     -fx-scale-y: 0.98;
 }
 
+.zero-quick-action-bar {
+    -fx-padding: 4px 0;
+}
+
+.zero-quick-btn {
+    -fx-background-color: rgba(15, 23, 42, 0.72);
+    -fx-background-radius: 18px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 18px;
+    -fx-border-width: 1px;
+    -fx-padding: 6px 12px;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 11.5px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+}
+
+.zero-quick-btn .svg {
+    -fx-fill: #38bdf8;
+}
+
+.zero-quick-btn:hover {
+    -fx-background-color: rgba(24, 35, 62, 0.88);
+    -fx-border-color: rgba(56, 189, 248, 0.45);
+    -fx-text-fill: #ffffff;
+}
+
+.zero-quick-btn:hover .svg {
+    -fx-fill: #7dd3fc;
+}
+
 .gray-background .class-title Text {
     -fx-fill: #38bdf8;
-    -fx-font-weight: bold;
+    -fx-font-weight: 700;
 }
 
 .gray-background .class-title Rectangle {
@@ -224,32 +370,53 @@
 }
 
 .iconed-item:hover, .iconed-menu-item:hover {
-    -fx-background-color: rgba(56, 189, 248, 0.12);
+    -fx-background-color: rgba(56, 189, 248, 0.14);
     -fx-background-radius: 8px;
 }
 
 .card, .card-no-padding {
-    -fx-background-color: rgba(30, 36, 46, 0.88);
-    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-background-color: rgba(15, 23, 42, 0.75);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.30), 16, 0, 0, 3);
 }
 
 .card-non-transparent {
-    -fx-background-color: #1e242e;
-    -fx-border-color: rgba(255, 255, 255, 0.12);
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.10);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
 }
 
 .card .label, .card Text, .card .svg {
-    -fx-text-fill: #e2e2e6;
-    -fx-fill: #e2e2e6;
+    -fx-text-fill: #e2e8f0;
+    -fx-fill: #e2e8f0;
 }
 
 .card .subtitle-label, .card .second-line .subtitle {
-    -fx-text-fill: #9499a6;
+    -fx-text-fill: #94a3b8;
+}
+
+.options-list {
+    -fx-background-color: rgba(15, 23, 42, 0.72);
+    -fx-background-radius: 14px;
+    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-border-radius: 14px;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.28), 16, 0, 0, 3);
 }
 
 .options-list-item {
-    -fx-background-color: rgba(28, 34, 44, 0.88);
-    -fx-border-color: rgba(255, 255, 255, 0.08);
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 0 1px 0;
+}
+
+.options-list-item:last {
+    -fx-border-width: 0;
 }
 
 .options-list-item:hover {
@@ -257,6 +424,7 @@
 }
 
 .options-sublist {
-    -fx-background-color: rgba(20, 25, 34, 0.85);
+    -fx-background-color: rgba(11, 17, 32, 0.80);
     -fx-background-radius: 12px;
 }
+
