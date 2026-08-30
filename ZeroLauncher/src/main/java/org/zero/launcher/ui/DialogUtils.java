@@ -163,8 +163,8 @@ public final class DialogUtils {
         Runnable showNextDialogAction = null;
 
         if (dialog != null && pane != null) {
-            if (pane.size() == 1 && pane.peek().orElse(null) == content) {
-                dialog.setOnDialogClosed(e -> pane.pop(content));
+            pane.pop(content);
+            if (pane.isEmpty()) {
                 dialog.close();
 
                 StackPane container = dialog.getDialogContainer();
@@ -185,8 +185,6 @@ public final class DialogUtils {
                         }
                     }
                 }
-            } else {
-                pane.pop(content);
             }
 
             if (content instanceof DialogAware dialogAware) {

@@ -41,6 +41,9 @@ import org.zero.launcher.util.io.NetworkUtils;
 import org.zero.launcher.util.platform.ManagedProcess;
 import org.zero.launcher.util.platform.SystemUtils;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -271,6 +274,7 @@ public final class TerracottaManager {
                         throw new IllegalStateException(String.format("Process has exited for 10s, code = %s", process.getExitCode()));
                     }
                 }
+                Thread.sleep(100);
             }
         }).whenComplete(Schedulers.javafx(), (port, exception) -> {
             TerracottaState next;
@@ -294,10 +298,10 @@ public final class TerracottaManager {
         return Task.completed(null);
     }
 
-    public static TerracottaState.Waiting setWaiting() {
+    public static @Nullable TerracottaState.Waiting setWaiting() {
         TerracottaState state = STATE_V.get();
         if (state instanceof TerracottaState.PortSpecific portSpecific) {
-            new GetTask(URI.create(String.format("http://127.0.0.1:%d/state/ide", portSpecific.port)))
+            new GetTask(URI.create(String.format("http://127.0.0.1:%d/state/idle", portSpecific.port)))
                     .setSignificance(Task.TaskSignificance.MINOR)
                     .start();
             return new TerracottaState.Waiting(-1, -1, null);

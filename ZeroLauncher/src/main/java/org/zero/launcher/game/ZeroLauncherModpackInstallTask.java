@@ -28,6 +28,9 @@ import org.zero.launcher.task.Task;
 import org.zero.launcher.util.gson.JsonUtils;
 import org.zero.launcher.util.io.CompressingUtils;
 
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/// Installs or updates a ZeroLauncher modpack into the game repository.
+@NotNullByDefault
 public final class ZeroLauncherModpackInstallTask extends Task<Void> {
     private final Path zipFile;
     private final String name;
@@ -51,16 +56,19 @@ public final class ZeroLauncherModpackInstallTask extends Task<Void> {
         this.name = name;
         this.modpack = modpack;
 
+        boolean isNew = !repository.hasVersion(name);
         Path run = repository.getRunDirectory(name);
         Path json = repository.getModpackConfiguration(name);
-        if (repository.hasVersion(name) && Files.notExists(json))
+        if (!isNew && Files.notExists(json))
             throw new IllegalArgumentException("Version " + name + " already exists");
 
         dependents.add(dependency.gameBuilder().name(name).gameVersion(modpack.getGameVersion()).buildAsync());
 
-        onDone().register(event -> {
-            if (event.isFailed()) repository.removeVersionFromDisk(name);
-        });
+        if (isNew) {
+            onDone().register(event -> {
+                if (event.isFailed()) repository.removeVersionFromDisk(name);
+            });
+        }
 
         ModpackConfiguration<Modpack> config = null;
         try {

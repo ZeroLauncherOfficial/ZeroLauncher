@@ -197,34 +197,42 @@ public class VersionPage extends DecoratorAnimatedPage implements DecoratorPage 
     }
 
     private void clearLibraries() {
-        var libraries = getRepository().getBaseDirectory().resolve("libraries");
-        Task.runAsync(Schedulers.io(), () -> {
-            FileUtils.deleteDirectoryQuietly(libraries);
-        }).whenComplete(Schedulers.javafx(), (exception) -> {
-            if (exception != null) {
-                Controllers.dialog(i18n("message.failed") + "\n" + StringUtils.getStackTrace(exception), i18n("message.error"), MessageDialogPane.MessageType.ERROR);
-            }
-        }).start();
+        Controllers.confirm(i18n("version.manage.remove_libraries.confirm"), i18n("message.warning"), MessageDialogPane.MessageType.WARNING, () -> {
+            var libraries = getRepository().getBaseDirectory().resolve("libraries");
+            Task.runAsync(Schedulers.io(), () -> {
+                FileUtils.deleteDirectoryQuietly(libraries);
+            }).whenComplete(Schedulers.javafx(), (exception) -> {
+                if (exception != null) {
+                    Controllers.dialog(i18n("message.failed") + "\n" + StringUtils.getStackTrace(exception), i18n("message.error"), MessageDialogPane.MessageType.ERROR);
+                } else {
+                    Controllers.toast(i18n("message.success"));
+                }
+            }).start();
+        }, null);
     }
 
     private void clearAssets() {
-        Path assetsDir = getRepository().getBaseDirectory().resolve("assets");
+        Controllers.confirm(i18n("version.manage.remove_assets.confirm"), i18n("message.warning"), MessageDialogPane.MessageType.WARNING, () -> {
+            Path assetsDir = getRepository().getBaseDirectory().resolve("assets");
 
-        ZeroLauncherGameRepository.InstanceReference currentInstanceReference = instanceReference.get();
-        Path resourcesDir = currentInstanceReference != null
-                ? getRepository().getRunDirectory(currentInstanceReference.instanceId()).resolve("resources")
-                : null;
+            ZeroLauncherGameRepository.InstanceReference currentInstanceReference = instanceReference.get();
+            Path resourcesDir = currentInstanceReference != null
+                    ? getRepository().getRunDirectory(currentInstanceReference.instanceId()).resolve("resources")
+                    : null;
 
-        Task.runAsync(Schedulers.io(), () -> {
-            FileUtils.deleteDirectoryQuietly(assetsDir);
-            if (resourcesDir != null) {
-                FileUtils.deleteDirectoryQuietly(resourcesDir);
-            }
-        }).whenComplete(Schedulers.javafx(), (exception) -> {
-            if (exception != null) {
-                Controllers.dialog(i18n("message.failed") + "\n" + StringUtils.getStackTrace(exception), i18n("message.error"), MessageDialogPane.MessageType.ERROR);
-            }
-        }).start();
+            Task.runAsync(Schedulers.io(), () -> {
+                FileUtils.deleteDirectoryQuietly(assetsDir);
+                if (resourcesDir != null) {
+                    FileUtils.deleteDirectoryQuietly(resourcesDir);
+                }
+            }).whenComplete(Schedulers.javafx(), (exception) -> {
+                if (exception != null) {
+                    Controllers.dialog(i18n("message.failed") + "\n" + StringUtils.getStackTrace(exception), i18n("message.error"), MessageDialogPane.MessageType.ERROR);
+                } else {
+                    Controllers.toast(i18n("message.success"));
+                }
+            }).start();
+        }, null);
     }
 
     private void clearJunkFiles() {

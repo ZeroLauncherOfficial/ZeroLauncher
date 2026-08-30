@@ -733,7 +733,7 @@ public final class ZeroLauncherGameRepository extends DefaultGameRepository {
         if (autoMemory) {
             maxMemory = noJVMOptions
                     ? null
-                    : Math.toIntExact(getAutoAllocatedMemory(SystemInfo.getPhysicalMemoryStatus().available()) / 1024L / 1024L);
+                    : Math.max(1024, Math.toIntExact(getAutoAllocatedMemory(SystemInfo.getPhysicalMemoryStatus().available()) / 1024L / 1024L));
         } else {
             maxMemory = vs.getMaxMemory();
         }
@@ -876,9 +876,12 @@ public final class ZeroLauncherGameRepository extends DefaultGameRepository {
     }
 
     public static long getAutoAllocatedMemory(long available) {
+        if (available <= 0) {
+            return 4096L * 1024L * 1024L; // Default fallback to 4 GiB if system available memory is unknown
+        }
         long usable = available - 512 * 1024 * 1024; // Reserve 512 MiB memory for off-heap memory and ZeroLauncher itself
         if (usable <= 0) {
-            return available;
+            return Math.max(available, 1024L * 1024L * 1024L);
         }
 
         final long threshold = 8L * 1024 * 1024 * 1024; // 8 GiB
@@ -889,7 +892,7 @@ public final class ZeroLauncherGameRepository extends DefaultGameRepository {
             suggested = Math.min(
                     (long) (threshold * 0.8 + (usable - threshold) * 0.2),
                     16L * 1024 * 1024 * 1024);
-        return suggested;
+        return Math.max(suggested, 1024L * 1024L * 1024L);
     }
 
     public static ProxyOption getProxyOption() {

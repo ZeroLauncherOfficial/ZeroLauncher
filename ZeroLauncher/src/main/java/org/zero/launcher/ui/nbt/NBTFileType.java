@@ -22,17 +22,30 @@ import org.glavo.nbt.chunk.ChunkRegion;
 import org.glavo.nbt.io.NBTCodec;
 import org.glavo.nbt.tag.Tag;
 import org.zero.launcher.util.io.FileUtils;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.zip.GZIPOutputStream;
 
+/// NBT file type enumeration supporting read and write operations.
 /// @author Glavo
+@NotNullByDefault
 public enum NBTFileType {
     COMPRESSED("dat", "dat_old") {
         @Override
         public Tag read(Path file) throws IOException {
             return NBTCodec.of().readTag(file);
+        }
+
+        @Override
+        public void write(Path file, NBTElement element) throws IOException {
+            try (OutputStream out = new GZIPOutputStream(Files.newOutputStream(file))) {
+                NBTCodec.of().writeTag(out, (Tag) element);
+            }
         }
     },
     ANVIL("mca") {
@@ -40,11 +53,21 @@ public enum NBTFileType {
         public NBTElement read(Path file) throws IOException {
             return NBTCodec.of().readRegion(file);
         }
+
+        @Override
+        public void write(Path file, NBTElement element) throws IOException {
+            NBTCodec.of().writeRegion(file, (ChunkRegion) element);
+        }
     },
     REGION("mcr") {
         @Override
         public ChunkRegion read(Path file) throws IOException {
             return NBTCodec.of().readRegion(file);
+        }
+
+        @Override
+        public void write(Path file, NBTElement element) throws IOException {
+            NBTCodec.of().writeRegion(file, (ChunkRegion) element);
         }
     };
 
@@ -73,5 +96,7 @@ public enum NBTFileType {
     }
 
     public abstract NBTElement read(Path file) throws IOException;
+
+    public abstract void write(Path file, NBTElement element) throws IOException;
 
 }

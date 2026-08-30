@@ -59,7 +59,17 @@ public final class ScreenshotGalleryPage extends StackPane implements VersionPag
     private final Label lblCount = new Label();
     private final Label lblEmpty = new Label("目前尚無遊戲截圖，進入遊戲按下 F2 即可自動收錄美照！");
     private final List<ScreenshotItem> currentItems = new ArrayList<>();
-    private final Map<Path, Image> thumbnailCache = new ConcurrentHashMap<>();
+    private final Map<Path, Image> thumbnailCache = Collections.synchronizedMap(
+            new LinkedHashMap<>(64, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(Map.Entry<Path, Image> eldest) {
+                    return size() > 80;
+                }
+            }
+    );
+
+    private static final int PAGE_SIZE = 60;
+    private int currentRenderedLimit = PAGE_SIZE;
 
     private record ScreenshotItem(Path path, String name, long size, LocalDateTime time) {
     }
@@ -146,6 +156,7 @@ public final class ScreenshotGalleryPage extends StackPane implements VersionPag
             items.sort((a, b) -> b.time().compareTo(a.time()));
 
             Platform.runLater(() -> {
+                currentRenderedLimit = PAGE_SIZE;
                 currentItems.clear();
                 currentItems.addAll(items);
                 renderItems();
@@ -164,11 +175,22 @@ public final class ScreenshotGalleryPage extends StackPane implements VersionPag
         }
         lblEmpty.setVisible(false);
 
-        for (int i = 0; i < currentItems.size(); i++) {
+        int renderCount = Math.min(total, currentRenderedLimit);
+        for (int i = 0; i < renderCount; i++) {
             ScreenshotItem item = currentItems.get(i);
             int index = i;
             Node card = createScreenshotCard(item, index);
             gridPane.getChildren().add(card);
+        }
+
+        if (total > renderCount) {
+            int remaining = total - renderCount;
+            JFXButton btnLoadMore = FXUtils.newRaisedButton("載入更多截圖 (尚有 " + remaining + " 張)");
+            btnLoadMore.setOnAction(e -> {
+                currentRenderedLimit += PAGE_SIZE;
+                renderItems();
+            });
+            gridPane.getChildren().add(btnLoadMore);
         }
     }
 

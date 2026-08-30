@@ -105,15 +105,18 @@ public final class MicrosoftAccount extends OAuthAccount {
     @Override
     public synchronized AuthInfo logInWhenCredentialsExpired() throws AuthenticationException {
         MicrosoftSession acquiredSession = service.authenticate(OAuth.GrantFlow.DEVICE);
+        if (acquiredSession.profile() == null) {
+            acquiredSession = service.refresh(acquiredSession);
+            if (acquiredSession.profile() == null) {
+                throw new NoCharacterException();
+            }
+        }
+
         if (!Objects.equals(profileID, acquiredSession.profile().id())) {
             throw new WrongAccountException(profileID, acquiredSession.profile().id());
         }
 
-        if (acquiredSession.profile() == null) {
-            session = service.refresh(acquiredSession);
-        } else {
-            session = acquiredSession;
-        }
+        session = acquiredSession;
 
         authenticated = true;
         invalidate();

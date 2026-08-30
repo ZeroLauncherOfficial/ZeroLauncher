@@ -35,17 +35,18 @@ import static java.nio.file.StandardOpenOption.*;
 import static org.zero.launcher.util.Lang.mapOf;
 import static org.zero.launcher.util.Pair.pair;
 
-/**
- * Helper class for adding/removing executable header from ZeroLauncher file.
- *
- * @author yushijinhun
- */
+import org.jetbrains.annotations.NotNullByDefault;
+import org.jetbrains.annotations.Nullable;
+
+/// Helper class for adding/removing executable header from ZeroLauncher file.
+/// @author yushijinhun
+@NotNullByDefault
 final class ExecutableHeaderHelper {
     private ExecutableHeaderHelper() {}
 
-    private static Map<String, String> suffix2header = mapOf(
-            pair("exe", "assets/ZeroLauncherauncher.exe"),
-            pair("sh", "assets/ZeroLauncherauncher.sh")
+    private static final Map<String, String> suffix2header = mapOf(
+            pair("exe", "assets/ZeroLauncher.exe"),
+            pair("sh", "assets/ZeroLauncher.sh")
     );
 
     private static Optional<String> getSuffix(Path file) {

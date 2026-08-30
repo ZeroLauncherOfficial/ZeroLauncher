@@ -248,7 +248,7 @@ public class CreateAccountPane extends JFXDialogLayout implements DialogAware {
         };
 
         if (factory instanceof OfflineAccountFactory && username != null && (!USERNAME_CHECKER_PATTERN.matcher(username).matches() || username.length() > 16)) {
-            Controllers.confirmWithCountdown(i18n("account.methods.offline.name.invalid"), i18n("message.warning"), 10,
+            Controllers.confirm(i18n("account.methods.offline.name.invalid"), i18n("message.warning"),
                     MessageDialogPane.MessageType.WARNING,
                     doCreate, () -> {
                         body.setDisable(false);

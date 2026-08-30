@@ -21,14 +21,14 @@ import org.zero.launcher.util.StringUtils;
 import org.zero.launcher.util.io.JarUtils;
 import org.zero.launcher.util.platform.Architecture;
 import org.zero.launcher.util.platform.OperatingSystem;
+import org.jetbrains.annotations.NotNullByDefault;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.EnumSet;
 
-/**
- * Stores metadata about this application.
- */
+/// Stores metadata and global configuration properties about this application.
+@NotNullByDefault
 public final class Metadata {
     private Metadata() {
     }
@@ -45,18 +45,18 @@ public final class Metadata {
     public static final int RECOMMENDED_JAVA_VERSION = 21;
 
     public static final String PUBLISH_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher";
-    public static final String DOWNLOAD_URL = "";
-    public static final String ZeroLauncher_UPDATE_URL = "";
-    public static final String MANUAL_UPDATE_URL = "";
+    public static final String DOWNLOAD_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases";
+    public static final String ZeroLauncher_UPDATE_URL = "https://raw.githubusercontent.com/ZeroLauncherOfficial/ZeroLauncher/main/update.json";
+    public static final String MANUAL_UPDATE_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases";
 
-    public static final String DOCS_URL = "";
-    public static final String CONTACT_URL = "";
-    public static final String CHANGELOG_URL = "";
-    public static final String EULA_URL = "";
-    public static final String GROUPS_URL = "";
+    public static final String DOCS_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher";
+    public static final String CONTACT_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher/issues";
+    public static final String CHANGELOG_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher/releases";
+    public static final String EULA_URL = "https://www.minecraft.net/eula";
+    public static final String GROUPS_URL = "https://github.com/ZeroLauncherOfficial/ZeroLauncher";
 
     public static final String BUILD_CHANNEL = JarUtils.getAttribute("zero.version.type", JarUtils.getAttribute("zero.version.type", "nightly"));
-    public static final String GITHUB_SHA = JarUtils.getAttribute("zero.version.hash", JarUtils.getAttribute("zero.version.hash", null));
+    public static final @Nullable String GITHUB_SHA = JarUtils.getAttribute("zero.version.hash", JarUtils.getAttribute("zero.version.hash", null));
 
     public static final Path CURRENT_DIRECTORY = Path.of(System.getProperty("user.dir")).toAbsolutePath().normalize();
     public static final Path MINECRAFT_DIRECTORY = OperatingSystem.getWorkingDirectory("minecraft");
@@ -74,8 +74,8 @@ public final class Metadata {
                         ? Path.of(xdgData, "zero").toAbsolutePath().normalize()
                         : Path.of(System.getProperty("user.home"), ".local", "share", "zero").toAbsolutePath().normalize();
                 Path legacyDir = StringUtils.isNotBlank(xdgData)
-                        ? Path.of(xdgData, "zero").toAbsolutePath().normalize()
-                        : Path.of(System.getProperty("user.home"), ".local", "share", "zero").toAbsolutePath().normalize();
+                        ? Path.of(xdgData, "hmcl").toAbsolutePath().normalize()
+                        : Path.of(System.getProperty("user.home"), ".local", "share", "hmcl").toAbsolutePath().normalize();
                 if (!java.nio.file.Files.exists(targetDir) && java.nio.file.Files.exists(legacyDir)) {
                     try {
                         org.zero.launcher.util.io.FileUtils.copyDirectory(legacyDir, targetDir);
@@ -85,7 +85,7 @@ public final class Metadata {
                 ZeroLauncher_USER_HOME = targetDir;
             } else {
                 Path targetDir = OperatingSystem.getWorkingDirectory("zero");
-                Path legacyDir = OperatingSystem.getWorkingDirectory("zero");
+                Path legacyDir = OperatingSystem.getWorkingDirectory("hmcl");
                 if (!java.nio.file.Files.exists(targetDir) && java.nio.file.Files.exists(legacyDir)) {
                     try {
                         org.zero.launcher.util.io.FileUtils.copyDirectory(legacyDir, targetDir);
@@ -104,7 +104,7 @@ public final class Metadata {
             ZeroLauncher_LOCAL_HOME = Path.of(zeroCurrentDir).toAbsolutePath().normalize();
         } else {
             Path targetDir = CURRENT_DIRECTORY.resolve(".zero");
-            Path legacyDir = CURRENT_DIRECTORY.resolve(".zero");
+            Path legacyDir = CURRENT_DIRECTORY.resolve(".hmcl");
             if (!java.nio.file.Files.exists(targetDir) && java.nio.file.Files.exists(legacyDir)) {
                 try {
                     org.zero.launcher.util.io.FileUtils.copyDirectory(legacyDir, targetDir);

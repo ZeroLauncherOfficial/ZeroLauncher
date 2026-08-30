@@ -77,8 +77,9 @@ public final class CurseInstallTask extends Task<Void> {
         this.repository = dependencyManager.getGameRepository();
         this.run = repository.getRunDirectory(name);
 
+        boolean isNew = !repository.hasVersion(name);
         Path json = repository.getModpackConfiguration(name);
-        if (repository.hasVersion(name) && Files.notExists(json))
+        if (!isNew && Files.notExists(json))
             throw new IllegalArgumentException("Version " + name + " already exists.");
 
         GameBuilder builder = dependencyManager.gameBuilder().name(name).gameVersion(manifest.minecraft().gameVersion());
@@ -93,14 +94,16 @@ public final class CurseInstallTask extends Task<Void> {
         }
         dependents.add(builder.buildAsync());
 
-        onDone().register(event -> {
-            Exception ex = event.getTask().getException();
-            if (event.isFailed()) {
-                if (!(ex instanceof ModpackCompletionException)) {
-                    repository.removeVersionFromDisk(name);
+        if (isNew) {
+            onDone().register(event -> {
+                Exception ex = event.getTask().getException();
+                if (event.isFailed()) {
+                    if (!(ex instanceof ModpackCompletionException)) {
+                        repository.removeVersionFromDisk(name);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         ModpackConfiguration<CurseManifest> config = null;
         try {

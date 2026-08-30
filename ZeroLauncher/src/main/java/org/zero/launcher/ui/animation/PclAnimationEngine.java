@@ -174,12 +174,16 @@ public final class PclAnimationEngine {
         boolean isPressed = false;
     }
 
-    private static final Map<Node, NodeAnimationState> STATE_MAP = Collections.synchronizedMap(new WeakHashMap<>());
+    private static final String KEY_ANIM_STATE = "org.zero.launcher.ui.animation.PclAnimationEngine.STATE";
 
     private static NodeAnimationState getState(Node node) {
-        synchronized (STATE_MAP) {
-            return STATE_MAP.computeIfAbsent(node, k -> new NodeAnimationState());
+        Object existing = node.getProperties().get(KEY_ANIM_STATE);
+        if (existing instanceof NodeAnimationState state) {
+            return state;
         }
+        NodeAnimationState state = new NodeAnimationState();
+        node.getProperties().put(KEY_ANIM_STATE, state);
+        return state;
     }
 
     /// 可中斷的平滑屬性過渡核心（自動捕獲瞬態值為起點，動態計算剩餘時長）

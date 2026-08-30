@@ -68,22 +68,17 @@ public final class StyleSheets {
     }
 
     private static String toStyleSheetUri(String styleSheet, String fallback) {
-        if (FXUtils.JAVAFX_MAJOR_VERSION >= 17)
-            // JavaFX 17+ support loading stylesheets from data URIs
-            // https://bugs.openjdk.org/browse/JDK-8267554
-            return "data:text/css;charset=UTF-8;base64," + Base64.getEncoder().encodeToString(styleSheet.getBytes(StandardCharsets.UTF_8));
-        else
-            try {
-                Path temp = Files.createTempFile("zero", ".css");
-                // For JavaFX 17 or earlier, CssParser uses the default charset
-                // https://bugs.openjdk.org/browse/JDK-8279328
-                Files.writeString(temp, styleSheet, Charset.defaultCharset());
-                temp.toFile().deleteOnExit();
-                return temp.toUri().toString();
-            } catch (IOException | NullPointerException e) {
-                LOG.error("Unable to create stylesheet, fallback to " + fallback, e);
-                return fallback;
-            }
+        try {
+            Path cacheDir = org.zero.launcher.Metadata.ZeroLauncher_LOCAL_HOME.resolve("cache");
+            Files.createDirectories(cacheDir);
+            String safeName = "style-" + Math.abs(fallback.hashCode()) + ".css";
+            Path temp = cacheDir.resolve(safeName);
+            Files.writeString(temp, styleSheet, StandardCharsets.UTF_8);
+            return temp.toUri().toString();
+        } catch (IOException | NullPointerException e) {
+            LOG.error("Unable to create stylesheet, fallback to " + fallback, e);
+            return fallback;
+        }
     }
 
     private static String getFontStyleSheet() {

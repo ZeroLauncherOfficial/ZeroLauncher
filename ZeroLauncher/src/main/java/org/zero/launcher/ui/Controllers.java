@@ -527,30 +527,11 @@ public final class Controllers {
 
             Runnable updateShowTips = () -> state().getShownTips().put(APRIL_FOOLS, currentYear);
 
-            Controllers.confirmWithCountdown(i18n("launcher.april_fools.switch_lzh"), null, 10,
+            Controllers.confirm(i18n("launcher.april_fools.switch_lzh"), null,
                     MessageType.QUESTION, () -> {
-                        Controllers.confirm(i18n("launcher.april_fools.switch_lzh.confirm"), null, MessageType.QUESTION, () -> {
-                            LOG.info("Switching locale to " + lzh);
-
-                            updateShowTips.run();
-                            settings().languageProperty().set(lzh);
-
-                            Controllers.onApplicationStop();
-
-                            try {
-                                FileSaver.waitForAllSaves();
-                            } catch (InterruptedException ignored) {
-                                // Ignore
-                            }
-
-                            try {
-                                Restarter.restartSelf();
-                            } catch (IOException e) {
-                                LOG.warning("Failed to restart self", e);
-                            }
-
-                            Platform.exit();
-                        }, updateShowTips);
+                        LOG.info("Switching locale to " + lzh);
+                        updateShowTips.run();
+                        settings().languageProperty().set(lzh);
                     }, updateShowTips);
         }
     }
@@ -706,6 +687,10 @@ public final class Controllers {
 
     public static void showToast(String content) {
         decorator.showToast(content);
+    }
+
+    public static void toast(String content) {
+        showToast(content);
     }
 
     public static void onHyperlinkAction(String href) {

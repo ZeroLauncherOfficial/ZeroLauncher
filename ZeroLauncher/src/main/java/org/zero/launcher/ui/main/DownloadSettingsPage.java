@@ -128,7 +128,19 @@ public class DownloadSettingsPage extends StackPane {
                             settings().commonDirectoryProperty(), settings().commonDirectoryTypeProperty()));
 
             JFXButton cleanButton = FXUtils.newBorderButton(i18n("launcher.cache_directory.clean"));
-            cleanButton.setOnAction(e -> clearCacheDirectory());
+            cleanButton.setOnAction(e -> {
+                cleanButton.setDisable(true);
+                org.zero.launcher.task.Task.runAsync(org.zero.launcher.task.Schedulers.io(), this::clearCacheDirectory)
+                        .whenComplete(org.zero.launcher.task.Schedulers.javafx(), ex -> {
+                            cleanButton.setDisable(false);
+                            if (ex != null) {
+                                org.zero.launcher.util.logging.Logger.LOG.warning("Failed to clean cache directory", ex);
+                                org.zero.launcher.ui.Controllers.dialog(i18n("message.failed") + "\n" + org.zero.launcher.util.StringUtils.getStackTrace(ex), i18n("message.error"), MessageDialogPane.MessageType.ERROR);
+                            } else {
+                                org.zero.launcher.ui.Controllers.toast(i18n("message.success"));
+                            }
+                        }).start();
+            });
             fileCommonLocationSublist.setHeaderRight(cleanButton);
 
             ComponentSublist downloadThreadsSublist = new ComponentSublist(() -> {

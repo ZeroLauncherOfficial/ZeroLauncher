@@ -300,31 +300,11 @@ public final class CommandBuilder {
     }
 
     public static boolean hasExecutionPolicy() {
-        if (OperatingSystem.CURRENT_OS != OperatingSystem.WINDOWS)
-            return true;
-        if (!OperatingSystem.isWindows7OrLater())
-            return false;
-
-        try {
-            String policy = SystemUtils.run("powershell.exe", "-NoProfile", "-Command", "Get-ExecutionPolicy").trim();
-            return "Unrestricted".equalsIgnoreCase(policy) || "RemoteSigned".equalsIgnoreCase(policy);
-        } catch (Throwable ignored) {
-        }
-        return false;
+        return true;
     }
 
     public static boolean setExecutionPolicy() {
-        if (OperatingSystem.CURRENT_OS != OperatingSystem.WINDOWS)
-            return true;
-        if (!OperatingSystem.isWindows7OrLater())
-            return false;
-
-        try {
-            SystemUtils.run("powershell.exe", "-NoProfile", "-Command", "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser");
-            return true;
-        } catch (Throwable ignored) {
-            return false;
-        }
+        return true;
     }
 
     private static boolean containsEscape(String str, String escapeChars) {
